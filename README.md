@@ -75,7 +75,7 @@ Para fazer um post é necessário usuário e login, portanto será trabalhada a 
  
 ### Data de Entrega
 
-O projeto tem até a seguinte data: `DD/MM/YYYY - 14:00h`. Para ser entregue a avaliação final.
+O projeto tem até a seguinte data: `03/02/2021 - 14:00h`. Para ser entregue a avaliação final.
 
 ---
 
@@ -212,6 +212,8 @@ app.get('/', (request, response) => {
 `sd-05-project-blogs-api/config/config.js`
 
 ```
+require('dotenv').config();
+
 module.exports = {
   "development": {
     "username": process.env.MYSQL_USER,
