@@ -9,8 +9,8 @@ const create = async (req, res) => {
     const token = createToken(userData);
 
     res.status(201).json({ token });
-  } catch (error) {
-    console.log(error.message);
+  } catch {
+    res.status(500).json({ message: 'Ops... algo deu errado, né?' });
   }
 };
 
