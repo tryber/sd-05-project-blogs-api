@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const UsersTable = queryInterface.createTable("BlogPosts", {
+    const UsersTable = queryInterface.createTable("Posts", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -18,11 +18,6 @@ module.exports = {
         unique: true,
         type: Sequelize.STRING,
       },
-      // password: {
-      //   allowNull: false,
-      //   unique: false,
-      //   type: Sequelize.STRING,
-      // },
       published: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -37,5 +32,5 @@ module.exports = {
 
   },
 
-  down: async (queryInterface) => queryInterface.dropTable("BlogPosts"),
+  down: async (queryInterface) => queryInterface.dropTable("Posts"),
 };
