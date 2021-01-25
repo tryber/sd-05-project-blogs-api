@@ -1,8 +1,3 @@
-// // const rescue = require('express-rescue');
-// const Joi = require('@hapi/joi');
-// const rescue = require('express-rescue');
-// const { User } = require('../models');
-
 
 
 // const createUser = rescue((req, res) => {
@@ -10,9 +5,9 @@
 
 //   User.create({ displayName, email, password, image })
 //     .then((newUser) => {
-//       const { id, displayName, email, image } = newUser;
+//       // const { id, displayName, email, image } = newUser;
 
-//       res.status(200).json({ id, displayName, email, image });
+//       res.status(200).json(newUser);
 //     })
 //     .catch((e) => {
 //       console.log(e.message);
@@ -20,6 +15,3 @@
 //     });
 // });
 
-// module.exports = {
-//   createUser,
-// };

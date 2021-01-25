@@ -1,5 +1,6 @@
 const joi = require('@hapi/joi');
 const rescue = require('express-rescue');
+const { User } = require('../models');
 
 const USER_SCHEMA = joi.object({
   displayName: joi.string().min(8).required(),
@@ -9,14 +10,17 @@ const USER_SCHEMA = joi.object({
 });
 
 const validateUserEntries = async (req, res, next) => {
-  // try {
-    const { error } = USER_SCHEMA.validate(req.body);
+  const { error } = USER_SCHEMA.validate(req.body);
 
-    if (error) next({ error, status: 400 });
-
-  // } catch (error) {
-  //   return res.status(400).json(error);
-  // }
+  if (error) next({ message: error.details[0].message, status: 400 });
+  next();
 };
 
-module.exports = { validateUserEntries };
+const validateIfEmailIsNotDuplicate = rescue(async (req, res, next) => {
+  const { email } = req.body;
+  const user = await User.findOne({ where: { email } });
+
+  if (user) next({ message: 'Usuário já existe', status: 409 });
+});
+
+module.exports = { validateUserEntries, validateIfEmailIsNotDuplicate };

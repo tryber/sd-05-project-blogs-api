@@ -1,13 +1,12 @@
 const express = require('express');
 const userRouter = express.Router();
-const rescue = require('express-rescue');
-const { validateUserEntries } = require('../Middleware/userMiddleware');
-const { createUser } = require('../Service/UserServices');
+const userMiddlewares = require('../Middleware/userMiddleware');
 
 userRouter.post(
   '/',
 
-  validateUserEntries,
+  userMiddlewares.validateUserEntries,
+  userMiddlewares.validateIfEmailIsNotDuplicate,
 );
 
 module.exports = userRouter;

@@ -1,5 +1,5 @@
 const express = require('express');
-const userRouter = require('./Controller/UserController');
+const userRouter = require('./Routes/UserRouter');
 const errorMiddleware = require('./Middleware/errorMiddleware');
 const bodyParser = require('body-parser');
 
