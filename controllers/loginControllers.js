@@ -14,7 +14,8 @@ const login = async (req, res) => {
     }
 
     return res.status(400).json(sendError('Campos inválidos'));
-  } catch {
+  } catch (err) {
+    console.log(err);
     return res.status(500).json(sendError('Ops... algo deu errado, né?'));
   }
 };

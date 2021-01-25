@@ -10,11 +10,27 @@ const create = async (req, res) => {
     const token = createToken(userData);
 
     return res.status(201).json({ token });
-  } catch {
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(sendError('Ops... algo deu errado, né?'));
+  }
+};
+
+const list = async (req, res) => {
+  try {
+    const { authorization } = req.headers;
+    if (authorization) {
+      const result = await User.findAll();
+
+      return res.status(200).json(result);
+    }
+  } catch (err) {
+    console.log(err);
     return res.status(500).json(sendError('Ops... algo deu errado, né?'));
   }
 };
 
 module.exports = {
   create,
+  list,
 };

@@ -1,6 +1,9 @@
-const userValidation = require('./userValidation');
+const createUserValidation = require('./createUserValidation');
 const loginValidation = require('./loginValidation');
+const tokenValidation = require('./tokenValidation');
 
 module.exports = {
-  userValidation, loginValidation,
+  createUserValidation,
+  loginValidation,
+  tokenValidation,
 };
