@@ -8,7 +8,7 @@ userRouter.post('/', createUserValidation, usersControllers.create);
 
 userRouter.get('/:id', tokenValidation, usersControllers.show);
 
-userRouter.get('/', tokenValidation, usersControllers.list);
+userRouter.get('/', tokenValidation, usersControllers.index);
 
 userRouter.delete('/me', tokenValidation, usersControllers.remove);
 

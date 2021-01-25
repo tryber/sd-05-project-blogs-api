@@ -1,11 +1,11 @@
-const { User } = require('../models');
+const { Users } = require('../models');
 const { createToken } = require('../auth/token');
 const { sendError } = require('../services');
 
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const result = await User.findOne({ where: { email } });
+    const result = await Users.findOne({ where: { email } });
 
     if (result?.password === password) {
       const { password: _, ...userData } = result;

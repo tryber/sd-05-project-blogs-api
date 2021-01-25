@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { Users } = require('../models');
 const { sendError } = require('../services');
 
 const { createToken } = require('../auth/token');
@@ -6,7 +6,7 @@ const { createToken } = require('../auth/token');
 const create = async (req, res) => {
   try {
     const { displayName, email, password, image } = req.body;
-    const result = await User.create({ displayName, email, password, image });
+    const result = await Users.create({ displayName, email, password, image });
     const { password: _, ...userData } = result;
     const token = createToken(userData);
 
@@ -17,11 +17,11 @@ const create = async (req, res) => {
   }
 };
 
-const list = async (req, res) => {
+const index = async (req, res) => {
   try {
     const { authorization } = req.headers;
     if (authorization) {
-      const result = await User.findAll();
+      const result = await Users.findAll();
 
       return res.status(200).json(result);
     }
@@ -34,7 +34,7 @@ const list = async (req, res) => {
 const show = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await User.findOne({ where: { id } });
+    const result = await Users.findOne({ where: { id } });
     if (!result) {
       return res.status(404).json(sendError('Usuário não existe'));
     }
@@ -56,7 +56,7 @@ const remove = async (_, res) => {
 
 module.exports = {
   create,
-  list,
+  index,
   show,
   remove,
 };

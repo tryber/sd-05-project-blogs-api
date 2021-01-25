@@ -1,5 +1,5 @@
 const { sendError } = require('../services');
-const { User } = require('../models');
+const { Users } = require('../models');
 
 const verifyName = (req) => {
   const { displayName } = req.body;
@@ -27,7 +27,7 @@ const verifyEmail = async (req) => {
     return { status: 400, err: sendError('"email" must be a valid email') };
   }
 
-  const foundRegisteredEmail = await User.findOne({ where: { email } });
+  const foundRegisteredEmail = await Users.findOne({ where: { email } });
   if (foundRegisteredEmail) {
     return { status: 409, err: sendError('Usuário já existe') };
   }
