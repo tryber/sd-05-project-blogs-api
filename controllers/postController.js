@@ -25,4 +25,23 @@ const index = async (req, res) => {
   }
 };
 
-module.exports = { create, index };
+const show = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { authorization } = req.headers;
+
+    if (authorization) {
+      const result = await Posts.findOne({ where: { id }, include: { model: Users, as: 'user' } });
+
+      if (!result) {
+        return res.status(404).json(sendError('Post não existe'));
+      }
+      return res.status(200).json(result);
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(sendError('Ops... algo deu errado, né?'));
+  }
+};
+
+module.exports = { create, index, show };
