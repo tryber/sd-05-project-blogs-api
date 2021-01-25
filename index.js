@@ -7,7 +7,7 @@ require('dotenv').config();
 // IMPORTATIONS
 const app = express();
 
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 // const usersController = require('./controllers/usersController');
 // const loginController = require('./controllers/loginController');
