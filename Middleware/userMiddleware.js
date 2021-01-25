@@ -21,6 +21,7 @@ const validateIfEmailIsNotDuplicate = rescue(async (req, res, next) => {
   const user = await User.findOne({ where: { email } });
 
   if (user) next({ message: 'Usuário já existe', status: 409 });
+  if (!user) next();
 });
 
 module.exports = { validateUserEntries, validateIfEmailIsNotDuplicate };
