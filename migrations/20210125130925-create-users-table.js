@@ -28,16 +28,16 @@ module.exports = {
         unique: false,
         type: Sequelize.STRING,
       },
-      // createdAt: {
-      //   type: Sequelize.DATE,
-      //   allowNull: false,
-      //   defaultValue: Sequelize.Now,
-      // },
-      // updatedAt: {
-      //   type: Sequelize.DATE,
-      //   allowNull: false,
-      //   defaultValue: Sequelize.Now,
-      // }
+      createdAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.Now,
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.Now,
+      }
     });
 
     return UsersTable;
