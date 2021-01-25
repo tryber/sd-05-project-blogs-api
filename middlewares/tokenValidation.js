@@ -9,7 +9,9 @@ const tokenValidation = async (req, res, next) => {
       return res.status(401).json(sendError('Token não encontrado'));
     }
 
-    verifyToken(authorization);
+    const verifiedToken = verifyToken(authorization);
+
+    req.user = verifiedToken.dataValues;
 
     next();
   } catch {
