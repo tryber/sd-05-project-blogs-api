@@ -30,7 +30,22 @@ const list = async (req, res) => {
   }
 };
 
+const show = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await User.findOne({ where: { id } });
+    if (!result) {
+      return res.status(404).json(sendError('Usuário não existe'));
+    }
+    return res.status(200).json(result);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(sendError('Ops... algo deu errado, né?'));
+  }
+};
+
 module.exports = {
   create,
   list,
+  show,
 };
