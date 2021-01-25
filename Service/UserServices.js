@@ -1,5 +1,3 @@
-
-
 // const createUser = rescue((req, res) => {
 //   const { displayName, email, password, image } = req.body;
 
@@ -14,4 +12,3 @@
 //       res.status(500).json({ message: 'Something went wrong' });
 //     });
 // });
-
