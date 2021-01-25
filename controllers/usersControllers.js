@@ -1,6 +1,7 @@
 const { User } = require('../models');
-const createToken = require('../auth/createToken');
 const { sendError } = require('../services');
+
+const { createToken } = require('../auth/token');
 
 const create = async (req, res) => {
   try {
@@ -44,8 +45,18 @@ const show = async (req, res) => {
   }
 };
 
+const remove = async (_, res) => {
+  try {
+    return res.status(204).send();
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(sendError('Ops... algo deu errado, né?'));
+  }
+};
+
 module.exports = {
   create,
   list,
   show,
+  remove,
 };

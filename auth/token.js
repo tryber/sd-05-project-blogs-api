@@ -12,4 +12,10 @@ const createToken = (payload) => {
   return token;
 };
 
-module.exports = createToken;
+const verifyToken = (token) => {
+  const verifiedToken = jwt.verify(token, secret);
+
+  return verifiedToken;
+};
+
+module.exports = { createToken, verifyToken };

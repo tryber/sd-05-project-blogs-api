@@ -6,8 +6,10 @@ const userRouter = express.Router();
 
 userRouter.post('/', createUserValidation, usersControllers.create);
 
+userRouter.get('/:id', tokenValidation, usersControllers.show);
+
 userRouter.get('/', tokenValidation, usersControllers.list);
 
-userRouter.get('/:id', tokenValidation, usersControllers.show);
+userRouter.delete('/me', tokenValidation, usersControllers.remove);
 
 module.exports = userRouter;

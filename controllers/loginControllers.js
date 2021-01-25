@@ -1,5 +1,5 @@
 const { User } = require('../models');
-const createToken = require('../auth/createToken');
+const { createToken } = require('../auth/token');
 const { sendError } = require('../services');
 
 const login = async (req, res) => {
