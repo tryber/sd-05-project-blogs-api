@@ -9,11 +9,14 @@ const USER_SCHEMA = joi.object({
 });
 
 const validateUserEntries = async (req, res, next) => {
-  const { error } = USER_SCHEMA.validate(req.body);
+  // try {
+    const { error } = USER_SCHEMA.validate(req.body);
 
-  if (error) next(error.details[0]);
+    if (error) next({ error, status: 400 });
 
-  next();
+  // } catch (error) {
+  //   return res.status(400).json(error);
+  // }
 };
 
 module.exports = { validateUserEntries };
