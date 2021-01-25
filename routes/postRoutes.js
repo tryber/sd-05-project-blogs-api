@@ -10,4 +10,6 @@ postRoutes.get('/', tokenValidation, postController.index);
 
 postRoutes.get('/:id', tokenValidation, postController.show);
 
+postRoutes.put('/:id', tokenValidation, postValidation, postController.edit);
+
 module.exports = postRoutes;

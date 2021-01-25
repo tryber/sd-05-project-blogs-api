@@ -19,12 +19,9 @@ const create = async (req, res) => {
 
 const index = async (req, res) => {
   try {
-    const { authorization } = req.headers;
-    if (authorization) {
-      const result = await Users.findAll();
+    const result = await Users.findAll();
 
-      return res.status(200).json(result);
-    }
+    return res.status(200).json(result);
   } catch (err) {
     console.log(err);
     return res.status(500).json(sendError('Ops... algo deu errado, né?'));

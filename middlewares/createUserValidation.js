@@ -50,7 +50,7 @@ const verifyPassword = (req) => {
 };
 
 const userValidation = async (req, res, next) => {
-  const nameErr = await verifyName(req);
+  const nameErr = verifyName(req);
   if (nameErr) {
     return res.status(nameErr.status).json(nameErr.err);
   }
@@ -60,7 +60,7 @@ const userValidation = async (req, res, next) => {
     return res.status(emailErr.status).json(emailErr.err);
   }
 
-  const passErr = await verifyPassword(req);
+  const passErr = verifyPassword(req);
   if (passErr) {
     return res.status(passErr.status).json(passErr.err);
   }
