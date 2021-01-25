@@ -1,18 +1,16 @@
 const express = require('express');
 const userRouter = express.Router();
 const rescue = require('express-rescue');
+const { validateUserEntries } = require('../Middleware/userMiddleware');
 const { createUser } = require('../Service/UserServices');
 
 userRouter.post(
   '/',
-  createUser
 
-
-  }),
+  validateUserEntries,
 );
 
 module.exports = userRouter;
-
 
 // User.create({ name, username, email, password })
 // .then((newUser) => {
