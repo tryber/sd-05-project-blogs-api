@@ -1,7 +1,7 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const userRouter = require('./Routes/UserRouter');
 const errorMiddleware = require('./Middleware/errorMiddleware');
-const bodyParser = require('body-parser');
 
 const app = express();
 
