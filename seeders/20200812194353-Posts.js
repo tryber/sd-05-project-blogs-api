@@ -9,6 +9,8 @@ module.exports = {
           userId: 1,
           published: new Date('2011-08-01T19:58:00.000Z'),
           updated: new Date('2011-08-01T19:58:51.000Z'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         {
           id: 2,
@@ -17,6 +19,8 @@ module.exports = {
           userId: 1,
           published: new Date('2011-08-01T19:58:00.000Z'),
           updated: new Date('2011-08-01T19:58:51.000Z'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       ]);
   },
