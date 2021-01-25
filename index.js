@@ -10,6 +10,6 @@ app.use(routes);
 
 app.get('/', (_req, res) => res.send());
 
-const { PORT } = process.env || 3000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => console.log(`Haam... Ouvindo na porta ${PORT}, né?!`));
