@@ -1,5 +1,6 @@
 const { User } = require('../models');
 const createToken = require('../auth/createToken');
+const { sendError } = require('../services');
 
 const create = async (req, res) => {
   try {
@@ -8,9 +9,9 @@ const create = async (req, res) => {
     const { password: _, ...userData } = result;
     const token = createToken(userData);
 
-    res.status(201).json({ token });
+    return res.status(201).json({ token });
   } catch {
-    res.status(500).json({ message: 'Ops... algo deu errado, né?' });
+    return res.status(500).json(sendError('Ops... algo deu errado, né?'));
   }
 };
 

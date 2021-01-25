@@ -1,7 +1,7 @@
-const sendError = (err) => ({ message: err });
+const { sendError } = require('../services');
 const { User } = require('../models');
 
-const verifyName = async (req) => {
+const verifyName = (req) => {
   const { displayName } = req.body;
 
   if (displayName.length < 8) {
@@ -35,7 +35,7 @@ const verifyEmail = async (req) => {
   return null;
 };
 
-const verifyPassword = async (req) => {
+const verifyPassword = (req) => {
   const { password } = req.body;
 
   if (!password) {
@@ -54,14 +54,17 @@ const userValidation = async (req, res, next) => {
   if (nameErr) {
     return res.status(nameErr.status).json(nameErr.err);
   }
+
   const emailErr = await verifyEmail(req);
   if (emailErr) {
     return res.status(emailErr.status).json(emailErr.err);
   }
+
   const passErr = await verifyPassword(req);
   if (passErr) {
     return res.status(passErr.status).json(passErr.err);
   }
+
   next();
 };
 
