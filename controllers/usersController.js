@@ -15,22 +15,6 @@ const {
 
 const generateJWT = require('../services/generateToken');
 
-// /_ Busca um usuário _/
-// userRouter.get('/:id', (req, res, next) => {
-//   User.findByPk(req.params.id)
-//     .then((user) => {
-//       if (user === null) {
-//         return res.status(404).send({ message: 'Usuário não encontrado' });
-//       }
-//       return res.status(200).json(user);
-//     })
-//     .catch((e) => {
-//       console.log(e.message);
-//       res.status(500).json({ message: 'Algo deu errado' });
-//     });
-
-// });
-
 // 1 - Sua aplicação deve ter o endpoint POST /user
 // done with middlewares, service being better only when you need to manipulate return
 userRouter.post(
@@ -58,32 +42,20 @@ userRouter.get(
   }),
 );
 
-// const createUser = rescue(async (req, res) => {
-//   const { body } = req;
-//   const createdUser = await User.create(body);
-//   const { password: _, ...userWithoutPassword } = createdUser;
-
-//   const token = createToken(userWithoutPassword);
-//   return res.status(201).json({ token });
-// });
-
-// userRouter.post(
-//   '/',
-
-//   userMiddlewares.validateUserEntries,
-//   userMiddlewares.validateIfEmailIsNotDuplicate,
-//   userControllers.createUser,
-// );
-
-// usersRouter.post(
-//   '/',
-//   rescue(async (req, res) => {
-//     const { name, email, password } = req.body;
-//     const userCreated = await usersServices.create(name, email, password);
-//     if (!userCreated) return res.status(400).json({ message: 'User was not created' });
-//     return res.status(201).json(userCreated);
-//   }),
-// );
+// 4 - Sua aplicação deve ter o endpoint GET /user/:id
+userRouter.get(
+  '/:id',
+  validateToken,
+  rescue(async (req, res) => {
+    const { id } = req.params;
+    const userById = await User.findByPk(id);
+    // also possible: const userById = await User.findOne({ where: { id } });
+    if (!userById) {
+      return res.status(404).json({ message: 'Usuário não existe' });
+    }
+    return res.status(200).json(userById);
+  }),
+);
 
 // /_ Atualiza um usuário _/
 // userRouter.put('/:id', (req, res) => {
