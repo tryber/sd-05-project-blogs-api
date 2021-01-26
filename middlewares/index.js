@@ -5,7 +5,7 @@ const {
   validatePassword,
 } = require('./usersMdw');
 const { validateLoginEmail, validateExistingEmail, validateLoginPassword } = require('./loginMdw');
-
+const validateToken = require('./validateToken');
 const errorMdw = require('./errorMdw');
 
 module.exports = {
@@ -16,5 +16,6 @@ module.exports = {
   validateLoginEmail,
   validateExistingEmail,
   validateLoginPassword,
+  validateToken,
   errorMdw,
 };

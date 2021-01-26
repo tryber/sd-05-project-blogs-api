@@ -10,6 +10,7 @@ const {
   validateEmail,
   validateNotExisting,
   validatePassword,
+  validateToken,
 } = require('../middlewares');
 
 const generateJWT = require('../services/generateToken');
@@ -47,14 +48,15 @@ userRouter.post(
   }),
 );
 
-// userRouter.get(
-//   '/',
-//   rescue(async (_req, res) => {
-//     const createdUser = await User.findAll();
-//     console.log(createdUser);
-//     res.status(201).json(createdUser);
-//   })
-// );
+// 3 - Sua aplicação deve ter o endpoint GET /user
+userRouter.get(
+  '/',
+  validateToken,
+  rescue(async (_req, res) => {
+    const allUsers = await User.findAll();
+    res.status(200).json(allUsers);
+  })
+);
 
 // const createUser = rescue(async (req, res) => {
 //   const { body } = req;
