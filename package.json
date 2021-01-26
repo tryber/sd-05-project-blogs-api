@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mysql2": "^2.1.0",
-    "sequelize": "^6.3.4",
+    "mysql2": "^2.2.5",
+    "rescue": "^6.0.4",
+    "sequelize": "^6.4.0",
     "shelljs": "^0.8.4"
   },
   "scripts": {
@@ -28,5 +30,21 @@
     "jest": "^26.0.1",
     "sequelize-cli": "^6.2.0",
     "supertest": "^4.0.2"
-  }
+  },
+  "description": "Ao iniciar este projeto, você concorda com as diretrizes do Código de Ética e Conduta e do Manual da Pessoa Estudante da Trybe.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tryber/sd-05-project-blogs-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tryber/sd-05-project-blogs-api/issues"
+  },
+  "homepage": "https://github.com/tryber/sd-05-project-blogs-api#readme"
 }
