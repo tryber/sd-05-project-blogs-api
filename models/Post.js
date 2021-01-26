@@ -2,8 +2,16 @@ const Post = (sequelize, DataTypes) => {
   const PostModel = sequelize.define('Post', {
     title: DataTypes.STRING,
     content: DataTypes.STRING,
-    published: DataTypes.DATE,
-    updated: DataTypes.DATE,
+    published: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+    updated: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      onUpdate: DataTypes.NOW,
+    },
+    userId: DataTypes.INTEGER,
   });
 
   PostModel.associate = (models) => {
@@ -14,3 +22,7 @@ const Post = (sequelize, DataTypes) => {
 };
 
 module.exports = Post;
+
+// Post.associate = (models) => {
+//   Post.belongsTo(models.Users, { foreignKey: 'userId', as: 'user' });
+// };
