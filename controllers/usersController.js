@@ -43,7 +43,7 @@ userRouter.post(
     const createdUser = await User.create({ displayName, email, password, image });
     // res.status(201).json(createdUser);
     const token = await generateJWT(createdUser);
-    return res.status(200).json({ token });
+    return res.status(201).json({ token });
   }),
 );
 
