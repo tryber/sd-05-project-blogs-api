@@ -3,7 +3,7 @@ const shell = require('shelljs');
 
 const url = 'http://localhost:3000';
 
-describe.skip('Sua aplicação deve ter o endpoint POST `/login`', () => {
+describe('Sua aplicação deve ter o endpoint POST `/login`', () => {
   beforeEach(async () => {
     shell.exec('npx sequelize-cli db:drop');
     shell.exec('npx sequelize-cli db:create && npx sequelize-cli db:migrate $');
