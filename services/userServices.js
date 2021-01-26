@@ -1,56 +1,26 @@
-const Users = require('../models');
+const { Users } = require('../models');
 const { createToken } = require('../middlewares/JWToken');
 
-const create = async (body) => {
-  // if (!body) {
-  //   return {
-  //     error: true,
-  //     code: 'Bad Request',
-  //     message: 'Invalid entries. Try again.',
-  //   };
-  // }
-  const { displayName, email, password, image } = body;
+const returnMsg = (errorMessage) => {
+  return {
+    error: true,
+    code: 'Bad Request',
+    message: errorMessage,
+  }
+};
 
+const create = async (body) => {
+  const { displayName, email, password, image } = body;
   if (!/^[A-Za-z \s]{8,}$/.test(displayName) || !displayName) {
-    return {
-      error: true,
-      code: 'Bad Request',
-      message: '"displayName" length must be at least 8 characters long',
+    return returnMsg('"displayName" length must be at least 8 characters long')
+  };
+  if (!email) { return returnMsg('"email" is required')};
+  if (!/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/i.test(email)) {
+    return returnMsg('"email" must be a valid email')
     };
-  }
-  if (!email) {
-    return {
-      error: true,
-      code: 'Bad Request',
-      message: '"email" is required',
-    };
-  }
-  const emailRegex = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/i;
-  const emailIsValid = emailRegex.test(email);
-  if (!emailIsValid) {
-    return {
-      error: true,
-      code: 'Bad Request',
-      message: '"email" must be a valid email',
-    };
-  }
-  if (!password) {
-    return {
-      error: true,
-      code: 'Bad Request',
-      message: '"password" is required',
-    };
-  }
-  if (password.length < 6) {
-    return {
-      error: true,
-      code: 'Bad Request',
-      message: '"password" length must be 6 characters long',
-    };
-  }  
-  // console.log(email);
+  if (!password) { returnMsg('"password" is required') };
+  if (password.length < 6) { returnMsg('"password" length must be 6 characters long') };
   const emailExists = await Users.findOne({ where: { email } });
-  // console.log(emailExists);
   if (emailExists) {
     return {
       error: true,
@@ -58,19 +28,11 @@ const create = async (body) => {
       message: 'Usuário já existe',
     };
   }
-  const newUser = await Users.create(displayName, email, password, image);
-  // console.log(newUser);
-  console.log('User Token', {
-    id: newUser.insertId,
-    displayName,
-    email,
-  });
+  const newUser = await Users.create({ displayName, email, password, image });
   const token = createToken({
-    id: newUser.insertId,
     displayName,
     email,
   });
-
   return token;
 };
 

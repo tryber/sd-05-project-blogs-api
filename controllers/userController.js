@@ -23,7 +23,7 @@ const create = async (req, res) => {
 };
 
 module.exports = {
-  login,
+  // login,
   // getAll,
   // getById,
   create,
