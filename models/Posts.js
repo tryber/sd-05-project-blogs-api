@@ -1,8 +1,7 @@
-const User = (sequelize, DataTypes) => {
-  const user = sequelize.define('User', {
+const Post = (sequelize, DataTypes) => {
+  const post = sequelize.define('Post', {
     title: DataTypes.STRING,
     content: DataTypes.TEXT,
-    user_id: DataTypes.INTEGER,
     published: DataTypes.DATE,
     updated: DataTypes.DATE,
   },
@@ -10,7 +9,11 @@ const User = (sequelize, DataTypes) => {
     timestamps: false,
   });
 
-  return user;
+  Post.associate = (models) => {
+    Post.belongsTo(models.User, { as: 'user', foreignKey: 'id' });
+  };
+
+  return post;
 };
 
-module.exports = User;
+module.exports = Post;
