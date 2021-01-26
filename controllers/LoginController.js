@@ -4,7 +4,7 @@ require('dotenv').config();
 // const service = require('../services/userService');
 const { User } = require('../models');
 
-const secret = process.env.JWT_SECRET;
+const secret = process.env.JWT_SECRET || 'calado';
 
 const jwtConfig = {
   expiresIn: '15m',
