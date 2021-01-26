@@ -22,14 +22,13 @@ const login = async ({ email = null, password = null }) => {
 const authenticateToken = (token) => {
   if (!token) throw new StatusError('Token não encontrado', 401);
 
-  console.log(token);
-
   try {
-    const { password: _, ...userWithoutPassword} = checkToken(token).payload.dataValues;
+    const payload = checkToken(token).payload.dataValues;
+    const { password: _, ...userWithoutPassword } = payload;
 
     return userWithoutPassword;
   } catch (error) {
-    if (error.message === 'invalid token') {
+    if (error.message === 'invalid token' || error.message === 'jwt malformed' || error.message === 'invalid signature') {
       throw new StatusError('Token expirado ou inválido', 401);
     }
   }

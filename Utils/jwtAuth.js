@@ -6,7 +6,7 @@ const config = {
   algorithm: 'HS256',
 };
 
-const SECRET = process.env.SECRET;
+const SECRET = process.env.SECRET || 'there is no secret'; 
 
 const createToken = (payload) => jwt.sign({ payload }, SECRET, config);
 const checkToken = (token) => jwt.verify(token, SECRET);
