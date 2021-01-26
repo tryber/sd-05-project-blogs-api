@@ -1,3 +1,5 @@
+const { User } = require('../models');
+
 const validEmail = /^[\w+.]+@\w+\.\w{2,}(?:\.\w{2})?$/;
 const userValidation = (req, res, next) => {
   const { displayName, email, password } = req.body;
@@ -25,4 +27,26 @@ const userValidation = (req, res, next) => {
   next();
 };
 
-module.exports = { userValidation };
+const loginValidation = async (req, res, next) => {
+  const { email, password } = req.body;
+  if (email === undefined) {
+    return res.status(400).json({ message: '"email" is required' });
+  }
+  if (password === undefined) {
+    return res.status(400).json({ message: '"password" is required' });
+  }
+  if (email === '') {
+    return res.status(400).json({ message: '"email" is not allowed to be empty' });
+  }
+  if (password === '') {
+    return res.status(400).json({ message: '"password" is not allowed to be empty' });
+  }
+  const findByEmail = await User.findAll()
+    .then((users) => users.find((item) => item.email === email));
+  if (!findByEmail || String(findByEmail.dataValues.password) !== String(password)) {
+    return res.status(400).json({ message: 'Campos inválidos' });
+  }
+  next();
+};
+
+module.exports = { userValidation, loginValidation };
