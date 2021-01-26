@@ -17,7 +17,7 @@ userRouter.get(
   '/',
 
   isAuthorized,
-  
+  userControllers.getAll,
 );
 
 module.exports = userRouter;

@@ -25,14 +25,9 @@ const login = rescue(async (req, res, next) => {
   }
 });
 
-const getAll = rescue(async (req, res, next) => {
-  try {
-
-  } catch (error) {
-    const { message, status } = error;
-
-    next({ message, status });
-  }
-})
+const getAll = rescue(async (req, res) => {
+  const allUsers = await User.findAll();
+  res.status(200).json(allUsers);
+});
 
 module.exports = { createUser, login, getAll };

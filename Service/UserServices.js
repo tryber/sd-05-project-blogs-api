@@ -25,7 +25,6 @@ const authenticateToken = (token) => {
   console.log(token);
 
   try {
-    console.log('entrou no try');
     const { password: _, ...userWithoutPassword} = checkToken(token).payload.dataValues;
 
     return userWithoutPassword;
