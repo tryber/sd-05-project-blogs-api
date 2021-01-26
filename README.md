@@ -287,7 +287,7 @@ Alguns exemplos:
   }
   ```
 
-- Deve conter uma tabela chamada **BlogPosts**, contendo os seguinte dados:
+- Deve conter uma tabela chamada **Posts**, contendo os seguinte dados:
 
   ```json
   {
