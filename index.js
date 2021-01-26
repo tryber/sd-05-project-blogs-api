@@ -1,6 +1,17 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const userController = require('./controllers/UsersController');
+const errorMiddleware = require('./middlewares/error');
 
 const app = express();
+
+app.use(express.urlencoded({ extended: false }));
+
+app.use(bodyParser.json());
+
+app.use('/user', userController);
+
+app.use(errorMiddleware);
 
 const PORT = 3000;
 
