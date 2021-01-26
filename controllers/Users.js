@@ -1,5 +1,6 @@
 const express = require('express');
 const { User } = require('../models');
+const { createToken } = require('../auth/token');
 
 const router = express.Router();
 
@@ -8,7 +9,8 @@ router.post('/', (req, res) => {
 
   User.create({ displayName, email, password, image })
     .then((newUser) => {
-      res.status(200).json(newUser);
+      const token = createToken({ newUser });
+      res.status(200).json({ token });
     })
     .catch((e) => {
       console.log(e.message);

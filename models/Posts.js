@@ -4,7 +4,7 @@ const Post = (sequelize, DataTypes) => {
     content: DataTypes.STRING,
     published: DataTypes.DATE,
     updated: DataTypes.DATE,
-    user_id: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER,
   });
 
   return post;
