@@ -21,7 +21,7 @@ const registerUser = rescue(async (req, _res, next) => {
     req.data = { token: createToken(id) };
     next();
   } catch {
-    throw new Error('Usuário já existe;409')
+    throw new Error('Usuário já existe;409');
   }
 });
 
