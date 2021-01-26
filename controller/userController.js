@@ -2,6 +2,7 @@ const { Router } = require('express');
 const rescue = require('express-rescue');
 
 const usersFactory = require('../service/users/usersFactory');
+const authToken = require('../middlewares/authToken');
 
 const user = Router();
 
@@ -16,6 +17,29 @@ user.post(
     }
 
     return res.status(201).json({ token });
+  }),
+);
+
+user.get(
+  '/',
+  authToken,
+  rescue(async (req, res) => {
+    const allUsers = await usersFactory().listAllUsers();
+    return res.status(200).json(allUsers);
+  }),
+);
+
+user.get(
+  '/:id',
+  authToken,
+  rescue(async (req, res) => {
+    const { id } = req.params;
+    const user = await usersFactory().getUserById(id);
+
+    if (user.error) {
+      return res.status(user.statusCode).json({message: user.message});
+    }
+    return res.status(200).json(user);
   }),
 );
 

@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const user = require('../../controller/userController');
 const createToken = require('../../middlewares/createToken');
 
 const validateUser = (displayName, email, password, image) => {
@@ -13,8 +14,7 @@ const validateUser = (displayName, email, password, image) => {
 
 const validateLogin = (email, password) => {
   const schema = Joi.object({
-    email: Joi.string().email().required().not()
-      .empty(),
+    email: Joi.string().email().required().not().empty(),
     password: Joi.string().required().not().empty(),
   });
   return schema.validate({ email, password });
@@ -72,7 +72,36 @@ const logUser = (User) => async (email, password) => {
   return createToken(userData);
 };
 
+const listAllUsers = (User) => async () => {
+  const getAllUsers = await User.findAll();
+  const everyUser = getAllUsers.map((user) => {
+    const {
+      dataValues: { password: _, ...userData },
+    } = user;
+    return userData;
+  });
+  return everyUser;
+};
+
+const getUserById = (User) => async (id) => {
+  const user = await User.findByPk(id);
+
+  if (!user) {
+    return {
+      error: true,
+      message: 'Usuário não existe',
+      statusCode: 404,
+    };
+  }
+  const {
+    dataValues: { password: _, ...userData },
+  } = user;
+  return userData;
+};
+
 module.exports = {
   createUser,
   logUser,
+  listAllUsers,
+  getUserById,
 };
