@@ -9,6 +9,6 @@ postRouter.post(
 
   isAuthorized,
   postControllers.createPost,
-)
+);
 
 module.exports = postRouter;
