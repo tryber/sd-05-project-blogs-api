@@ -27,12 +27,12 @@ const verifyContent = (req) => {
 };
 
 const postValidation = async (req, res, next) => {
-  const titleErr = await verifyTitle(req);
+  const titleErr = verifyTitle(req);
   if (titleErr) {
     return res.status(titleErr.status).json(titleErr.err);
   }
 
-  const contentErr = await verifyContent(req);
+  const contentErr = verifyContent(req);
   if (contentErr) {
     return res.status(contentErr.status).json(contentErr.err);
   }

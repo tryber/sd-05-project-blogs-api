@@ -8,6 +8,8 @@ postRoutes.post('/', tokenValidation, postValidation, postController.create);
 
 postRoutes.get('/', tokenValidation, postController.index);
 
+postRoutes.get('/search', tokenValidation, postController.search);
+
 postRoutes.get('/:id', tokenValidation, postController.show);
 
 postRoutes.put('/:id', tokenValidation, postValidation, postController.edit);

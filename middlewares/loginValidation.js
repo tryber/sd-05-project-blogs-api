@@ -1,6 +1,6 @@
 const { sendError } = require('../services');
 
-const verifyEmail = async (req) => {
+const verifyEmail = (req) => {
   const { email } = req.body;
 
   if (email === '') {
@@ -20,7 +20,7 @@ const verifyEmail = async (req) => {
   return null;
 };
 
-const verifyPassword = async (req) => {
+const verifyPassword = (req) => {
   const { password } = req.body;
 
   if (password === '') {
@@ -41,12 +41,12 @@ const verifyPassword = async (req) => {
 };
 
 const loginValidation = async (req, res, next) => {
-  const emailErr = await verifyEmail(req);
+  const emailErr = verifyEmail(req);
   if (emailErr) {
     return res.status(emailErr.status).json(emailErr.err);
   }
 
-  const passErr = await verifyPassword(req);
+  const passErr = verifyPassword(req);
   if (passErr) {
     return res.status(passErr.status).json(passErr.err);
   }
