@@ -11,7 +11,7 @@ const validateName = async (req, res, next) => {
   const { displayName } = req.body;
   if (displayName.length < 8) {
     return next(
-      new CodeError('"displayName" length must be at least 8 characters long', 'invalid_data'),
+      new CodeError('"displayName" length must be at least 8 characters long', 'invalid_data')
     );
   }
   // invalid_data for status 400 in the error middleware

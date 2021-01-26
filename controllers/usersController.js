@@ -3,6 +3,7 @@ const express = require('express');
 const rescue = require('express-rescue');
 
 const { User } = require('../models');
+
 const userRouter = express.Router();
 const {
   validateName,
@@ -10,6 +11,7 @@ const {
   validateNotExisting,
   validatePassword,
 } = require('../middlewares');
+
 const generateJWT = require('../services/generateToken');
 
 // /_ Busca um usuário _/

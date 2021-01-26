@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const usersController = require('./controllers/usersController');
-// const loginController = require('./controllers/loginController');
+const loginController = require('./controllers/loginController');
 // const postsController = require('./controllers/postsController');
 const { errorMdw } = require('./middlewares');
 
@@ -22,7 +22,7 @@ app.get('/', (request, response) => {
 });
 
 app.use('/user', usersController);
-// app.use('/login', loginController);
+app.use('/login', loginController);
 // app.use('/post', postsController);
 // app.use('/images', express.static(path.join(__dirname, 'uploads')));
 app.use(errorMdw);
