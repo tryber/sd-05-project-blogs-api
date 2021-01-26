@@ -33,14 +33,13 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       published: {
-        allowNull: false,
         isDate: true,
         type: Sequelize.DATE,
       },
       updated: {
         isDate: true,
         type: Sequelize.DATE,
-      },
+      }
     });
   },
   down: async (queryInterface, Sequelize) => {

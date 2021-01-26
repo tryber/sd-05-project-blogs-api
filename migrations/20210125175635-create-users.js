@@ -30,6 +30,14 @@ module.exports = {
           min: 6,
           type: Sequelize.STRING,
         },
+        createdAt: {
+          isDate: true,
+          type: Sequelize.DATE,
+        },
+        updatedAt: {
+          isDate: true,
+          type: Sequelize.DATE,
+        }
       });
   },
 
