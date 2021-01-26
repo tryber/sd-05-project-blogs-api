@@ -12,9 +12,4 @@ const create = (sequelize, DataTypes) => {
   return Users;
 };
 
-/* const getByEmail = async (email) => {
-  const [buscaEmail] = await connection.execute('SELECT * FROM users WHERE email = ?', [email]);
-  return buscaEmail[0];
-}; */
-
 module.exports = create;
