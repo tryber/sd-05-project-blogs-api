@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const service = require('../services/userService');
 const createJWT = require('../auth/createJWT');
+const validateJWT = require('../auth/validateJWT');
 const userInfo = require('../middleware/userInfo');
 const checkUser = require('../middleware/checkUser');
 
@@ -19,6 +20,10 @@ users.post('/', userInfo, checkUser, async (req, res) => {
   } catch (e) {
     res.send(e.message);
   }
+});
+users.get('/', validateJWT, async (req, res) => {
+  const allUsers = await service.getAll();
+  return res.status(200).json(allUsers);
 });
 // const getAll = async (req, res) => {
 //   return res.status(200).json({ message: 'Deu bom!' });
