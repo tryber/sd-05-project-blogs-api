@@ -32,7 +32,19 @@ const getAll = async () => {
   return allUsers;
 };
 
+const getById = async (id) => {
+  const userById = await Users.findOne({ where: { id } });
+  if (!userById) {
+    return {
+      error: true,
+      code: 404,
+      message: 'Usuário não existe',
+    };
+  }
+  return userById;
+};
 module.exports = {
   create,
   getAll,
+  getById,
 };
