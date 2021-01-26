@@ -12,5 +12,4 @@ userRouter.post(
   userControllers.createUser,
 );
 
-
 module.exports = userRouter;

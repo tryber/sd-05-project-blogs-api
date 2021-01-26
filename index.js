@@ -4,7 +4,6 @@ const userRouter = require('./Routes/UserRouter');
 const errorMiddleware = require('./Middleware/errorMiddleware');
 const userControllers = require('./Controllers/UserControllers');
 
-
 const app = express();
 
 app.use(bodyParser.json());

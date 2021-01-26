@@ -13,9 +13,19 @@ const createUser = rescue(async (req, res) => {
 });
 
 const login = rescue(async (req, res, next) => {
-  const emailAndPassword = req.body;
+  try {
+    const emailAndPassword = req.body;
 
-  const user = await userService.login(emailAndPassword, next);
-  
+    const token = await userService.login(emailAndPassword, next);
+    return res.status(200).json({ token });
+  } catch (error) {
+    console.log(error);
+    const { message, status } = error;
+    console.log('====================================');
+    console.log(message);
+    console.log(status);
+    console.log('====================================');
+    next({ message, status });
+  }
 });
 module.exports = { createUser, login };
