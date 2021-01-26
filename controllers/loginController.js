@@ -15,8 +15,7 @@ login.post('/', loginInfo, async (req, res) => {
     if (loginC.error) {
       return res.status(loginC.code).json({ message: loginC.message });
     }
-    const { password: _, ...userData } = loginC;
-    const token = createJWT(userData);
+    const token = createJWT(loginC.dataValues);
     return res.status(200).json({ token });
   } catch (e) {
     res.send(e.message);

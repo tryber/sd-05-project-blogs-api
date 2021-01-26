@@ -15,7 +15,7 @@ const loginCheck = async (email, password) => {
       message: '"email" is required',
     };
   }
-  const userInfo = Users.findOne({ where: { email, password } });
+  const userInfo = await Users.findOne({ where: { email, password }, attributes: ['id', 'email', 'displayName'] });
   return userInfo;
 };
 
