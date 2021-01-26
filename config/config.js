@@ -6,14 +6,14 @@ module.exports = {
     password: process.env.MYSQL_PASSWORD,
     database: 'blogs_api',
     host: process.env.HOSTNAME,
-    dialect: 'mysql'
+    dialect: 'mysql',
   },
   test: {
     username: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
     database: 'blogs_api',
     host: process.env.HOSTNAME,
-    dialect: 'mysql'
+    dialect: 'mysql',
   },
   production: {
     username: process.env.MYSQL_USER,

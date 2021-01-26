@@ -1,10 +1,19 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const userController = require('./controllers/userController');
 
 const app = express();
 
-app.listen(3000, () => console.log('ouvindo porta 3000!'));
+app.use(bodyParser.json());
+
+app.post('/user', userController.create);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (request, response) => {
   response.send();
+});
+
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`o pai tá ON na: ${PORT}, né?`);
 });
