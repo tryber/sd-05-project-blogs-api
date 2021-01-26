@@ -1,10 +1,9 @@
 const userService = require('./userService');
-const { User } = require('../../models/');
+const { User } = require('../../models');
 
-const userFactory = () => {
-  return {
-    createUser: userService.createUser(User),
-  };
-};
+const userFactory = () => ({
+  createUser: userService.createUser(User),
+  logUser: userService.logUser(User),
+});
 
 module.exports = userFactory;

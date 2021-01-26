@@ -40,6 +40,45 @@ const createUser = (User) => async (displayName, email, password, image) => {
   return token;
 };
 
+const validateLogin = (email, password) => {
+  const schema = Joi.object({
+    email: Joi.string().email().required().not().empty(),
+    password: Joi.string().required().not().empty(),
+  });
+  return schema.validate({ email, password });
+};
+
+const logUser = (User) => async (email, password) => {
+  const loginValidation = validateLogin(email, password);
+
+  if (loginValidation.error) {
+    return {
+      error: true,
+      message: loginValidation.error.message,
+      statusCode: 400,
+    };
+  }
+
+  const isUserValid = await User.findOne({ where: { email, password } });
+  console.log(isUserValid);
+
+  if (!isUserValid) {
+    return {
+      error: true,
+      message: 'Campos inválidos',
+      statusCode: 400,
+    };
+  }
+
+  const {
+    dataValues: { password: _, ...userData },
+  } = isUserValid;
+
+  const token = createToken(userData);
+  return token;
+};
+
 module.exports = {
   createUser,
+  logUser,
 };

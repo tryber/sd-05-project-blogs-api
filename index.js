@@ -2,12 +2,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const userController = require('./controller/userController');
+const loginController = require('./controller/loginController');
 
 const app = express();
 
 app.use(bodyParser.json());
 
 app.use('/user', userController);
+app.use('/login', loginController);
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));
 
