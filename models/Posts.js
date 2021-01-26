@@ -1,5 +1,5 @@
 const Post = (sequelize, DataTypes) => {
-  const Post = sequelize.define('Post', {
+  const post = sequelize.define('Post', {
     title: DataTypes.STRING,
     content: DataTypes.STRING,
     published: DataTypes.DATE,
@@ -7,7 +7,7 @@ const Post = (sequelize, DataTypes) => {
     user_id: DataTypes.INTEGER,
   });
 
-  return Post;
+  return post;
 };
 
 module.exports = Post;
