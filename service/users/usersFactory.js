@@ -6,6 +6,7 @@ const userFactory = () => ({
   logUser: userService.logUser(User),
   listAllUsers: userService.listAllUsers(User),
   getUserById: userService.getUserById(User),
+  deleteUser: userService.deleteUser(User),
 });
 
 module.exports = userFactory;

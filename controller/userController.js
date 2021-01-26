@@ -34,12 +34,22 @@ user.get(
   authToken,
   rescue(async (req, res) => {
     const { id } = req.params;
-    const user = await usersFactory().getUserById(id);
+    const userFound = await usersFactory().getUserById(id);
 
-    if (user.error) {
-      return res.status(user.statusCode).json({message: user.message});
+    if (userFound.error) {
+      return res.status(userFound.statusCode).json({ message: userFound.message });
     }
-    return res.status(200).json(user);
+    return res.status(200).json(userFound);
+  }),
+);
+
+user.delete(
+  '/me',
+  authToken,
+  rescue(async (req, res) => {
+    const token = req.headers.authorization;
+    await usersFactory().deleteUser(token);
+    return res.status(204).send();
   }),
 );
 

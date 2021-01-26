@@ -1,6 +1,6 @@
 const Joi = require('joi');
-const user = require('../../controller/userController');
 const createToken = require('../../middlewares/createToken');
+const decodeToken = require('../../middlewares/decodeToken');
 
 const validateUser = (displayName, email, password, image) => {
   const schema = Joi.object({
@@ -14,7 +14,8 @@ const validateUser = (displayName, email, password, image) => {
 
 const validateLogin = (email, password) => {
   const schema = Joi.object({
-    email: Joi.string().email().required().not().empty(),
+    email: Joi.string().email().required().not()
+      .empty(),
     password: Joi.string().required().not().empty(),
   });
   return schema.validate({ email, password });
@@ -73,6 +74,7 @@ const logUser = (User) => async (email, password) => {
 };
 
 const listAllUsers = (User) => async () => {
+  // { attributes: { exclude: ['password'] } }
   const getAllUsers = await User.findAll();
   const everyUser = getAllUsers.map((user) => {
     const {
@@ -99,9 +101,15 @@ const getUserById = (User) => async (id) => {
   return userData;
 };
 
+const deleteUser = (User) => async (token) => {
+  const { id } = decodeToken(token);
+  await User.destroy({ where: { id } });
+};
+
 module.exports = {
   createUser,
   logUser,
   listAllUsers,
   getUserById,
+  deleteUser,
 };
