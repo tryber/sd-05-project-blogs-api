@@ -19,14 +19,16 @@ const login = async ({ email = null, password = null }) => {
   return token;
 };
 
-const isAValidToken = (token) => {
+const authenticateToken = (token) => {
   if (!token) throw new StatusError('Token não encontrado', 401);
 
+  console.log(token);
+
   try {
-    checkToken(token);
-    // console.log('check token result');
-    // console.log(result);
-    return true;
+    console.log('entrou no try');
+    const { password: _, ...userWithoutPassword} = checkToken(token).payload.dataValues;
+
+    return userWithoutPassword;
   } catch (error) {
     if (error.message === 'invalid token') {
       throw new StatusError('Token expirado ou inválido', 401);
@@ -34,4 +36,4 @@ const isAValidToken = (token) => {
   }
 };
 
-module.exports = { login, isAValidToken };
+module.exports = { login, authenticateToken };

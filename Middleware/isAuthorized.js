@@ -1,10 +1,12 @@
-const { isAValidToken } = require('../Service/UserServices');
+const { authenticateToken } = require('../Service/UserServices');
 
 module.exports = (req, res, next) => {
   try {
     const { authorization } = req.headers;
+    const payloadUser = authenticateToken(authorization);
 
-    if (isAValidToken(authorization)) next();
+    req.data = payloadUser;
+    next();
   } catch (error) {
     const { message, status } = error;
 
