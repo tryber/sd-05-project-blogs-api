@@ -1,4 +1,4 @@
-const createUsers = (sequelize, DataTypes) => {
+const Users = (sequelize, DataTypes) => {
   const Users = sequelize.define('User', {
     id: { type: DataTypes.INTEGER, primaryKey: true },
     displayName: DataTypes.STRING,
@@ -10,12 +10,12 @@ const createUsers = (sequelize, DataTypes) => {
     timestamps: false,
   });
   Users.associate = (models) => {
-    Users.hasMany(models.Posts, { foreignKey: 'id', as: 'userId' });
-    };
+    Users.hasMany(models.Posts, { foreignKey: 'id', as: 'posts' });
+  };
   return Users;
 };
 
-module.exports = createUsers;
+module.exports = Users;
 
 // id: 2,
 // displayName: 'Michael Schumacher',
