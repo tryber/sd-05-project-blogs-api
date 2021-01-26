@@ -2,10 +2,9 @@ const { isAValidToken } = require('../Service/UserServices');
 
 module.exports = (req, res, next) => {
   try {
-    const { token } = req.headers.authorization;
+    const { authorization } = req.headers;
 
-    if (isAValidToken(token)) next();
-
+    if (isAValidToken(authorization)) next();
   } catch (error) {
     const { message, status } = error;
 
