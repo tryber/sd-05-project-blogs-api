@@ -30,9 +30,23 @@ users.post('/', async (req, res) => {
 
 users.get('/', checkToken, async (_req, res) => {
   try {
-    const findUsers = await Users.findAll();
+    const findUsers = await Users.findAll({ attributes: { exclude: ['password'] } });
     // console.log('findUsers==>', findUsers);
     res.status(200).json(findUsers);
+  } catch (error) {
+    // res.status(500).json({ message: error.message });
+    res.status(500).json({ message: 'Deu ruim' });
+  }
+});
+
+users.get('/:id', checkToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const findUserId = await Users.findOne({ where: { id }, attributes: { exclude: ['password'] } });
+    if (!findUserId) {
+      return res.status(404).json({ message: 'Usuário não existe' });
+    }
+    res.status(200).json(findUserId);
   } catch (error) {
     // res.status(500).json({ message: error.message });
     res.status(500).json({ message: 'Deu ruim' });
