@@ -55,7 +55,7 @@ userRouter.get(
   rescue(async (_req, res) => {
     const allUsers = await User.findAll();
     res.status(200).json(allUsers);
-  })
+  }),
 );
 
 // const createUser = rescue(async (req, res) => {
