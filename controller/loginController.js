@@ -8,14 +8,14 @@ const { createToken } = require('../Middlewares/webTokenCreate');
 
 logins.post('/', async (req, res) => {
   try {
-    const { email, password } =  req.body;
+    const { email, password } = req.body;
     // const findUser = await MODEL.filter((user) => user.email == email);
     const login = await service.login(email, password);
     if (login.error) {
       return res.status(login.statusCode).json({ message: login.message });
     }
     const token = createToken({
-      displayName,
+      email,
       iss: 'post_api',
     });
     res.status(200).json({ token });

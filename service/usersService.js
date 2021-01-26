@@ -18,15 +18,10 @@ const create = async (displayName, email, password, image) => {
   }
   if (password.length < 6) {
     return {
-      error: true,
-      message: '"password" length must be 6 characters long',
-      statusCode: 400,
+      error: true, message: '"password" length must be 6 characters long', statusCode: 400,
     };
   }
-  const emailDuplicate = await Users.findOne({where: {email: email}});
-  console.log('emailduplicate', emailDuplicate);
-  // const emailDuplicate = Users.findOne({where: {email: {$eq: email}}});
-  // const emailDuplicate = Users.filter((user) => user.email == email);
+  const emailDuplicate = await Users.findOne({ where: { email } });
   if (emailDuplicate) {
     return { error: true, message: 'Usuário já existe', statusCode: 409 };
   }
