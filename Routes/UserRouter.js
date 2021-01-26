@@ -20,4 +20,11 @@ userRouter.get(
   userControllers.getAll,
 );
 
+userRouter.get(
+  '/:id',
+
+  isAuthorized,
+  userControllers.getUser,
+);
+
 module.exports = userRouter;

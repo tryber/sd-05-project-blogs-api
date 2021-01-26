@@ -30,4 +30,12 @@ const getAll = rescue(async (req, res) => {
   res.status(200).json(allUsers);
 });
 
-module.exports = { createUser, login, getAll };
+const getUser = rescue(async (req, res) => {
+  const { id } = req.params;
+
+  const user = await userService.getUser(id);
+
+  return res.status(200).json(user);
+});
+
+module.exports = { createUser, login, getAll, getUser };

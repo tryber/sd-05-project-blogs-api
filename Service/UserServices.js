@@ -28,10 +28,22 @@ const authenticateToken = (token) => {
 
     return userWithoutPassword;
   } catch (error) {
-    if (error.message === 'invalid token' || error.message === 'jwt malformed' || error.message === 'invalid signature') {
+    if (
+      error.message === 'invalid token' ||
+      error.message === 'jwt malformed' ||
+      error.message === 'invalid signature'
+    ) {
       throw new StatusError('Token expirado ou inválido', 401);
     }
   }
 };
 
-module.exports = { login, authenticateToken };
+const getUser = async (id) => {
+  const user = await User.findOne({ where: { id } });
+
+  if (!user) throw new StatusError('Usuário não existe', 404);
+
+  return user;
+};
+
+module.exports = { login, authenticateToken, getUser };
