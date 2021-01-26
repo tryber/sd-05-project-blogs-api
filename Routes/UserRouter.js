@@ -12,4 +12,10 @@ userRouter.post(
   userControllers.createUser,
 );
 
+userRouter.get(
+  '/',
+
+  // userControllers.getAll,
+);
+
 module.exports = userRouter;

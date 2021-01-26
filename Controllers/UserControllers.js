@@ -1,5 +1,5 @@
 const rescue = require('express-rescue');
-const { createToken } = require('../Middleware/jwtAuth');
+const { createToken } = require('../Utils/jwtAuth');
 const { User } = require('../models');
 const userService = require('../Service/UserServices');
 
@@ -19,13 +19,20 @@ const login = rescue(async (req, res, next) => {
     const token = await userService.login(emailAndPassword, next);
     return res.status(200).json({ token });
   } catch (error) {
-    console.log(error);
     const { message, status } = error;
-    console.log('====================================');
-    console.log(message);
-    console.log(status);
-    console.log('====================================');
+
     next({ message, status });
   }
 });
+
+// const getAll = rescue(async (req, res, next) => {
+//   try {
+
+//   } catch (error) {
+//     const { message, status } = error;
+
+//     next({ message, status });
+//   }
+// })
+
 module.exports = { createUser, login };
