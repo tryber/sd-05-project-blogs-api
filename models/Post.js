@@ -22,7 +22,3 @@ const Post = (sequelize, DataTypes) => {
 };
 
 module.exports = Post;
-
-// Post.associate = (models) => {
-//   Post.belongsTo(models.Users, { foreignKey: 'userId', as: 'user' });
-// };
