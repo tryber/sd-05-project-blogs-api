@@ -14,6 +14,16 @@ router.post('/', rescue(async (req, res, next) => {
   }
 }));
 
+router.get('/:id', auth, rescue(async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const user = await service.getOne(id);
+    res.status(200).json(user);
+  } catch (err) {
+    next(err);
+  }
+}));
+
 router.get('/', auth, rescue(async (req, res, next) => {
   try {
     const users = await service.getAll();

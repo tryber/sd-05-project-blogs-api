@@ -25,7 +25,15 @@ const create = async (user) => {
 
 const getAll = async () => User.findAll();
 
+const getOne = async (userId) => {
+  const user = await User.findByPk(userId);
+  if (!user) throw new UserException('Usuário não existe', 'not_found');
+  const { id, displayName, email, image } = user.dataValues;
+  return { id, displayName, email, image };
+};
+
 module.exports = {
   create,
   getAll,
+  getOne,
 };

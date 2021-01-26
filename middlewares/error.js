@@ -15,5 +15,8 @@ module.exports = (err, _req, res, _next) => {
   if (validatorKey === 'is_required') {
     res.status(400).json({ message });
   }
+  if (validatorKey === 'not_found') {
+    res.status(404).json({ message });
+  }
   res.status(404).json({ message: 'Algo deu errado' });
 };
