@@ -23,10 +23,10 @@ posts.put('/:id', validateJWT, async (req, res) => {
     const postId = req.params.id;
     const updatePost = await service.updPost(userId, postId, title, content);
     if (updatePost.error) {
-      res.status(updatePost.code).json({ message: updatePost.message });
+      return res.status(updatePost.code).json({ message: updatePost.message });
     }
     if (updatePost[0] === 0) {
-      res.status(401).json({ message: 'Usuário não autorizado' });
+      return res.status(401).json({ message: 'Usuário não autorizado' });
     }
     return res.status(200).json(updatePost);
   } catch (e) {
