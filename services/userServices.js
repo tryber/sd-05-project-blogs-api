@@ -30,7 +30,7 @@ const create = async (body) => {
 const login = async (body) => {
   const { email, password } = body;
   if (email === '') { return returnMsg('"email" is not allowed to be empty'); }
-  if (password === '') { return returnMsg('"passord" is not allowed to be empty'); }
+  if (password === '') { return returnMsg('"password" is not allowed to be empty'); }
   if (!email) { return returnMsg('"email" is required'); }
   if (!password) { return returnMsg('"password" is required'); }
   const user = await Users.findOne({ where: { email } });
