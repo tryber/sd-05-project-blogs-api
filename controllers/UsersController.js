@@ -14,6 +14,17 @@ router.post('/', rescue(async (req, res, next) => {
   }
 }));
 
+router.delete('/me', auth, rescue(async (req, res, next) => {
+  const { id } = req.user;
+  try {
+    const user = await service.exclude(id);
+    console.log(user);
+    res.status(204).json(user);
+  } catch (err) {
+    next(err);
+  }
+}));
+
 router.get('/:id', auth, rescue(async (req, res, next) => {
   const { id } = req.params;
   try {

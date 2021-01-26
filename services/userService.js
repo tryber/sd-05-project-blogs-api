@@ -32,8 +32,11 @@ const getOne = async (userId) => {
   return { id, displayName, email, image };
 };
 
+const exclude = async (id) => User.destroy({ where: { id } });
+
 module.exports = {
   create,
   getAll,
   getOne,
+  exclude,
 };

@@ -16,8 +16,7 @@ module.exports = async (req, res, next) => {
 
     if (!user) throw new Error({ code: 'invalid_user', message: 'Invalid entries. Try again.' });
 
-    const { password, ...userWithoutPassword } = user;
-
+    const { password, ...userWithoutPassword } = user['0'].dataValues;
     req.user = userWithoutPassword;
 
     return next();
