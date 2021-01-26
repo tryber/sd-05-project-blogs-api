@@ -10,7 +10,7 @@ const Post = (sequelize, Datatypes) => {
     updated: Datatypes.DATE,
   },
   {
-  timestamps: false,
+    timestamps: false,
   });
   Post.associate = (models) => {
     Post.belongsTo(models.User, { as: 'user', foreignKey: 'userId' });

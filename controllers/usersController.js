@@ -1,7 +1,9 @@
 const express = require('express');
+
+const rescue = require('express-rescue');
+
 const { User } = require('../models');
 const userRouter = express.Router();
-const rescue = require('express-rescue');
 const {
   validateName,
   validateEmail,
@@ -40,7 +42,7 @@ userRouter.post(
     // res.status(201).json(createdUser);
     const token = await generateJWT(createdUser);
     return res.status(200).json({ token });
-  })
+  }),
 );
 
 // userRouter.get(

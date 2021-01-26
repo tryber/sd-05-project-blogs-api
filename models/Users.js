@@ -9,7 +9,7 @@ const User = (sequelize, Datatypes) => {
     image: Datatypes.STRING,
   },
   {
-  timestamps: false,
+    timestamps: false,
   });
 
   User.associate = (models) => {
