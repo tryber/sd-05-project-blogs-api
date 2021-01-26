@@ -10,7 +10,7 @@ router.post('/', (req, res) => {
   User.create({ displayName, email, password, image })
     .then((newUser) => {
       const token = createToken({ newUser });
-      res.status(200).json({ token });
+      res.status(201).json({ token });
     })
     .catch((e) => {
       console.log(e.message);
