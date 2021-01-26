@@ -1,21 +1,30 @@
 const express = require('express');
 const { User } = require('../models');
-const { createToken } = require('../auth/token');
+const authToken = require('../services/authToken');
+const services = require('../services');
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
-  const { displayName, email, password, image } = req.body;
+router.post('/', async (req, res) => {
+  const response = await services.userPostMiddleware(req);
 
-  User.create({ displayName, email, password, image })
-    .then((newUser) => {
-      const token = createToken({ newUser });
-      res.status(201).json({ token });
-    })
-    .catch((e) => {
-      console.log(e.message);
-      res.status(500).send({ message: 'Algo deu errado' });
-    });
+  if (response.err) return res.status(response.err.status).json(response.err);
+
+  res.status(201).json(response);
+});
+
+router.get('/', async (req, res) => {
+  try {
+    const response = await authToken(req);
+
+    if (response.err) return res.status(response.err.status).json(response.err);
+
+    const data = await User.findAll();
+
+    res.status(200).json(data);
+  } catch {
+    res.status(500).send({ message: 'Algo deu errado' });
+  }
 });
 
 module.exports = router;
