@@ -38,4 +38,14 @@ const getUser = rescue(async (req, res) => {
   return res.status(200).json(user);
 });
 
-module.exports = { createUser, login, getAll, getUser };
+const deleteUser = rescue(async (req, res) => {
+  const { id } = req.data;
+
+  const destroyed = await userService.deleteUser(id);
+  console.log(destroyed);
+  console.log('não vai entrar no .res mesmo?');
+  console.log(res);
+  return res.status(204).json({ message: 'why do we have to throw a json?' });
+});
+
+module.exports = { createUser, login, getAll, getUser, deleteUser };

@@ -27,4 +27,11 @@ userRouter.get(
   userControllers.getUser,
 );
 
+userRouter.delete(
+  '/me',
+
+  isAuthorized,
+  userControllers.deleteUser,
+);
+
 module.exports = userRouter;
