@@ -2,7 +2,7 @@
 // Conventional to use singular here (User) despite plural in the name (Users)
 const User = (sequelize, Datatypes) => {
   const UserModel = sequelize.define('User', {
-    id: { type: DataTypes.INTEGER, primaryKey: true },
+    id: { type: Datatypes.INTEGER, primaryKey: true },
     displayName: Datatypes.STRING,
     email: Datatypes.STRING,
     password: Datatypes.STRING,

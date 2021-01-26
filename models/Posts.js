@@ -2,10 +2,10 @@
 // Conventional to use singular here (Post) despite plural in the name (Posts)
 const Post = (sequelize, Datatypes) => {
   const PostModel = sequelize.define('Post', {
-    id: { type: DataTypes.INTEGER, primaryKey: true },
+    id: { type: Datatypes.INTEGER, primaryKey: true },
     title: Datatypes.STRING,
     content: Datatypes.TEXT,
-    userId: { type: DataTypes.INTEGER, foreignKey: true },
+    userId: { type: Datatypes.INTEGER, foreignKey: true },
     published: Datatypes.DATE,
     updated: Datatypes.DATE,
   });
