@@ -3,6 +3,7 @@ const userMiddlewares = require('../Middleware/userMiddleware');
 const userControllers = require('../Controllers/UserControllers');
 
 const userRouter = express.Router();
+
 userRouter.post(
   '/',
 
@@ -10,5 +11,6 @@ userRouter.post(
   userMiddlewares.validateIfEmailIsNotDuplicate,
   userControllers.createUser,
 );
+
 
 module.exports = userRouter;

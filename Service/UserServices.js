@@ -1,14 +1,16 @@
-// const createUser = rescue((req, res) => {
-//   const { displayName, email, password, image } = req.body;
+const { User } = require('../models');
+const { createToken } = require('../Middleware/jwtAuth');
 
-//   User.create({ displayName, email, password, image })
-//     .then((newUser) => {
-//       // const { id, displayName, email, image } = newUser;
+const login = async ({ email, password }, next) => {
+  if (!email) next({ message: '"email" is not allowed to be empty', status: 400 });
+  if (!password) next({ message: '"password" is not allowed to be empty', status: 400 });
 
-//       res.status(200).json(newUser);
-//     })
-//     .catch((e) => {
-//       console.log(e.message);
-//       res.status(500).json({ message: 'Something went wrong' });
-//     });
-// });
+  const user = await User.findOne({ where: { email, password } });
+  if (!user) next({ message: 'Campos inválidos', status: 400 });
+
+  const { password: _, ...userWithoutPassword } = user;
+
+  
+};
+
+module.exports = { login };
