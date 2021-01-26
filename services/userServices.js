@@ -11,9 +11,9 @@ const create = async (body) => {
   if (!email) { return returnMsg('"email" is required'); }
   if (!/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/i.test(email)) {
     return returnMsg('"email" must be a valid email');
-    }
-  if (!password) { returnMsg('"password" is required'); }
-  if (password.length < 6) { returnMsg('"password" length must be 6 characters long'); }
+  }
+  if (!password) { return returnMsg('"password" is required'); }
+  if (password.length < 6) { return returnMsg('"password" length must be 6 characters long'); }
   const emailExists = await Users.findOne({ where: { email } });
   if (emailExists) {
     return {
@@ -27,8 +27,30 @@ const create = async (body) => {
   return token;
 };
 
+const login = async (body) => {
+  const { email, password } = body;
+  if (email === '') { return returnMsg('"email" is not allowed to be empty'); }
+  if (password === '') { return returnMsg('"passord" is not allowed to be empty'); }
+  if (!email) { return returnMsg('"email" is required'); } 
+  if (!password) { return returnMsg('"password" is required'); }
+  const user = await Users.findOne({ where: { email } });
+  console.log(user);
+  if (!user || user.password !== password) {
+    return {
+      error: true,
+      code: 'Bad Request',
+      message: 'Campos inválidos',
+    };
+  }
+  const { password: _, ...userWithoutPassword } = user;
+  console.log(userWithoutPassword);
+  const token = createToken({ userWithoutPassword });
+  console.log(token);
+  return token;
+};
+
 module.exports = {
-  // login,
+  login,
   // getAll,
   // getById,
   create,

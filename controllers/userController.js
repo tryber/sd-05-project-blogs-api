@@ -22,8 +22,27 @@ const create = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  try {
+    const dadosBody = req.body;
+    // console.log(dadosBody);
+    const getlogin = await service.login(dadosBody);
+    // console.log(login);
+    if (getlogin.error) {
+      if (getlogin.code === 'Bad Request') {
+        return res.status(400).json({ message: getlogin.message });
+      }
+      return res.status(500).json({ message: 'Algo deu ruim no login' });
+    }
+    res.status(200).json({ token: getlogin });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: 'Algo deu ruim no LOGIN' });
+  }
+};
+
 module.exports = {
-  // login,
+  login,
   // getAll,
   // getById,
   create,
