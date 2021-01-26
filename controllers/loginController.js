@@ -23,7 +23,7 @@ loginRouter.post(
     const userLoginData = req.body;
     // to get both email and password
     const token = await generateJWT(userLoginData);
-    return res.status(201).json({ token });
+    return res.status(200).json({ token });
   }),
 );
 
