@@ -10,6 +10,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/user/', middlewares.userPostMiddleware, controllers.Users);
+app.use('/login/', controllers.Login);
 
 const PORT = process.env.PORT || 3000;
 
