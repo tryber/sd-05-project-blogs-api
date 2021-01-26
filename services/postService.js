@@ -1,4 +1,4 @@
-const { Posts } = require('../models');
+const { Posts, Users } = require('../models');
 
 const create = async (title, content, id) => {
   if (!title) {
@@ -22,7 +22,11 @@ const create = async (title, content, id) => {
   });
   return cPost;
 };
-
+const getAll = async () => {
+  const allPosts = await Posts.findAll({ include: { model: Users, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] } });
+  return allPosts;
+};
 module.exports = {
   create,
+  getAll,
 };
