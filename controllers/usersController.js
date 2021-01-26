@@ -42,8 +42,10 @@ const show = async (req, res) => {
   }
 };
 
-const remove = async (_, res) => {
+const remove = async (req, res) => {
   try {
+    const { email } = req.user;
+    await Users.destroy({ where: { email } });
     return res.status(204).send();
   } catch (err) {
     console.log(err);

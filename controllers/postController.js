@@ -26,7 +26,10 @@ const show = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const result = await Posts.findOne({ where: { id }, include: { model: Users, as: 'user', attributes: { exclude: ['password'] } } });
+    const result = await Posts.findOne({
+      where: { id },
+      include: { model: Users, as: 'user', attributes: { exclude: ['password'] } },
+    });
 
     if (!result) {
       return res.status(404).json(sendError('Post não existe'));
@@ -63,10 +66,7 @@ const search = async (req, res) => {
 
     const posts = await Posts.findAll({
       where: {
-        [Op.or]: [
-          { title: { [Op.like]: `%${q}%` } },
-          { content: { [Op.like]: `%${q}%` } },
-        ],
+        [Op.or]: [{ title: { [Op.like]: `%${q}%` } }, { content: { [Op.like]: `%${q}%` } }],
       },
       include: { model: Users, as: 'user', attributes: { exclude: ['password'] } },
     });
@@ -77,4 +77,28 @@ const search = async (req, res) => {
   }
 };
 
-module.exports = { create, index, show, edit, search };
+const remove = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+    const post = await Posts.findOne({ where: { id } });
+    const userid = post?.dataValues.userId;
+
+    if (!post) {
+      return res.status(404).json(sendError('Post não existe'));
+    }
+
+    if (userid === userId) {
+      await Posts.destroy({ where: { id, userId } });
+
+      return res.status(204).send();
+    }
+
+    return res.status(401).json(sendError('Usuário não autorizado'));
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(sendError('Ops... algo deu errado, né?'));
+  }
+};
+
+module.exports = { create, index, show, edit, search, remove };

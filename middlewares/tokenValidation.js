@@ -10,7 +10,7 @@ const tokenValidation = async (req, res, next) => {
     }
 
     const verifiedToken = verifyToken(authorization);
-    console.log(authorization);
+
     req.user = verifiedToken.dataValues;
 
     next();

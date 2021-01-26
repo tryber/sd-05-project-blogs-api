@@ -14,4 +14,6 @@ postRoutes.get('/:id', tokenValidation, postController.show);
 
 postRoutes.put('/:id', tokenValidation, postValidation, postController.edit);
 
+postRoutes.delete('/:id', tokenValidation, postController.remove);
+
 module.exports = postRoutes;
