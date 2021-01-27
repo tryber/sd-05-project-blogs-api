@@ -14,20 +14,6 @@ router.post('/', async (req, res) => {
   res.status(201).json(response);
 });
 
-router.get('/', async (req, res) => {
-  try {
-    const response = await authToken(req);
-
-    if (response.err) return res.status(response.err.status).json(response.err);
-
-    const data = await User.findAll();
-
-    res.status(200).json(data);
-  } catch {
-    res.status(500).send({ message: 'Algo deu errado' });
-  }
-});
-
 router.get('/:id', async (req, res) => {
   try {
     const response = await authToken(req);
@@ -35,6 +21,20 @@ router.get('/:id', async (req, res) => {
     if (response.err) return res.status(response.err.status).json(response.err);
 
     const data = await userById(req, res);
+
+    res.status(200).json(data);
+  } catch {
+    res.status(500).send({ message: 'Algo deu errado' });
+  }
+});
+
+router.get('/', async (req, res) => {
+  try {
+    const response = await authToken(req);
+
+    if (response.err) return res.status(response.err.status).json(response.err);
+
+    const data = await User.findAll();
 
     res.status(200).json(data);
   } catch {
