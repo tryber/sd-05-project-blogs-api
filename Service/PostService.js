@@ -16,9 +16,15 @@ const editPost = async (titleAndContent, id, userId) => {
   const post = await Post.findOne({ where: { id } });
 
   if (userId !== post.userId) throw new StatusError('Usuário não autorizado', 401);
-  console.log('====================================');
-  console.log(post);
-  console.log('====================================');
-}
+
+  const { title = null, content = null } = titleAndContent;
+
+  if (!title) throw new StatusError('"title" is required', 400);
+  if (!content) throw new StatusError('"content" is required', 400);
+
+  await Post.update({ title, content }, { where: { id } });
+
+  return { title, content, userId };
+};
 
 module.exports = { createPost, editPost };

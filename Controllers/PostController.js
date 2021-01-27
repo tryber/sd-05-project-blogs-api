@@ -23,7 +23,8 @@ const editPost = rescue(async (req, res, next) => {
     const { id: userId } = req.data;
     const titleAndContent = req.body;
 
-    postService.editPost(titleAndContent, id, userId);
+    const updatedPost = await postService.editPost(titleAndContent, id, userId);
+    return res.status(200).json(updatedPost);
   } catch (error) {
     const { message, status } = error;
 
