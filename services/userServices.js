@@ -1,5 +1,5 @@
 const { Users } = require('../models');
-const { createToken } = require('../middlewares/JWToken');
+const { createToken, verifyToken } = require('../middlewares/JWToken');
 
 const returnMsg = (errorMessage) => ({ error: true, code: 'Bad Request', message: errorMessage });
 
@@ -34,7 +34,7 @@ const login = async (body) => {
   if (!email) { return returnMsg('"email" is required'); }
   if (!password) { return returnMsg('"password" is required'); }
   const user = await Users.findOne({ where: { email } });
-  console.log(user);
+  // console.log(user);
   if (!user || user.password !== password) {
     return {
       error: true,
@@ -43,15 +43,37 @@ const login = async (body) => {
     };
   }
   const { password: _, ...userWithoutPassword } = user;
-  console.log(userWithoutPassword);
+  // console.log(userWithoutPassword);
   const token = createToken({ userWithoutPassword });
-  console.log(token);
+  // console.log(token);
   return token;
+};
+
+const getAll = async (token) => {
+  if (!token) {
+    return {
+      error: true,
+      code: 'Unauthorized',
+      message: 'Token não encontrado',
+    };
+  }
+  const validateToken = verifyToken(token);
+  if (validateToken === 'jwt malformed' || !validateToken.displayName) {
+    return {
+      error: true,
+      code: 'Unauthorized',
+      message: 'Token expirado ou inválido',
+    };
+  }
+  const allUsers = await Users.findAll();
+  const { password: _, ...userData } = allUsers;
+// precisa tirar password
+  return allUsers;
 };
 
 module.exports = {
   login,
-  // getAll,
+  getAll,
   // getById,
   create,
   // update,
