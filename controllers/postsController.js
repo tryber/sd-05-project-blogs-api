@@ -15,6 +15,16 @@ router.post('/', auth, rescue(async (req, res, next) => {
   }
 }));
 
+router.put('/:id', auth, rescue(async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const post = await service.update(id, req.user.id, req.body);
+    res.status(200).json(post);
+  } catch (err) {
+    next(err);
+  }
+}));
+
 // router.delete('/:id', auth, rescue(async (req, res, next) => {
 //   const { id } = req.user;
 //   try {

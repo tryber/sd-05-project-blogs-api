@@ -18,5 +18,8 @@ module.exports = (err, _req, res, _next) => {
   if (validatorKey === 'not_found') {
     res.status(404).json({ message });
   }
+  if (validatorKey === 'unauthorized') {
+    res.status(401).json({ message });
+  }
   res.status(404).json({ message: 'Algo deu errado' });
 };

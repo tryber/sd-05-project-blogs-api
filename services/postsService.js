@@ -13,6 +13,22 @@ function PostException(message, validatorKey) {
   };
 }
 
+const update = async (postId, userId, newPost) => {
+  const { content, title } = newPost;
+  const actualPost = await Post.findOne({ where: { id: postId } });
+  if (!content) {
+    throw new PostException('"content" is required', 'is_required');
+  }
+  if (!title) {
+    throw new PostException('"title" is required', 'is_required');
+  }
+  if (actualPost.userId !== userId) {
+    throw new PostException('Usuário não autorizado', 'unauthorized');
+  }
+  await Post.update({ content, title }, { where: { id: postId, userId } });
+  return { title, content, userId };
+};
+
 const create = async (post, userId) => {
   const { content, title } = post;
   if (!content) {
@@ -49,4 +65,5 @@ module.exports = {
   getAll,
   getOne,
   exclude,
+  update,
 };
