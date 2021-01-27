@@ -58,7 +58,8 @@ const getAll = async (token) => {
     };
   }
   const validateToken = verifyToken(token);
-  if (validateToken === 'jwt malformed' || !validateToken.displayName) {
+  console.log(validateToken);
+  if (validateToken === 'jwt malformed') {
     return {
       error: true,
       code: 'Unauthorized',
@@ -66,8 +67,8 @@ const getAll = async (token) => {
     };
   }
   const allUsers = await Users.findAll();
-  const { password: _, ...userData } = allUsers;
-// precisa tirar password
+  // const { password: _, ...userData } = allUsers;
+  // não precisa tirar password?
   return allUsers;
 };
 
