@@ -20,8 +20,9 @@ loginRouter.post(
   validateExistingEmail,
   validateLoginPassword,
   rescue(async (req, res) => {
-    const userLoginData = req.body;
-    // to get both email and password
+    const userLoginData = req.existingUser;
+    // to get both email, password and id
+    // see login middleware to understand where req.existingUser comes from
     const token = await generateJWT(userLoginData);
     return res.status(200).json({ token });
   }),

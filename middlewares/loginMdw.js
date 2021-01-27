@@ -20,8 +20,10 @@ const validateLoginEmail = async (req, res, next) => {
 
 const validateExistingEmail = async (req, _res, next) => {
   const { email } = req.body;
-  const existingEmail = await User.findOne({ where: { email } });
-  if (!existingEmail) {
+  const existingUser = await User.findOne({ where: { email } });
+  req.existingUser = existingUser.dataValues;
+  // req.existingUser declared so as to then generating a complete token payload
+  if (!existingUser) {
     return next(new CodeError('Campos inválidos', 'invalid_data'));
   }
   next();

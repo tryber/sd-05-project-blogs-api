@@ -7,6 +7,7 @@ const {
 const { validateLoginEmail, validateExistingEmail, validateLoginPassword } = require('./loginMdw');
 const validateToken = require('./validateToken');
 const errorMdw = require('./errorMdw');
+const validatePost = require('./postsMdw');
 
 module.exports = {
   validateName,
@@ -18,4 +19,5 @@ module.exports = {
   validateLoginPassword,
   validateToken,
   errorMdw,
+  validatePost,
 };

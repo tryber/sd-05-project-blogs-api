@@ -26,7 +26,6 @@ userRouter.post(
   rescue(async (req, res) => {
     const { displayName, email, password, image } = req.body;
     const createdUser = await User.create({ displayName, email, password, image });
-    // res.status(201).json(createdUser);
     const token = await generateJWT(createdUser);
     return res.status(201).json({ token });
   }),
@@ -62,18 +61,17 @@ userRouter.delete(
   '/me',
   validateToken,
   rescue(async (req, res) => {
-    // https://jwt.io/ to access what is inside the token payload
     const { email } = req.userPayload;
+    // https://jwt.io/ to access the payload object structure
+    // & validateToken middleware contains req.userPayload
     await User.destroy({ where: { email } });
     return res.status(204).send();
   }),
 );
 
-
 // /_ Atualiza um usuário _/
 // userRouter.put('/:id', (req, res) => {
 //   const { fullname, email } = req.body;
-
 //   User.update(
 //     { fullname, email },
 //     {
@@ -82,22 +80,6 @@ userRouter.delete(
 //   ).then((result) => {
 //     res.status(200).send({ message: 'Usuário atualizado com sucesso!' });
 //   })
-//     .catch((e) => {
-//       console.log(e.message);
-//       res.status(500).send({ message: 'Algo deu errado' });
-//     });
-// });
-
-// /_ Remove um usuário _/
-// userRouter.delete('/:id', (req, res) => {
-//   User.destroy({
-//     where: {
-//       id: req.params.id,
-//     },
-//   })
-//     .then((user) => {
-//       res.status(200).send({ message: `Usuário excluído com sucesso.` });
-//     })
 //     .catch((e) => {
 //       console.log(e.message);
 //       res.status(500).send({ message: 'Algo deu errado' });

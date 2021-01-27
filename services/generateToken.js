@@ -11,9 +11,10 @@ const generateJWT = async (user) => {
   // 3/ Payload
   // First taking away sensible data
   const { password: _, ...userWithoutPassword } = user;
-  const { _id: id } = userWithoutPassword;
+  // const { id } = userWithoutPassword;
+  // console.log(userWithoutPassword);
   const payload = {
-    sub: id,
+    // sub: id,
     userData: userWithoutPassword,
   };
   // 4/ Signature

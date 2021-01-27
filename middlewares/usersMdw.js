@@ -23,10 +23,8 @@ const validateEmail = async (req, res, next) => {
   if (!email) {
     return next(new CodeError('"email" is required', 'invalid_data'));
   }
-  // const emailRegex = /[A-Z0-9]{1,}@[A-Z0-9]{2,}\.[A-Z0-9]{2,}/i;
-  // Do Felipinho
   const emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
-  // Do cookmaster
+  // Mesmo regex usado no projeto CookMaster
   if (!emailRegex.test(email)) {
     return next(new CodeError('"email" must be a valid email', 'invalid_data'));
   }

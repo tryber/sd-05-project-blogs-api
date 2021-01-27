@@ -6,8 +6,8 @@ const Post = (sequelize, Datatypes) => {
     title: Datatypes.STRING,
     content: Datatypes.TEXT,
     userId: { type: Datatypes.INTEGER, foreignKey: true },
-    published: Datatypes.DATE,
-    updated: Datatypes.DATE,
+    published: { type: Datatypes.DATE, defaultValue: Datatypes.NOW },
+    updated: { type: Datatypes.DATE, defaultValue: Datatypes.NOW },
   },
   {
     timestamps: false,
