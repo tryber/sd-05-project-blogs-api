@@ -12,4 +12,13 @@ const createPost = async ({ title = null, content = null }, userId) => {
   return Post.create({ title, content, userId });
 };
 
-module.exports = { createPost };
+const editPost = async (titleAndContent, id, userId) => {
+  const post = await Post.findOne({ where: { id } });
+
+  if (userId !== post.userId) throw new StatusError('Usuário não autorizado', 401);
+  console.log('====================================');
+  console.log(post);
+  console.log('====================================');
+}
+
+module.exports = { createPost, editPost };

@@ -11,4 +11,11 @@ postRouter.post(
   postControllers.createPost,
 );
 
+postRouter.put(
+  '/:id',
+
+  isAuthorized,
+  postControllers.editPost,
+);
+
 module.exports = postRouter;
