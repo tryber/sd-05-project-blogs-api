@@ -1,6 +1,9 @@
+const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 
 const validEmail = /^[\w+.]+@\w+\.\w{2,}(?:\.\w{2})?$/;
+const secret = 'lyraah';
+
 const userValidation = (req, res, next) => {
   const { displayName, email, password } = req.body;
   if (displayName.length < 8) {
@@ -49,4 +52,18 @@ const loginValidation = async (req, res, next) => {
   next();
 };
 
-module.exports = { userValidation, loginValidation };
+const authValidation = async (req, res, next) => {
+  const { authorization } = req.headers;
+  console.log(req.headers);
+  if (authorization === '') {
+    return res.status(401).json({ message: 'Token não encontrado' });
+  }
+  try {
+    await jwt.verify(authorization, secret);
+    next();
+  } catch (e) {
+    res.status(401).json({ message: 'Token expirado ou inválido' });
+  }
+};
+
+module.exports = { userValidation, loginValidation, authValidation };
