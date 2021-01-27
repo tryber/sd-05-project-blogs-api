@@ -66,8 +66,33 @@ const getPostById = (Post, User) => async (id) => {
   return getPost;
 };
 
+const updatePost = (Post) => async (title, content, id, token) => {
+  const isUpdateValid = validatePost(title, content);
+
+  if (isUpdateValid.error) {
+    return {
+      error: true,
+      message: isUpdateValid.error.message,
+      statusCode: 400,
+    };
+  }
+
+  const { id: userId } = decodeToken(token);
+
+  const updatedPost = await Post.update({ title, content }, { where: { id, userId } });
+  if (updatedPost[0] === 0) {
+    return {
+      error: true,
+      message: 'Usuário não autorizado',
+      statusCode: 401,
+    };
+  }
+  return { title, content, userId };
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
+  updatePost,
 };

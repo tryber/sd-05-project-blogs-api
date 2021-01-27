@@ -45,4 +45,20 @@ post.get(
   }),
 );
 
+post.put(
+  '/:id',
+  authToken,
+  rescue(async (req, res) => {
+    const { id } = req.params;
+    const { title, content } = req.body;
+    const token = req.headers.authorization;
+    const updatePost = await postFactory().updatePost(title, content, id, token);
+
+    if (updatePost.error) {
+      return res.status(updatePost.statusCode).json({ message: updatePost.message });
+    }
+    return res.status(200).json(updatePost);
+  }),
+);
+
 module.exports = post;
