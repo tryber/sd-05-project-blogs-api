@@ -8,7 +8,7 @@ const login = async (req, res) => {
     const result = await Users.findOne({ where: { email } });
 
     if (result?.password === password) {
-      const { password: _, ...userData } = result;
+      const { password: _, ...userData } = result.dataValues;
       const token = createToken(userData);
       return res.status(200).json({ token });
     }
