@@ -66,7 +66,7 @@ const getAll = async (token) => {
       message: 'Token expirado ou inválido',
     };
   }
-  const allUsers = await Users.findAll();  
+  const allUsers = await Users.findAll();
   // const { password: _, ...userData } = allUsers;
   // não precisa tirar password?
   return allUsers;
@@ -90,11 +90,7 @@ const getById = async (token, id) => {
   }
   const getUser = await Users.findOne({ where: { id } });
   if (!getUser) {
-    return {
-      error: true,
-      code: 'Not Found',
-      message: 'Usuário não existe',
-    };
+    return { error: true, code: 'Not Found', message: 'Usuário não existe' };
   }
   const { displayName, email, image } = getUser;
   return { id, displayName, email, image };
