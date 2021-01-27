@@ -31,7 +31,7 @@ const deletePost = async (id, userId) => {
   console.log('será que tem o post?');
   console.log(post);
 
-  if(!post) throw new StatusError('Post não existe', 404);
+  if (!post) throw new StatusError('Post não existe', 404);
 
   if (userId !== post.userId) throw new StatusError('Usuário não autorizado', 401);
 
