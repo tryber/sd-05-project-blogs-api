@@ -93,7 +93,7 @@ const getById = async (token, id) => {
     return { error: true, code: 'Not Found', message: 'Usuário não existe' };
   }
   const { displayName, email, image } = getUser;
-  return { id, displayName, email, image };
+  return { id: Number(id), displayName, email, image };
 };
 
 module.exports = {
