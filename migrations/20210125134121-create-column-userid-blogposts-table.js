@@ -6,7 +6,7 @@ module.exports = {
 		return queryInterface.addColumn('Posts', 'userId', {
 			type: Sequelize.INTEGER,
 			allowNull: false,
-			defaultValue: 1,
+			// defaultValue: 1,
 			references: {
 				model: 'Users',
 				key: 'id'
