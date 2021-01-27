@@ -1,5 +1,5 @@
 const { BlogPosts } = require('../models');
-const { createToken, verifyToken } = require('../middlewares/JWToken');
+const { verifyToken } = require('../middlewares/JWToken');
 
 const create = async (token, title, content) => {
   if (!token) {
@@ -21,7 +21,7 @@ const create = async (token, title, content) => {
   if (!content) {
     return { error: true, code: 'Bad Request', message: '"content" is required' };
   }
-  const createPost = await BlogPosts.create({ title, content, userId: ID });
+  await BlogPosts.create({ title, content, userId: ID });
   return { title, content, userId: ID };
 };
 

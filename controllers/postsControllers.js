@@ -2,7 +2,7 @@ const service = require('../services/postsServices');
 
 const create = async (req, res) => {
   try {
-    const { title, content} = req.body;
+    const { title, content } = req.body;
     const { authorization } = req.headers;
     const createPost = await service.create(authorization, title, content);
     // console.log(createPost);
