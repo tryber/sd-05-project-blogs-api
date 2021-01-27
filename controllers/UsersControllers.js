@@ -66,4 +66,17 @@ router.get('/user/:id', authValidation, (req, res) => {
         .json({ message: 'Alguns bugs tomaram conta dessa lógica :(' }));
 });
 
+router.delete('/user/me', authValidation, (req, res) => {
+  const { authorization } = req.headers;
+  const decode = jwt.verify(authorization, secret);
+  const email = decode.data;
+  User.destroy({
+    where: {
+      email,
+    },
+  })
+    .then(() => res.status(204).send())
+    .catch(() => res.status(500).json({ message: 'Alguns bugs tomaram conta dessa lógica :(' }));
+});
+
 module.exports = router;
