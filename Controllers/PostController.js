@@ -31,5 +31,19 @@ const editPost = rescue(async (req, res, next) => {
     next({ message, status });
   }
 });
+const deletePost = rescue(async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    console.log(req.data);
+    const { id: userId } = req.data;
 
-module.exports = { createPost, editPost };
+    await postService.deletePost(id, userId);
+    return res.status(204).json();
+  } catch (error) {
+    const { message, status } = error;
+
+    next({ message, status });
+  }
+});
+
+module.exports = { createPost, editPost, deletePost };

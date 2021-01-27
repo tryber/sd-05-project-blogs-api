@@ -18,4 +18,11 @@ postRouter.put(
   postControllers.editPost,
 );
 
+postRouter.delete(
+  '/:id',
+
+  isAuthorized,
+  postControllers.deletePost,
+);
+
 module.exports = postRouter;
