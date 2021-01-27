@@ -12,8 +12,8 @@ const User = (sequelize, Datatypes) => {
     timestamps: false,
   });
 
-  User.associate = (models) => {
-    User.hasMany(models.Post, { as: 'posts', foreignKey: 'userId' });
+  UserModel.associate = (models) => {
+    UserModel.hasMany(models.Post, { as: 'posts', foreignKey: 'userId' });
   };
   // foreignKey is always the userId, linking both tables
   // alias is what we are chosing it to be. Here, "post", because "user has many posts".

@@ -2,7 +2,7 @@ const express = require('express');
 
 const rescue = require('express-rescue');
 
-const { Post } = require('../models');
+const { Post, User } = require('../models');
 
 const postRouter = express.Router();
 const {
@@ -26,15 +26,18 @@ postRouter.post(
   }),
 );
 
-// // 3 - Sua aplicação deve ter o endpoint GET /user
-// userRouter.get(
-//   '/',
-//   validateToken,
-//   rescue(async (_req, res) => {
-//     const allUsers = await User.findAll();
-//     res.status(200).json(allUsers);
-//   }),
-// );
+// 7 - Sua aplicação deve ter o endpoint GET /post
+postRouter.get(
+  '/',
+  validateToken,
+  rescue(async (_req, res) => {
+    const allPosts = await Post.findAll(({ include: { model: User, as: 'user' } }));
+    // "include" indicates to Sequelize req's settings:
+    // property "model" to tell what table is used
+    // & as needs to be same name as in assocation written into the present model (Post).
+    res.status(200).json(allPosts);
+  }),
+);
 
 // // 4 - Sua aplicação deve ter o endpoint GET /user/:id
 // userRouter.get(

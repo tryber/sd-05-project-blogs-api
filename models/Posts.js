@@ -12,8 +12,8 @@ const Post = (sequelize, Datatypes) => {
   {
     timestamps: false,
   });
-  Post.associate = (models) => {
-    Post.belongsTo(models.User, { as: 'user', foreignKey: 'userId' });
+  PostModel.associate = (models) => {
+    PostModel.belongsTo(models.User, { as: 'user', foreignKey: 'userId' });
   };
   // foreignKey is always the userId, linking both tables
   // alias is what we are chosing it to be. Here, "user", because "post belongs to user".
