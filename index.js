@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const loginController = require('./controllers/loginController');
-const userController = require('./controllers/usersController');
-const postController = require('./controllers/postsController');
+const loginController = require('./controllers/loginCont');
+const userController = require('./controllers/usersCont');
+const postController = require('./controllers/postsCont');
 const errorMiddleware = require('./middlewares/error');
 
 const app = express();
