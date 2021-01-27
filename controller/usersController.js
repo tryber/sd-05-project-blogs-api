@@ -55,7 +55,7 @@ users.get('/:id', checkToken, async (req, res) => {
 });
 
 users.delete('/me', checkToken, async (req, res) => {
-  console.log('\n\n');
+  // console.log('\n\n');
   try {
     const { id } = req.payload;
     const deleteUser = await Users.destroy({ where: { id } });

@@ -1,5 +1,5 @@
 'use strict';
-// MIGRATIONS CRIA TABELAS E AS COLUNAS
+// MIGRATIONS CRIA TABELAS E AS COLUNAS NO MYSQL
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const usersTable = queryInterface.createTable('Users', {
