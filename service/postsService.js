@@ -14,7 +14,18 @@ const getAllPosts = () =>
     },
   });
 
+const getOnePost = (id) =>
+  Posts.findOne({
+    where: { id },
+    include: {
+      model: Users,
+      as: 'user',
+      attributes: ['id', 'displayName', 'email', 'image'],
+    },
+  });
+
 module.exports = {
   createPost,
   getAllPosts,
+  getOnePost,
 };

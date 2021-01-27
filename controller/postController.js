@@ -15,8 +15,20 @@ route.post('/', hasToken, validatePostInformation, async (req, res) => {
 
 route.get('/', hasToken, async (req, res) => {
   const posts = await postsService.getAllPosts();
-  console.log(posts[0].dataValues.id);
+  console.log(posts);
   return res.status(200).json(posts);
+});
+
+route.get('/:id', hasToken, async (req, res) => {
+  const { id } = req.params;
+  const post = await postsService.getOnePost(id);
+  if (!post) {
+    return res.status(404).json({
+      message: 'Post não existe',
+    });
+  }
+
+  return res.status(200).json(post);
 });
 
 module.exports = route;
