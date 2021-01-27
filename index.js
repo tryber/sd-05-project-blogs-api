@@ -18,3 +18,5 @@ app.get('/', (request, response) => {
 });
 
 app.use('/user', routes.users);
+
+app.use('/login', routes.login);

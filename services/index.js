@@ -1,3 +1,4 @@
 const users = require('./usersServices');
+const tokenJWT = require('./tokenJWT');
 
-module.exports = { users };
+module.exports = { tokenJWT, users };
