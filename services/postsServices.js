@@ -70,9 +70,7 @@ const getById = async (token, id) => {
 };
 
 const update = async (token, id, title, content) => {
-  if (!token) {
-    return { error: true, code: 'Unauthorized', message: 'Token não encontrado' };
-  }
+  if (!token) { return { error: true, code: 'Unauthorized', message: 'Token não encontrado' }; }
   const validateToken = verifyToken(token);
   if (validateToken === 'jwt malformed' || !validateToken) {
     return { error: true, code: 'Unauthorized', message: 'Token expirado ou inválido' };
@@ -81,16 +79,12 @@ const update = async (token, id, title, content) => {
   if (!title) {
     return { error: true, code: 'Bad Request', message: '"title" is required' };
   }
-  if (!content) {
-    return { error: true, code: 'Bad Request', message: '"content" is required' };
-  }
+  if (!content) { return { error: true, code: 'Bad Request', message: '"content" is required' }; }
   const getPostById = await BlogPosts.findOne({ where: { id } });
-  if (!getPostById) {
-    return { error: true, code: 'Not Found', message: 'Post não existe' };
-  }
+  if (!getPostById) { return { error: true, code: 'Not Found', message: 'Post não existe' }; }
   const { userId } = getPostById;
   const getUser = await Users.findOne({ where: { id: userId } });
-  if (!getUser || userId != reqId) {
+  if (!getUser || userId !== reqId) {
     return { error: true, code: 'Unauthorized', message: 'Usuário não autorizado' };
   }
   BlogPosts.update({ title, content }, { where: { id } });
