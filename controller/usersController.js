@@ -18,6 +18,7 @@ users.post('/', async (req, res) => {
       return res.status(userCreate.statusCode).json({ message: userCreate.message });
     }
     const token = createToken({
+      id: userCreate.id,
       displayName,
       iss: 'post_api',
     });
@@ -50,6 +51,18 @@ users.get('/:id', checkToken, async (req, res) => {
   } catch (error) {
     // res.status(500).json({ message: error.message });
     res.status(500).json({ message: 'Deu ruim' });
+  }
+});
+
+users.delete('/me', checkToken, async (req, res) => {
+  console.log('\n\n');
+  try {
+    const { id } = req.payload;
+    const deleteUser = await Users.destroy({ where: { id } });
+    res.status(204).json(deleteUser);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    // res.status(500).json({ message: 'Deu ruim' });
   }
 });
 

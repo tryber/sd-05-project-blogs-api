@@ -15,6 +15,7 @@ logins.post('/', async (req, res) => {
       return res.status(login.statusCode).json({ message: login.message });
     }
     const token = createToken({
+      id: login.id,
       email,
       iss: 'post_api',
     });
