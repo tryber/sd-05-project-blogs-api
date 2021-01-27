@@ -33,6 +33,13 @@ postRouter.get(
 );
 
 postRouter.get(
+  '/search',
+
+  isAuthorized,
+  postControllers.searchPostThatHasTerm,
+);
+
+postRouter.get(
   '/:id',
 
   isAuthorized,

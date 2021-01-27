@@ -64,4 +64,17 @@ const getPostById = rescue(async (req, res, next) => {
   }
 });
 
-module.exports = { createPost, editPost, deletePost, getAll, getPostById };
+const searchPostThatHasTerm = rescue(async (req, res, next) => {
+  try {
+    const { q: term } = req.query;
+
+    const postsThatMatch = await postService.searchPostThatHasTerm(term);
+    res.status(200).json(postsThatMatch);
+  } catch (error) {
+    const { message, status } = error;
+
+    next({ message, status });
+  }
+});
+
+module.exports = { createPost, editPost, deletePost, getAll, getPostById, searchPostThatHasTerm };
