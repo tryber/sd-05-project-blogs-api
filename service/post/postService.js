@@ -34,7 +34,21 @@ const createPost = (Post) => async (title, content, token) => {
 
   return postData;
 };
+// Opção 2
+// delete createdPost.dataValues.id;
+// delete createdPost.dataValues.published;
+// delete createdPost.dataValues.updated;
+
+// const { dataValues } = createdPost;
+
+// return dataValues;
+
+const getAllPosts = (Post, User) => async () => {
+  const allPosts = await Post.findAll({ include: [{ model: User, as: 'user' }] });
+  return allPosts;
+};
 
 module.exports = {
   createPost,
+  getAllPosts,
 };

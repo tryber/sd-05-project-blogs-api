@@ -21,4 +21,17 @@ post.post(
   }),
 );
 
+post.get(
+  '/',
+  authToken,
+  rescue(async (req, res) => {
+    const allPosts = await postFactory().getAllPosts();
+    return res.status(200).json(allPosts);
+  }),
+);
+
+// post.get('/:id', authToken, rescue(async (req, res) => {
+//   const
+// }))
+
 module.exports = post;
