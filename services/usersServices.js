@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
+// const Sequelize = require('sequelize');
+// const { Op } = Sequelize;
 const { User } = require('../models');
 const { checkName, checkEmail, checkPassword } = require('../utils/validation');
 
@@ -17,7 +17,7 @@ const checkData = (email, password) => {
 
   if (!email) {
     throw new CodeError('"email" is required', 'invalid_data');
-  }  
+  }
 
   if (!checkEmail(email)) {
     throw new CodeError('"email" must be a valid email', 'invalid_data');
@@ -29,7 +29,7 @@ const checkData = (email, password) => {
 
   if (!password) {
     throw new CodeError('"password" is required', 'invalid_data');
-  }  
+  }
 
   if (!checkPassword(password)) {
     throw new CodeError('"password" length must be 6 characters long', 'invalid_data');
@@ -53,16 +53,17 @@ const create = async ({ displayName, email, password, image }) => {
 
 const login = async ({ email, password }) => {
   checkData(email, password);
-  // const verifyUser = await User.findOne({ where: { [Op.and]: [{ email: email.toLowerCase() }, { password }]}});
+  // const verifyUser = await User.findOne({ where: {
+  // [Op.and]: [{ email: email.toLowerCase() }, { password }]}});
   const verifyUser = await User.findOne({ where: { email, password } });
   console.log(verifyUser);
   // if (!verifyUser) {
   //   throw new CodeError('Campos inválidos', 'invalid_data');
   // }
   if (verifyUser) {
-    return verifyUser
+    return verifyUser;
+  }
+  throw new CodeError('Campos inválidos', 'invalid_data');
 };
-    throw new CodeError('Campos inválidos', 'invalid_data');
-}
 
 module.exports = { create, login };
