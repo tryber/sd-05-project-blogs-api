@@ -13,4 +13,10 @@ route.post('/', hasToken, validatePostInformation, async (req, res) => {
   return res.status(201).json(post);
 });
 
+route.get('/', hasToken, async (req, res) => {
+  const posts = await postsService.getAllPosts();
+  console.log(posts[0].dataValues.id);
+  return res.status(200).json(posts);
+});
+
 module.exports = route;
