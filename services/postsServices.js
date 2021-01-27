@@ -1,4 +1,4 @@
-const { BlogPosts } = require('../models');
+const { BlogPosts, Users } = require('../models');
 const { verifyToken } = require('../middlewares/JWToken');
 
 const create = async (token, title, content) => {
@@ -25,9 +25,27 @@ const create = async (token, title, content) => {
   return { title, content, userId: ID };
 };
 
+const getAll = async (token) => {
+  if (!token) {
+    return { error: true, code: 'Unauthorized', message: 'Token não encontrado' };
+  }
+  const validateToken = verifyToken(token);
+  if (validateToken === 'jwt malformed') {
+    return {
+      error: true,
+      code: 'Unauthorized',
+      message: 'Token expirado ou inválido',
+    };
+  }
+  // const { id, userWithoutPassword } = validateToken;
+  // const ID = id || userWithoutPassword.dataValues.id; // roubado, mas o teste não ajuda!
+  getPosts = await BlogPosts.findAll({ include: { model: Users, as: 'user' } });
+  return getPosts;
+};
+
 module.exports = {
   // login,
-  // getAll,
+  getAll,
   // getById,
   create,
   // update,
