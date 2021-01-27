@@ -1,6 +1,6 @@
 const express = require('express');
 const { User } = require('../models');
-const authToken = require('../services/authToken');
+const authToken = require('../middlewares/authToken');
 const userById = require('../services/userById');
 const services = require('../services');
 
@@ -14,12 +14,8 @@ router.post('/', async (req, res) => {
   res.status(201).json(response);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', authToken, async (req, res) => {
   try {
-    const response = await authToken(req);
-
-    if (response.err) return res.status(response.err.status).json(response.err);
-
     const data = await userById(req, res);
 
     res.status(200).json(data);
@@ -28,12 +24,8 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.get('/', async (req, res) => {
+router.get('/', authToken, async (req, res) => {
   try {
-    const response = await authToken(req);
-
-    if (response.err) return res.status(response.err.status).json(response.err);
-
     const data = await User.findAll();
 
     res.status(200).json(data);
