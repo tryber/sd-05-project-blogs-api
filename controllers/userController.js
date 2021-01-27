@@ -58,10 +58,32 @@ const getAll = async (req, res) => {
   }
 };
 
+const getById = async (req, res) => {
+  try {
+    const { authorization } = req.headers;
+    const { id } = req.params;
+    const getUser = await service.getById(authorization, id);
+    // console.log(login);
+    if (getUser.error) {
+      if (getUser.code === 'Unauthorized') {
+        return res.status(401).json({ message: getUser.message });
+      }
+      if (getUser.code === 'Not Found') {
+        return res.status(404).json({ message: getUser.message });
+      }
+      return res.status(500).json({ message: 'Algo deu ruim no getById' });
+    }
+    res.status(200).json(getUser);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: 'Algo deu ruim no GETBYID' });
+  }
+};
+
 module.exports = {
   login,
   getAll,
-  // getById,
+  getById,
   create,
   // update,
   // remove,
