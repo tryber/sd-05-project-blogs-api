@@ -56,7 +56,7 @@ router.get('/user/:id', authValidation, (req, res) => {
   User.findByPk(id)
     .then((user) => {
       if (user === null) {
-        res.status(404).json({ message: 'Usuário não existe' });
+        return res.status(404).json({ message: 'Usuário não existe' });
       }
       return res.status(200).json(user);
     })
