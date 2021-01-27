@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { Op } = require('sequelize');
 const decodeToken = require('../../middlewares/decodeToken');
 
 const validatePost = (title, content) => {
@@ -90,9 +91,52 @@ const updatePost = (Post) => async (title, content, id, token) => {
   return { title, content, userId };
 };
 
+const searchPost = (Post, User) => async (searchTerm) => {
+  if (searchTerm === '') {
+    return Post.findAll({
+      include: [{ model: User, as: 'user', attributes: { exclude: ['password'] } }],
+    });
+  }
+  const foundPosts = await Post.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.substring]: searchTerm } },
+        { content: { [Op.substring]: searchTerm } },
+      ],
+    },
+    include: [{ model: User, as: 'user', attributes: { exclude: ['password'] } }],
+  });
+  return foundPosts;
+};
+
+const deletePost = (Post) => async (id, token) => {
+  const { id: userId } = decodeToken(token);
+  const postExists = await Post.findOne({ where: { id } });
+
+  if (!postExists) {
+    return {
+      error: true,
+      message: 'Post não existe',
+      statusCode: 404,
+    };
+  }
+  const deletedPost = await Post.destroy({ where: { id, userId } });
+
+  if (deletedPost === 0) {
+    return {
+      error: true,
+      message: 'Usuário não autorizado',
+      statusCode: 401,
+    };
+  }
+  return deletedPost;
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   updatePost,
+  searchPost,
+  deletePost,
 };

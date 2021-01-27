@@ -30,6 +30,32 @@ post.get(
   }),
 );
 
+post.put(
+  '/:id',
+  authToken,
+  rescue(async (req, res) => {
+    const { id } = req.params;
+    const { title, content } = req.body;
+    const token = req.headers.authorization;
+    const updatePost = await postFactory().updatePost(title, content, id, token);
+
+    if (updatePost.error) {
+      return res.status(updatePost.statusCode).json({ message: updatePost.message });
+    }
+    return res.status(200).json(updatePost);
+  }),
+);
+
+post.get(
+  '/search',
+  authToken,
+  rescue(async (req, res) => {
+    const { q: searchTerm } = req.query;
+    const postsFound = await postFactory().searchPost(searchTerm);
+    return res.status(200).json(postsFound);
+  }),
+);
+
 post.get(
   '/:id',
   authToken,
@@ -45,19 +71,20 @@ post.get(
   }),
 );
 
-post.put(
+post.delete(
   '/:id',
   authToken,
   rescue(async (req, res) => {
     const { id } = req.params;
-    const { title, content } = req.body;
     const token = req.headers.authorization;
-    const updatePost = await postFactory().updatePost(title, content, id, token);
 
-    if (updatePost.error) {
-      return res.status(updatePost.statusCode).json({ message: updatePost.message });
+    const postDeleted = await postFactory().deletePost(id, token);
+
+    if (postDeleted.error) {
+      return res.status(postDeleted.statusCode).json({ message: postDeleted.message });
     }
-    return res.status(200).json(updatePost);
+
+    return res.status(204).send();
   }),
 );
 
