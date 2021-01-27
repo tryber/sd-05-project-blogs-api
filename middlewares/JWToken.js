@@ -14,6 +14,7 @@ const createToken = (payload) => jwt.sign(payload, secret, jwtConfig);
 const verifyToken = (token) => {
   try {
     const verifiedToken = jwt.verify(token, secret);
+    // console.log(verifiedToken);
     return verifiedToken;
   } catch (error) {
     return error.message;

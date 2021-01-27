@@ -80,11 +80,29 @@ const getById = async (req, res) => {
   }
 };
 
+const remove = async (req, res) => {
+  try {
+    const { authorization } = req.headers;
+    const removeUser = await service.exclude(authorization);
+    // console.log(login);
+    if (removeUser.error) {
+      if (removeUser.code === 'Unauthorized') {
+        return res.status(401).json({ message: removeUser.message });
+      }
+      return res.status(500).json({ message: 'Algo deu ruim no deleteMe' });
+    }
+    res.status(204).json({ message: "vai tourinho" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: 'Algo deu ruim no DELETE' });
+  }
+};
+
 module.exports = {
   login,
   getAll,
   getById,
   create,
   // update,
-  // remove,
+  remove,
 };

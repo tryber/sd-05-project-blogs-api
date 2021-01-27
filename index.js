@@ -14,6 +14,8 @@ app.get('/user', userController.getAll);
 
 app.get('/user/:id', userController.getById);
 
+app.delete('/user/me', userController.remove);
+
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (request, response) => {
   response.send();

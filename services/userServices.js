@@ -58,7 +58,7 @@ const getAll = async (token) => {
     };
   }
   const validateToken = verifyToken(token);
-  console.log(validateToken);
+  // console.log(validateToken);
   if (validateToken === 'jwt malformed') {
     return {
       error: true,
@@ -96,11 +96,35 @@ const getById = async (token, id) => {
   return { id: Number(id), displayName, email, image };
 };
 
+const exclude = async (token) => {
+  if (!token) {
+    return {
+      error: true,
+      code: 'Unauthorized',
+      message: 'Token não encontrado',
+    };
+  }
+  const validateToken = verifyToken(token);
+  if (validateToken === 'jwt malformed') {
+    return {
+      error: true,
+      code: 'Unauthorized',
+      message: 'Token expirado ou inválido',
+    };
+  }
+  // console.log(validateToken);
+  const { email, userWithoutPassword } = validateToken;
+  const EMAIL = email || userWithoutPassword.dataValues.email; // roubado, mas o teste não ajuda!
+  await Users.destroy({ where: { email: EMAIL  } });
+  // console.log("vai tourinho");
+  return {error: false};
+};
+
 module.exports = {
   login,
   getAll,
   getById,
   create,
   // update,
-  // exclude,
+  exclude,
 };
