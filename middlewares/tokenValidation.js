@@ -11,7 +11,7 @@ const tokenValidation = async (req, res, next) => {
 
     const verifiedToken = verifyToken(authorization);
 
-    req.user = verifiedToken.dataValues;
+    req.user = verifiedToken;
 
     next();
   } catch {

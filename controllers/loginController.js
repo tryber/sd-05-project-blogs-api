@@ -1,15 +1,13 @@
-const { Users } = require('../models');
-const { createToken } = require('../auth/token');
+const { authentication } = require('../services');
 const { sendError } = require('../services');
 
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const result = await Users.findOne({ where: { email } });
 
-    if (result?.dataValues.password === password) {
-      const { password: _, ...userData } = result.dataValues;
-      const token = createToken(userData);
+    const token = await authentication.login(email, password);
+
+    if (token) {
       return res.status(200).json({ token });
     }
 
