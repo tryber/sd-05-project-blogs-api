@@ -1,7 +1,7 @@
 const express = require('express');
 const rescue = require('express-rescue');
-const service = require('../services/postsService');
 const auth = require('../middlewares/auth');
+const service = require('../services/postsService');
 
 const router = express.Router();
 
