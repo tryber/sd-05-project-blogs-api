@@ -39,20 +39,20 @@ postRouter.get(
   }),
 );
 
-// // 4 - Sua aplicação deve ter o endpoint GET /user/:id
-// userRouter.get(
-//   '/:id',
-//   validateToken,
-//   rescue(async (req, res) => {
-//     const { id } = req.params;
-//     const userById = await User.findByPk(id);
-//     // also possible: const userById = await User.findOne({ where: { id } });
-//     if (!userById) {
-//       return res.status(404).json({ message: 'Usuário não existe' });
-//     }
-//     return res.status(200).json(userById);
-//   }),
-// );
+// 8 - Sua aplicação deve ter o endpoint GET post/:id
+postRouter.get(
+  '/:id',
+  validateToken,
+  rescue(async (req, res) => {
+    const { id } = req.params;
+    const postById = await User.findByPk({ id, include: { model: User, as: 'user' }, });
+    // also possible: const postById = await Post.findOne({ where: { id }, include: { model: User, as: 'user' }, });
+    if (!postById) {
+      return res.status(404).json({ message: 'Post não existe' });
+    }
+    return res.status(200).json(postById);
+  }),
+);
 
 // // 5 - Sua aplicação deve ter o endpoint DELETE /user/me
 // userRouter.delete(
