@@ -61,11 +61,34 @@ const getById = async (req, res) => {
   }
 };
 
+const update = async (req, res) => {
+  try {
+    const { authorization } = req.headers;
+    const { id } = req.params;
+    const { title, content } = req.body;
+    const getUpdated = await service.update(authorization, id, title, content);
+    if (getUpdated.error) {
+      if (getUpdated.code === 'Unauthorized') {
+        return res.status(401).json({ message: getUpdated.message });
+      }
+      if (getUpdated.code === 'Bad Request') {
+        return res.status(400).json({ message: getUpdated.message });
+      }
+      return res.status(500).json({ message: 'Algo deu ruim no getUpdated' });
+    }
+    res.status(200).json(getUpdated);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: 'Algo deu ruim no GETUPDATED' });
+  }
+};
+
+
 module.exports = {
   // login,
   getAll,
   getById,
   create,
-  // update,
+  update,
   // remove,
 };
