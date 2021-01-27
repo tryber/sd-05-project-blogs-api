@@ -39,7 +39,7 @@ const getAll = async (token) => {
   }
   // const { id, userWithoutPassword } = validateToken;
   // const ID = id || userWithoutPassword.dataValues.id; // roubado, mas o teste não ajuda!
-  getPosts = await BlogPosts.findAll({ include: { model: Users, as: 'user' } });
+  const getPosts = await BlogPosts.findAll({ include: { model: Users, as: 'user' } });
   return getPosts;
 };
 
