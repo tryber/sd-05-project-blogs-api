@@ -1,5 +1,5 @@
 const express = require('express');
-
+const { generateToken } = require('../auth/generateToken');
 const usersService = require('../services/usersService');
 
 const usersRouter = express.Router();
@@ -13,7 +13,9 @@ usersRouter.post('/user', async (req, res) => {
       return res.status(createUser.statusCode).json({ message: createUser.message });
     }
 
-    return res.status(201).json({ displayName, email });
+    const token = await generateToken(createUser.dataValues);
+
+    return res.status(201).json(token);
   } catch (error) {
     return res.status(500).json(error.message);
   }
