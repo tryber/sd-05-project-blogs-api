@@ -1,6 +1,7 @@
 const express = require('express');
 const { generateToken } = require('../utils/generateToken');
 const usersService = require('../services/usersService');
+const validateToken = require('../utils/validateToken');
 
 const usersRouter = express.Router();
 
@@ -33,6 +34,16 @@ usersRouter.post('/login', async (req, res) => {
     const token = await generateToken(findUser.dataValues);
 
     return res.status(200).json({ token });
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+});
+
+usersRouter.get('/user', validateToken, async (req, res) => {
+  try {
+    const getAllUsers = await usersService.getAllUsers();
+
+    return res.status(200).json(getAllUsers);
   } catch (error) {
     return res.status(500).json(error.message);
   }
