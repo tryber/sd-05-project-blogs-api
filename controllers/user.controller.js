@@ -3,11 +3,11 @@ const user = require('../services/user.service');
 
 const userRouter = Router();
 
-userRouter.get('/', user.getAllUsers, (req, res) => {
-  res.status(200).json(req.data);
+userRouter.get('/', (_req, res) => {
+  res.send();
 });
 
-userRouter.post('/', user.registerUser, (req, res) => {
+userRouter.post('/user', user.registerUser, (req, res) => {
   res.status(201).json(req.data);
 });
 

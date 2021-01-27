@@ -9,15 +9,7 @@ const PORT = process.env.PORT || 3000;
 const STATUS_FAIL = 500;
 
 app.use(bodyParser);
-
-app.listen(PORT, () => console.log(`ouvindo porta ${PORT}!`));
-
-// não remova esse endpoint, e para o avaliador funcionar
-app.get('/', (_req, res) => {
-  res.send();
-});
-
-app.use('/user', userController);
+app.use('/', userController);
 
 const errorMiddleware = async (err, _req, res, _next) => {
   const [message, status] = err.message.split(';');
@@ -25,3 +17,5 @@ const errorMiddleware = async (err, _req, res, _next) => {
 };
 
 app.use(errorMiddleware);
+
+app.listen(PORT, () => console.log(`ouvindo porta ${PORT}!`));
