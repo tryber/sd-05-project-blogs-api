@@ -33,10 +33,13 @@ const getAll = async () => {
 };
 
 const getOne = async (postId) => {
-  const post = await Post.findByPk(postId);
-  if (!post) throw new PostException('Usuário não existe', 'not_found');
-  const { id, displayName, email, image } = post.dataValues;
-  return { id, displayName, email, image };
+  const [post] = await Post.findAll({
+    attributes: ['id', 'published', 'updated', 'title', 'content'],
+    where: { id: postId },
+    include: [{ model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] }],
+  }).then((data) => data);
+  if (!post) throw new PostException('Post não existe', 'not_found');
+  return post;
 };
 
 const exclude = async (id) => Post.destroy({ where: { id } });
