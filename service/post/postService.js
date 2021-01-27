@@ -44,11 +44,30 @@ const createPost = (Post) => async (title, content, token) => {
 // return dataValues;
 
 const getAllPosts = (Post, User) => async () => {
-  const allPosts = await Post.findAll({ include: [{ model: User, as: 'user' }] });
+  const allPosts = await Post.findAll({
+    include: [{ model: User, as: 'user', attributes: { exclude: ['password'] } }],
+  });
   return allPosts;
+};
+
+const getPostById = (Post, User) => async (id) => {
+  const getPost = await Post.findByPk(id, {
+    include: [{ model: User, as: 'user', attributes: { exclude: ['password'] } }],
+  });
+
+  if (!getPost) {
+    return {
+      error: true,
+      message: 'Post não existe',
+      statusCode: 404,
+    };
+  }
+
+  return getPost;
 };
 
 module.exports = {
   createPost,
   getAllPosts,
+  getPostById,
 };

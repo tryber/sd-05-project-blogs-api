@@ -30,8 +30,19 @@ post.get(
   }),
 );
 
-// post.get('/:id', authToken, rescue(async (req, res) => {
-//   const
-// }))
+post.get(
+  '/:id',
+  authToken,
+  rescue(async (req, res) => {
+    const { id } = req.params;
+    const getPost = await postFactory().getPostById(id);
+
+    if (getPost.error) {
+      return res.status(getPost.statusCode).json({ message: getPost.message });
+    }
+
+    return res.status(200).json(getPost);
+  }),
+);
 
 module.exports = post;
