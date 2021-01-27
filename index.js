@@ -1,5 +1,5 @@
 const express = require('express');
-const { loginController, userController } = require('./controller');
+const { loginController, userController, postController } = require('./controller');
 
 const app = express();
 
@@ -12,5 +12,6 @@ app.get('/', (request, response) => {
 
 app.use('/user', userController);
 app.use('/login', loginController);
+app.use('/post', postController);
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));
