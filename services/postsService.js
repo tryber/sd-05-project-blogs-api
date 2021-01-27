@@ -1,4 +1,5 @@
 const { Post } = require('../models');
+const { User } = require('../models');
 
 function PostException(message, validatorKey) {
   this.message = message;
@@ -23,7 +24,13 @@ const create = async (post, userId) => {
   return Post.create({ content, title, userId });
 };
 
-const getAll = async () => Post.findAll();
+const getAll = async () => {
+  const posts = await Post.findAll({
+    attributes: ['id', 'published', 'updated', 'title', 'content'],
+    include: [{ model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] }],
+  }).then((data) => data);
+  return posts;
+};
 
 const getOne = async (postId) => {
   const post = await Post.findByPk(postId);

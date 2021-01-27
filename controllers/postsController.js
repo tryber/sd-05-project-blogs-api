@@ -15,7 +15,7 @@ router.post('/', auth, rescue(async (req, res, next) => {
   }
 }));
 
-router.delete('/me', auth, rescue(async (req, res, next) => {
+router.delete('/:id', auth, rescue(async (req, res, next) => {
   const { id } = req.user;
   try {
     const user = await service.exclude(id);
@@ -26,15 +26,15 @@ router.delete('/me', auth, rescue(async (req, res, next) => {
   }
 }));
 
-router.get('/:id', auth, rescue(async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    const user = await service.getOne(id);
-    res.status(200).json(user);
-  } catch (err) {
-    next(err);
-  }
-}));
+// router.get('/:id', auth, rescue(async (req, res, next) => {
+//   const { id } = req.params;
+//   try {
+//     const user = await service.getOne(id);
+//     res.status(200).json(user);
+//   } catch (err) {
+//     next(err);
+//   }
+// }));
 
 router.get('/', auth, rescue(async (req, res, next) => {
   try {
