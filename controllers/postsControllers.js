@@ -40,10 +40,31 @@ const getAll = async (req, res) => {
   }
 };
 
+const getById = async (req, res) => {
+  try {
+    const { authorization } = req.headers;
+    const { id } = req.params;
+    const getPostbyId = await service.getById(authorization, id);
+    if (getPostbyId.error) {
+      if (getPostbyId.code === 'Unauthorized') {
+        return res.status(401).json({ message: getPostbyId.message });
+      }
+      if (getPostbyId.code === 'Not Found') {
+        return res.status(404).json({ message: getPostbyId.message });
+      }
+      return res.status(500).json({ message: 'Algo deu ruim no getById' });
+    }
+    res.status(200).json(getPostbyId);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: 'Algo deu ruim no GETBYID' });
+  }
+};
+
 module.exports = {
   // login,
   getAll,
-  // getById,
+  getById,
   create,
   // update,
   // remove,

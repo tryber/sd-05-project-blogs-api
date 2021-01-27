@@ -43,10 +43,36 @@ const getAll = async (token) => {
   return getPosts;
 };
 
+const getById = async (token, id) => {
+  if (!token) {
+    return {
+      error: true,
+      code: 'Unauthorized',
+      message: 'Token não encontrado',
+    };
+  }
+  const validateToken = verifyToken(token);
+  if (validateToken === 'jwt malformed') {
+    return {
+      error: true,
+      code: 'Unauthorized',
+      message: 'Token expirado ou inválido',
+    };
+  }
+  const getPostById = await BlogPosts.findOne({ where: { id } });
+  if (!getPostById) {
+    return { error: true, code: 'Not Found', message: 'Post não existe' };
+  }
+  const { title, content, published, updated, userId } = getPostById;
+  const getUser = await Users.findOne({ where: { id: userId } });
+
+  return { id: Number(id), title, content, published, updated, user: getUser };
+};
+
 module.exports = {
   // login,
   getAll,
-  // getById,
+  getById,
   create,
   // update,
   // exclude,
