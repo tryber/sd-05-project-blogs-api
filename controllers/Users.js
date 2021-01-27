@@ -18,6 +18,8 @@ router.get('/:id', authToken, async (req, res) => {
   try {
     const data = await userById(req, res);
 
+    if (data.err) return res.status(data.err.status).json(data.err);
+
     res.status(200).json(data);
   } catch {
     res.status(500).send({ message: 'Algo deu errado' });
