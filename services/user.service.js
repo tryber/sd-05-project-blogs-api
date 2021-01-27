@@ -51,7 +51,7 @@ const getUser = rescue(async (req, _res, next) => {
       default:
         console.error(message);
         throw new Error('Usuário não existe;404');
-    };
+    }
   }
 });
 
@@ -72,7 +72,7 @@ const getAllUsers = rescue(async (req, _res, next) => {
         throw new Error('Token expirado ou inválido;401');
       default:
         throw new Error('Erro desconhecido;401');
-    };
+    }
   }
 });
 
