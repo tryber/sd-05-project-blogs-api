@@ -1,5 +1,3 @@
-const { Post } = require('../models');
-
 class CodeError extends Error {
   constructor(message, code) {
     super(message);

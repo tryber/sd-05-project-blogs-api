@@ -2,7 +2,7 @@ const express = require('express');
 
 const rescue = require('express-rescue');
 
-const { Post, User } = require('../models');
+const { Post } = require('../models');
 
 const postRouter = express.Router();
 const {
@@ -21,7 +21,7 @@ postRouter.post(
     const { title, content } = req.body;
     const { id } = req.userPayload;
     // console.log(id);
-    const createdPost = await Post.create({ title, content, userId: id });
+    await Post.create({ title, content, userId: id });
     return res.status(201).json({ title, content, userId: id });
   }),
 );
