@@ -47,7 +47,7 @@ postRouter.get(
     const { id } = req.params;
     const postById = await User.findByPk({ id, include: { model: User, as: 'user' } });
     // also possible:
-    // const postById = await Post.findOne({ where: { id }, include: { model: User, as: 'user' }, });
+    // const postById = await Post.findOne({ where: { id }, include: { model: User, as: 'user' } });
     if (!postById) {
       return res.status(404).json({ message: 'Post não existe' });
     }
