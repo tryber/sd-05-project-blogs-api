@@ -44,4 +44,12 @@ const getAll = async () => {
   return allPosts;
 };
 
-module.exports = { createPost, editPost, deletePost, getAll };
+const getPostById = async (id) => {
+  const post = await Post.findOne({ where: { id }, include: { model: User, as: 'user' } });
+
+  if (!post) throw new StatusError('Post não existe', 404);
+
+  return post;
+};
+
+module.exports = { createPost, editPost, deletePost, getAll, getPostById };

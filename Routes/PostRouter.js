@@ -32,4 +32,11 @@ postRouter.get(
   postControllers.getAll,
 );
 
+postRouter.get(
+  '/:id',
+
+  isAuthorized,
+  postControllers.getPostById,
+);
+
 module.exports = postRouter;

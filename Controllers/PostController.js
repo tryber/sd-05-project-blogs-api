@@ -51,4 +51,17 @@ const getAll = rescue(async (req, res) => {
   res.status(200).json(allPosts);
 });
 
-module.exports = { createPost, editPost, deletePost, getAll };
+const getPostById = rescue(async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const post = await postService.getPostById(id);
+    res.status(200).json(post);
+  } catch (error) {
+    const { message, status } = error;
+
+    next({ message, status });
+  }
+});
+
+module.exports = { createPost, editPost, deletePost, getAll, getPostById };
