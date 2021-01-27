@@ -41,10 +41,7 @@ const deletePost = async (id, userId) => {
 const getAll = async () => {
   const allPosts = await Post.findAll({ include: { model: User, as: 'user' } });
 
-  console.log('====================================');
-  console.log(allPosts);
-  console.log('====================================');
-
-}
+  return allPosts;
+};
 
 module.exports = { createPost, editPost, deletePost, getAll };

@@ -11,7 +11,7 @@ const Post = (sequelize, DataTypes) => {
       defaultValue: DataTypes.NOW,
       onUpdate: DataTypes.NOW,
     },
-    userId: DataTypes.INTEGER,
+    // userId: DataTypes.INTEGER,
   });
 
   PostModel.associate = (models) => {
