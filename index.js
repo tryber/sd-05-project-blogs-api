@@ -2,13 +2,13 @@ require('dotenv').config();
 
 const express = require('express');
 
-const parser = require('body-parser')
+const parser = require('body-parser');
 
 const routes = require('./routes');
 
 const app = express();
 
-app.use(parser.json())
+app.use(parser.json());
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));
 

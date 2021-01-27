@@ -30,7 +30,7 @@ const checkData = (displayName, email, password) => {
   }
 };
 
-const create = async ({ displayName, email, password }) => {
+const create = async ({ displayName, email, password, image }) => {
   checkData(displayName, email, password);
 
   const thisEmailAlreadyExists = await User.findOne({ where: { email } });
