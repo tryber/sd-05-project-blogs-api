@@ -91,7 +91,7 @@ const remove = async (req, res) => {
       }
       return res.status(500).json({ message: 'Algo deu ruim no deleteMe' });
     }
-    res.status(204).json({ message: "vai tourinho" });
+    res.status(204).json({ message: 'vai tourinho' });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ message: 'Algo deu ruim no DELETE' });

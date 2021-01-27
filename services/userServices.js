@@ -16,14 +16,12 @@ const create = async (body) => {
   if (password.length < 6) { return returnMsg('"password" length must be 6 characters long'); }
   const emailExists = await Users.findOne({ where: { email } });
   if (emailExists) {
-    return {
-      error: true,
-      code: 'Conflict',
-      message: 'Usuário já existe',
-    };
+    return { error: true, code: 'Conflict', message: 'Usuário já existe' };
   }
   await Users.create({ displayName, email, password, image });
-  const token = createToken({ displayName, email });
+  const user = await Users.findOne({ where: { email } });
+  const { id } = user;
+  const token = createToken({ id, displayName, email });
   return token;
 };
 
@@ -115,9 +113,9 @@ const exclude = async (token) => {
   // console.log(validateToken);
   const { email, userWithoutPassword } = validateToken;
   const EMAIL = email || userWithoutPassword.dataValues.email; // roubado, mas o teste não ajuda!
-  await Users.destroy({ where: { email: EMAIL  } });
+  await Users.destroy({ where: { email: EMAIL } });
   // console.log("vai tourinho");
-  return {error: false};
+  return { error: false };
 };
 
 module.exports = {
