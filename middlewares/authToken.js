@@ -8,7 +8,7 @@ const authToken = async (req, res, next) => {
 
     const checkToken = verifyToken(authorization);
 
-    req.user = checkToken.dataValues;
+    req.user = checkToken.newUser;
 
     next();
   } catch {

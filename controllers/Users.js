@@ -34,4 +34,16 @@ router.get('/', authToken, async (req, res) => {
   }
 });
 
+router.delete('/me', authToken, async (req, res) => {
+  try {
+    if (!req.user) return res.status(204).send({ message: 'Algo deu errado' });
+    const { email } = req.user;
+    await User.destroy({ where: { email } });
+    return res.status(204).send();
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ message: 'Algo deu errado' });
+  }
+});
+
 module.exports = router;
