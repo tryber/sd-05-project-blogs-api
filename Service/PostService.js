@@ -1,4 +1,4 @@
-const { Post } = require('../models');
+const { Post, User } = require('../models');
 const { StatusError } = require('../Utils');
 
 const createPost = async ({ title = null, content = null }, userId) => {
@@ -38,4 +38,13 @@ const deletePost = async (id, userId) => {
   return Post.destroy({ where: { id } });
 };
 
-module.exports = { createPost, editPost, deletePost };
+const getAll = async () => {
+  const allPosts = await Post.findAll({ include: { model: User, as: 'user' } });
+
+  console.log('====================================');
+  console.log(allPosts);
+  console.log('====================================');
+
+}
+
+module.exports = { createPost, editPost, deletePost, getAll };

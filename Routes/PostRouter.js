@@ -25,4 +25,11 @@ postRouter.delete(
   postControllers.deletePost,
 );
 
+postRouter.get(
+  '/',
+
+  isAuthorized,
+  postControllers.getAll,
+);
+
 module.exports = postRouter;

@@ -46,4 +46,9 @@ const deletePost = rescue(async (req, res, next) => {
   }
 });
 
-module.exports = { createPost, editPost, deletePost };
+const getAll = rescue(async (req, res) => {
+  const allPosts = await postService.getAll();
+  res.status(200).json(allPosts);
+});
+
+module.exports = { createPost, editPost, deletePost, getAll };
