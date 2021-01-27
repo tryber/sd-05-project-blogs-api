@@ -46,9 +46,24 @@ router.post(
 router.get(
   '/user',
   authValidation,
-  rescue(async (req, res) => {
+  rescue(async (_req, res) => {
     User.findAll().then((users) => res.status(200).json(users));
   }),
 );
+
+router.get('/user/:id', authValidation, (req, res) => {
+  const { id } = req.params;
+  User.findByPk(id)
+    .then((user) => {
+      if (user === null) {
+        res.status(404).json({ message: 'Usuário não existe' });
+      }
+      return res.status(200).json(user);
+    })
+    .catch(() =>
+      res
+        .status(500)
+        .json({ message: 'Alguns bugs tomaram conta dessa lógica :(' }));
+});
 
 module.exports = router;
