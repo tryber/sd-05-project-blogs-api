@@ -9,6 +9,7 @@ const validateToken = async (req, res, next) => {
     const secret = 'magic-is-real';
     const payload = jwt.verify(token, secret);
     req.userPayload = payload.userData;
+    // console.log(`see the email of currently authenticated user: ${req.userPayload.email}`);
     return next();
   } catch (err) {
     console.log(err.message);

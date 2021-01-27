@@ -57,6 +57,19 @@ userRouter.get(
   }),
 );
 
+// 5 - Sua aplicação deve ter o endpoint DELETE /user/me
+userRouter.delete(
+  '/me',
+  validateToken,
+  rescue(async (req, res) => {
+    // https://jwt.io/ to access what is inside the token payload
+    const { email } = req.userPayload;
+    await User.destroy({ where: { email } });
+    return res.status(204).send();
+  }),
+);
+
+
 // /_ Atualiza um usuário _/
 // userRouter.put('/:id', (req, res) => {
 //   const { fullname, email } = req.body;
