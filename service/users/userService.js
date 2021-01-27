@@ -7,7 +7,7 @@ const validateUser = (displayName, email, password, image) => {
     displayName: Joi.string().min(8).required(),
     email: Joi.string().email().required(),
     password: Joi.string().length(6).required(),
-    image: Joi.required().message(),
+    image: Joi.required(),
   });
   return schema.validate({ displayName, email, password, image });
 };
