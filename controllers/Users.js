@@ -1,7 +1,7 @@
 const express = require('express');
 const { User } = require('../models');
 const authToken = require('../middlewares/authToken');
-const userById = require('../services/userById');
+const userById = require('../middlewares/userById');
 const services = require('../services');
 
 const router = express.Router();
@@ -14,13 +14,11 @@ router.post('/', async (req, res) => {
   res.status(201).json(response);
 });
 
-router.get('/:id', authToken, async (req, res) => {
+router.get('/:id', authToken, userById, async (req, res) => {
   try {
-    const data = await userById(req, res);
+    const { userData } = req;
 
-    if (data.err) return res.status(data.err.status).json(data.err);
-
-    res.status(200).json(data);
+    res.status(200).json(userData);
   } catch {
     res.status(500).send({ message: 'Algo deu errado' });
   }
