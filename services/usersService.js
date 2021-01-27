@@ -23,6 +23,23 @@ const createUser = async (displayName, email, password, image) => {
   return User.create({ displayName, email, password, image });
 };
 
+const login = async (email, password) => {
+  if (email === '') return throwErr('bad-request-empty-email', '"email" is not allowed to be empty');
+
+  if (password === '') return throwErr('bad-request-empty-password', '"password" is not allowed to be empty');
+
+  if (!email) return throwErr('bad-request-email-required', '"email" is required');
+
+  if (!password) return throwErr('bad-request-password-required', '"password" is required');
+
+  const user = await User.findOne({ where: { email } });
+
+  if (!user) return throwErr('bad-request-no-user', 'Campos inválidos');
+
+  return user;
+};
+
 module.exports = {
   createUser,
+  login,
 };
