@@ -25,6 +25,8 @@ app.post('/post', postsController.create);
 
 app.get('/post', postsController.getAll);
 
+app.get('/post/search', postsController.getByQuery);
+
 app.get('/post/:id', postsController.getById);
 
 app.put('/post/:id', postsController.update);

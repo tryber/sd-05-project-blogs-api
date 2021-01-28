@@ -83,6 +83,24 @@ const update = async (req, res) => {
   }
 };
 
+const getByQuery = async (req, res) => {
+  try {
+    const { authorization } = req.headers;
+    const { q: searchTerm } = req.query;
+    const getPostsByQuery = await service.getByQuery(authorization, searchTerm);
+    if (getPostsByQuery.error) {
+      if (getPostsByQuery.code === 'Unauthorized') {
+        return res.status(401).json({ message: getPostsByQuery.message });
+      }
+      return res.status(500).json({ message: 'Algo deu ruim no getByQuery' });
+    }
+    res.status(200).json(getPostsByQuery);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: 'Algo deu ruim no GETBYQUERY' });
+  }
+};
+
 const remove = async (req, res) => {
   try {
     const { authorization } = req.headers;
@@ -105,7 +123,7 @@ const remove = async (req, res) => {
 };
 
 module.exports = {
-  // login,
+  getByQuery,
   getAll,
   getById,
   create,

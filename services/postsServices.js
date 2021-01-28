@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { BlogPosts, Users } = require('../models');
 const { verifyToken } = require('../middlewares/JWToken');
 
@@ -91,6 +92,34 @@ const update = async (token, id, title, content) => {
   return { title, content, userId };
 };
 
+// para o [Op.or] olhei o PR do Paulo D'Andrea => https://sequelize.org/v5/manual/querying.htm 
+const getByQuery = async (token, query) => {
+  if (!token) {
+    return { error: true, code: 'Unauthorized', message: 'Token não encontrado' };
+  }
+  const validateToken = verifyToken(token);
+  if (validateToken === 'jwt malformed') {
+    return {
+      error: true,
+      code: 'Unauthorized',
+      message: 'Token expirado ou inválido',
+    };
+  };
+  // console.log(query);
+  const getQueryPosts = await BlogPosts.findAll({
+    where: { [Op.or]: [
+      { title: { [Op.like]: `%${query}%` } },
+      { content: { [Op.like]: `%${query}%` } },
+    ],
+    },
+    include: { model: Users, as: 'user' },
+  });
+  // if(getQueryPosts[0].dataValues) {
+  //   return getQueryPosts[0].dataValues.map((post) => {})
+  // }
+  return getQueryPosts;
+};
+
 const exclude = async (token, id) => {
   if (!token) { return { error: true, code: 'Unauthorized', message: 'Token não encontrado' }; }
   const validateToken = verifyToken(token);
@@ -110,7 +139,7 @@ const exclude = async (token, id) => {
 };
 
 module.exports = {
-  // login,
+  getByQuery,
   getAll,
   getById,
   create,
