@@ -1,5 +1,6 @@
 // const { Op } = require('sequelize');
 const { Post } = require('../models');
+const { User } = require('../models');
 
 class CodeError extends Error {
   constructor(message, code) {
@@ -17,9 +18,14 @@ const create = async ({ content, title }, { id }) => {
     throw new CodeError('"title" is required', 'invalid_entries');
   }
 
-  console.log(`id no service: ${id}`);
-
   return Post.create({ content, title, userId: id });
 };
 
-module.exports = { create };
+// const getAll = async () => {
+//   const allPosts = await Post.findAll({ include: {model: User, as: 'user'}});
+//   return allPosts;
+// };
+
+const getAll = async () => Post.findAll({ include: { model: User, as: 'user' } });
+
+module.exports = { create, getAll };

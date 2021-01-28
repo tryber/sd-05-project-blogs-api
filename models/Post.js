@@ -13,6 +13,8 @@ const Post = (sequelize, DataTypes) => {
     },
   }, { timestamps: false });
 
+  newPost.associate = (models) => newPost.belongsTo(models.User, { as: 'user', foreignKey: 'userId' });
+
   return newPost;
 };
 

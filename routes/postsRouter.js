@@ -6,7 +6,7 @@ const postsRouter = Router();
 
 postsRouter.post('/', middlewares.auth.auth, controllers.posts.create);
 
-// postsRouter.get('/', middlewares.auth.auth, controllers.posts.getAll);
+postsRouter.get('/', middlewares.auth.auth, controllers.posts.getAll);
 
 // postsRouter.get('/:id', middlewares.auth.auth, controllers.posts.getById);
 

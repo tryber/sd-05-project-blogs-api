@@ -2,7 +2,6 @@ const services = require('../services');
 
 const create = async (req, res) => {
   try {
-    console.log(`id no controller: ${req.userPayload.id}`);
     const newPost = await services.posts.create(req.body, req.userPayload);
     res.status(201).json(newPost);
   } catch (err) {
@@ -12,4 +11,15 @@ const create = async (req, res) => {
   }
 };
 
-module.exports = { create };
+const getAll = async (req, res) => {
+  try {
+    const showPosts = await services.posts.getAll();
+    console.log(showPosts);
+    res.status(200).json(showPosts);
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).json({ message: 'Something went wrong' });
+  }
+};
+
+module.exports = { create, getAll };
