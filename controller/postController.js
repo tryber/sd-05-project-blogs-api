@@ -113,14 +113,12 @@ posts.delete('/:id', checkToken, async (req, res) => {
     const { id } = req.params;
     const validatePost = await Posts.findOne({ where: { id } });
     if (!validatePost) res.status(404).json({ message: 'Post não existe' });
-    if (validatePost.userId !== userId) {
-      return res.status(401).json({ message: 'Usuário não autorizado' });
-    }
+    if (validatePost.userId !== userId) res.status(401).json({ message: 'Usuário não autorizado' });
     const deletePost = await Posts.destroy({ where: { id } });
     res.status(204).json(deletePost);
   } catch (error) {
-    // res.status(500).json({ message: error.message });
-    res.status(500).json({ message: 'Deu ruim' });
+    res.status(500).json({ message: error.message });
+    // res.status(500).json({ message: 'Deu ruim' });
   }
 });
 
