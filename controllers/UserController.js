@@ -1,20 +1,21 @@
-const express = require('express');
-const router = express.Router();
+const { Router } = require('express');
+
+const router = Router();
 const service = require('../services/userService');
 /* const { User } = require('../models'); */
 
 router.post('/', async (req, res) => {
-	try {
-		const { displayName, email, password, image } = req.body;
-		const userCreate = await service.create(displayName, email, password, image);
-		if (userCreate.error) {
-			return res.status(userCreate.statusCode).json({ message: userCreate.message });
-		}
-		return res.status(201).json(userCreate);
-	} catch (err) {
-		console.log(err.message);
-		res.status(500).send(err.message);
-	}
+  try {
+    const { displayName, email, password, image } = req.body;
+    const userCreate = await service.create(displayName, email, password, image);
+    if (userCreate.error) {
+      return res.status(userCreate.statusCode).json({ message: userCreate.message });
+    }
+    return res.status(201).json(userCreate);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send(err.message);
+  }
 });
 
 /* router.get('/', (_req, res) => {
@@ -44,38 +45,38 @@ router.post('/', async (req, res) => {
 }); */
 
 /* router.put('/:id', (req, res) => {
-	const { author, pageQuantity } = req.body;
+  const { author, pageQuantity } = req.body;
 
-	User.update(
-		{ author, pageQuantity },
-		{
-			where: {
-				id: req.params.id
-			}
-		}
-	)
-		.then((Users) => {
-			res.status(200).send({ message: 'Usuario atualizado com sucesso.' });
-		})
-		.catch((e) => {
-			console.log(e.message);
-			res.status(500).send({ message: 'Algo deu errado' });
-		});
+  User.update(
+    { author, pageQuantity },
+    {
+      where: {
+        id: req.params.id
+      }
+    }
+  )
+    .then((Users) => {
+      res.status(200).send({ message: 'Usuario atualizado com sucesso.' });
+    })
+    .catch((e) => {
+      console.log(e.message);
+      res.status(500).send({ message: 'Algo deu errado' });
+    });
 }); */
 
 /* router.delete('/:id', (req, res) => {
-	User.destroy({
-		where: {
-			id: req.params.id
-		}
-	})
-		.then((Users) => {
-			res.status(200).send({ message: 'Usuario excluído com sucesso.' });
-		})
-		.catch((e) => {
-			console.log(e.message);
-			res.status(500).send({ message: 'Algo deu errado' });
-		});
+  User.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then((Users) => {
+      res.status(200).send({ message: 'Usuario excluído com sucesso.' });
+    })
+    .catch((e) => {
+      console.log(e.message);
+      res.status(500).send({ message: 'Algo deu errado' });
+    });
 }); */
 
 module.exports = router;
