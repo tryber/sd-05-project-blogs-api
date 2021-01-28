@@ -39,6 +39,22 @@ usersRouter.post('/login', async (req, res) => {
   }
 });
 
+usersRouter.get('/user/:id', validateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const getOneUser = await usersService.getOneUser(id);
+
+    if (getOneUser.error) {
+      return res.status(getOneUser.statusCode).json({ message: getOneUser.message });
+    }
+
+    return res.status(200).json(getOneUser);
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+});
+
 usersRouter.get('/user', validateToken, async (req, res) => {
   try {
     const getAllUsers = await usersService.getAllUsers();

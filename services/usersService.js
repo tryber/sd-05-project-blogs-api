@@ -41,8 +41,17 @@ const login = async (email, password) => {
 
 const getAllUsers = async () => User.findAll();
 
+const getOneUser = async (id) => {
+  const user = await User.findOne({ where: { id } });
+
+  if (!user) return throwErr('not-found', 'Usuário não existe', 404);
+
+  return user;
+};
+
 module.exports = {
   createUser,
   login,
   getAllUsers,
+  getOneUser,
 };
