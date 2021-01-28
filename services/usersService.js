@@ -2,8 +2,7 @@ const { User } = require('../models');
 const validateDisplayName = require('../utils/validateDisplayName');
 const validateEmail = require('../utils/validateEmail');
 const validatePassword = require('../utils/validatePassword');
-
-const throwErr = (code, message, statusCode = 400) => ({ error: true, code, message, statusCode });
+const throwErr = require('../utils/throwErr');
 
 const createUser = async (displayName, email, password, image) => {
   if (!validateDisplayName(displayName)) return throwErr('bad-request-name', '"displayName" length must be at least 8 characters long');
