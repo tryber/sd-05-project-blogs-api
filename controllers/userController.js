@@ -26,7 +26,24 @@ userController.post('/', async (req, res) => {
   }
 });
 // GET /users
-// userController.get('/', (req, res) => {});
+userController.get('/', async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    if (!token) {
+      return res.status(401).json({ message: 'Token não encontrado' });
+    }
+    const users = await services.findAllUsers(token);
+    return res.status(200).json(users);
+  } catch (error) {
+    if (error.message) {
+      if (error.message === 'jwt malformed') {
+        return res.status(401).json({ message: 'Token expirado ou inválido' });
+      }
+      return res.status(401).json({ message: error.message });
+    }
+    return res.status(401).json({ message: 'algo deu ruim' });
+  }
+});
 // GET /user/:id
 // userController.get('/:id', (req, res) => {});
 // DELETE /user/:id

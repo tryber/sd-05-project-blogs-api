@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi');
 const { User } = require('../models');
-const { createToken } = require('../auth/jwt.auth');
+const { createToken, checkToken } = require('../auth/jwt.auth');
 
 const CREATE_SCHEMA = Joi.object({
   displayName: Joi.string().min(8).required(),
@@ -20,10 +20,31 @@ const createUser = async (displayName, email, password, image) => {
     throw new Error(error.message);
   }
 
-  const createdUser = await User.create({ displayName, email, password, image });
+  const createdUser = await User.create({
+    displayName,
+    email,
+    password,
+    image,
+  });
   return createToken(createdUser.dataValues.id);
+};
+
+const findAllUsers = async (token) => {
+  console.log(checkToken(token));
+  const usersList = await User.findAll();
+  const userListWithoutPassword = usersList.map(
+    ({ id, displayName, email, image }) => ({
+      id,
+      displayName,
+      email,
+      image,
+    }),
+  );
+  console.log(usersList);
+  return userListWithoutPassword;
 };
 
 module.exports = {
   createUser,
+  findAllUsers,
 };
