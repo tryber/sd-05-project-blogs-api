@@ -1,5 +1,5 @@
 const Router = require('express');
-const { Posts } = require('../models');
+const { Posts, Users } = require('../models');
 const { postM, authToken } = require('../middlewares');
 
 const posts = Router();
@@ -18,6 +18,15 @@ posts.post('/', authToken, postM.verifyPost, (req, res) => {
     .then(() => res.status(201).json({ title, content, userId: req.tokenId }))
     .catch((e) => {
       console.log(e);
+      res.status(500).json({ message: 'deu ruim' });
+    });
+});
+
+posts.get('/', authToken, async (req, res) => {
+  Posts.findAll({ include: { model: Users, as: 'user' } })
+    .then((postss) => res.status(200).json(postss))
+    .catch((e) => {
+      console.log(e.message);
       res.status(500).json({ message: 'deu ruim' });
     });
 });
