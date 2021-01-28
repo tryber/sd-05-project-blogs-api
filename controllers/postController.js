@@ -44,4 +44,19 @@ postRouter.get(
   }),
 );
 
+postRouter.delete(
+  '/:id',
+  validateToken,
+  rescue(async (req, res) => {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    const post = await services.deletePost(id, userId);
+
+    return post.error
+      ? res.status(post.code).json({ message: post.message })
+      : res.status(204).json({ message: 'Post apagado' });
+  }),
+);
+
 module.exports = postRouter;

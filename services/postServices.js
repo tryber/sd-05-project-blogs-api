@@ -49,4 +49,20 @@ async function getPostById(id) {
   return postID[0].dataValues;
 }
 
-module.exports = { createPost, getAllPosts, getPostById };
+async function deletePost(id, userId) {
+  const post = Posts.findOne({ where: { id } });
+
+  if (!post) {
+    return { error: true, code: 404, message: 'Post não existe' };
+  }
+
+  const author = post.dataValues.userId;
+
+  if (userId === author) {
+    return Posts.destroy({ where: { id, userId } });
+  }
+
+  return { error: true, code: 401, message: 'Usuário não autorizado' };
+}
+
+module.exports = { createPost, getAllPosts, getPostById, deletePost };
