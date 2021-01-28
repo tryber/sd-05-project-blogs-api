@@ -31,4 +31,18 @@ posts.get('/', authToken, async (req, res) => {
     });
 });
 
+posts.get('/:id', authToken, async (req, res) => {
+  Posts.findByPk(req.params.id, { include: { model: Users, as: 'user' } })
+    .then((postss) => {
+      if (postss == null) {
+        return res.status(404).json({ message: 'Post não existe' });
+      }
+      return res.status(200).json(postss);
+    })
+    .catch((e) => {
+      console.log(e.message);
+      return res.status(500).json({ message: 'deu ruim' });
+    });
+});
+
 module.exports = posts;
