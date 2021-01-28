@@ -55,35 +55,33 @@ postRouter.get(
   }),
 );
 
-// // 5 - Sua aplicação deve ter o endpoint DELETE /user/me
-// userRouter.delete(
-//   '/me',
-//   validateToken,
+// 9 - Sua aplicação deve ter o endpoint PUT /post/:id
+// postRouter.put(
+//   '/:id',
 //   rescue(async (req, res) => {
-//     const { email } = req.userPayload;
-//     // https://jwt.io/ to access the payload object structure
-//     // & validateToken middleware contains req.userPayload
-//     await User.destroy({ where: { email } });
-//     return res.status(204).send();
-//   }),
-// );
-
-// /_ Atualiza um usuário _/
-// userRouter.put('/:id', (req, res) => {
-//   const { fullname, email } = req.body;
-
-//   User.update(
-//     { fullname, email },
+//   const { title, content } = req.body;
+//   const updatedPost = Post.update(
+//     { title, content },
 //     {
 //       where: { id: req.params.id },
 //     }
-//   ).then((result) => {
-//     res.status(200).send({ message: 'Usuário atualizado com sucesso!' });
-//   })
-//     .catch((e) => {
-//       console.log(e.message);
-//       res.status(500).send({ message: 'Algo deu errado' });
-//     });
-// });
+//   );
+//   return res.status(200).json(updatedPost);
+//   }),
+// );
+
+// 10 - Sua aplicação deve ter o endpoint GET post/search?q=:searchTerm
+
+// 11 - Sua aplicação deve ter o endpoint DELETE post/:id
+// // 5 - Sua aplicação deve ter o endpoint DELETE /user/me
+// postRouter.delete(
+//   '/:id',
+//   validateToken,
+//   rescue(async (req, res) => {
+//     const { id } = req.params;
+//     await User.destroy({ where: { id } });
+//     return res.status(204).send();
+//   }),
+// );
 
 module.exports = postRouter;
