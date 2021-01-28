@@ -18,9 +18,9 @@ const userPostMiddleware = async (req) => {
     const { displayName, email, password, image } = req.body;
 
     const user = await Users.create({ displayName, email, password, image });
-    console.log(user, 'newuser');
+
     const token = createToken({ user });
-    console.log(token, 'token');
+
     return { token };
   } catch {
     return { err: { status: 500, message: 'Algo deu errado' } };
