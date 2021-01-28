@@ -69,21 +69,4 @@ userRouter.delete(
   }),
 );
 
-// /_ Atualiza um usuário _/
-// userRouter.put('/:id', (req, res) => {
-//   const { fullname, email } = req.body;
-//   User.update(
-//     { fullname, email },
-//     {
-//       where: { id: req.params.id },
-//     }
-//   ).then((result) => {
-//     res.status(200).send({ message: 'Usuário atualizado com sucesso!' });
-//   })
-//     .catch((e) => {
-//       console.log(e.message);
-//       res.status(500).send({ message: 'Algo deu errado' });
-//     });
-// });
-
 module.exports = userRouter;

@@ -22,7 +22,7 @@ loginRouter.post(
   rescue(async (req, res) => {
     const userLoginData = req.existingUser;
     // to get both email, password and id
-    // see login middleware to understand where req.existingUser comes from
+    // req.existingUser comes from above login middleware
     const token = await generateJWT(userLoginData);
     return res.status(200).json({ token });
   }),

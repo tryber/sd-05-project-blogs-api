@@ -2,6 +2,8 @@ const express = require('express');
 
 const rescue = require('express-rescue');
 
+const { Op } = require('sequelize');
+
 const { Post, User } = require('../models');
 
 const postRouter = express.Router();
@@ -9,8 +11,6 @@ const {
   validateToken,
   validatePost,
 } = require('../middlewares');
-
-const { Op } = require('sequelize');
 
 // 6 - Sua aplicação deve ter o endpoint POST /post
 postRouter.post(
@@ -56,12 +56,13 @@ postRouter.get(
     });
     // Sequelize operators https://sequelize.org/master/manual/model-querying-basics.html#operators
     // How to write it on Postman https://learning.postman.com/docs/sending-requests/requests/#:~:text=authentication%20and%20headers.-,Sending%20parameters,field%20and%20the%20Params%20tab.&text=To%20send%20a%20query%20parameter,be%20reflected%20in%20the%20others.
-    // Honestidade acadêmica: PR do aluno Felipe Vieira para lembrar de tirar password
+    // [Honestidade acadêmica]: PR do aluno Felipe Vieira para tirar password
+    // (via attributes, ou seja Eager Loading condicionado)
     return res.status(200).json(postsBySearch);
     // naturally sends empty [] in case of no match
   }),
 );
-// Reference for Trybe content on req.query: Block 26 - crush manager project 
+// Reference for Trybe content on req.query: Block 26 - crush manager project
 // Req10 before req8 because search term would be interpreted as id, returning l77.
 
 // 8 - Sua aplicação deve ter o endpoint GET post/:id
@@ -127,3 +128,7 @@ postRouter.delete(
 );
 
 module.exports = postRouter;
+
+// Possible architecture improvements:
+// - above functions code in middlewares or services
+// - or go one level up: endpoints in router, controller here still for these functions

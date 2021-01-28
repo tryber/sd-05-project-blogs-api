@@ -25,7 +25,8 @@ const validateExistingEmail = async (req, _res, next) => {
     return next(new CodeError('Campos inválidos', 'invalid_data'));
   }
   req.existingUser = existingUser.dataValues;
-  // req.existingUser declared so as to then generating a complete token payload
+  // req.existingUser declared so as to then generating a complete token payload,
+  // then reachable from the endpoint calling this mdw
   next();
 };
 
