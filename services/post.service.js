@@ -1,4 +1,4 @@
-const { Op } = require("sequelize");
+const { Op } = require('sequelize');
 const rescue = require('express-rescue');
 const { Post, User } = require('../models');
 
@@ -21,7 +21,7 @@ const registerPost = rescue(async (req, _res, next) => {
 const deletePost = rescue(async (req, _res, next) => {
   const userId = validateAuth(req)();
   const { id } = req.params;
-  if (!await Post.findByPk(id)) throw new Error('Post não existe;404')
+  if (!await Post.findByPk(id)) throw new Error('Post não existe;404');
   if (!await Post.destroy({ where: { id, userId } })) {
     throw new Error('Usuário não autorizado;401');
   }
