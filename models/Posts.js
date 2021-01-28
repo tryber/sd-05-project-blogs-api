@@ -1,13 +1,25 @@
-const Post = (sequelize, DataTypes) => {
-  const post = sequelize.define('Post', {
+const Posts = (sequelize, DataTypes) => {
+  const post = sequelize.define('Posts', {
     title: DataTypes.STRING,
     content: DataTypes.STRING,
-    published: DataTypes.DATE,
-    updated: DataTypes.DATE,
     userId: DataTypes.INTEGER,
-  });
+    published: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+    updated: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      onUpdate: DataTypes.NOW,
+    },
+  },
+  { timestamps: false });
+
+  post.associate = (models) => {
+    post.belongsTo(models.Users, { foreignKey: 'userId', as: 'user' });
+  };
 
   return post;
 };
 
-module.exports = Post;
+module.exports = Posts;

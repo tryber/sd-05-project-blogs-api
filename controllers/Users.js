@@ -1,5 +1,5 @@
 const express = require('express');
-const { User } = require('../models');
+const { Users } = require('../models');
 const authToken = require('../middlewares/authToken');
 const userById = require('../middlewares/userById');
 const services = require('../services');
@@ -26,7 +26,7 @@ router.get('/:id', authToken, userById, async (req, res) => {
 
 router.get('/', authToken, async (req, res) => {
   try {
-    const data = await User.findAll();
+    const data = await Users.findAll();
 
     res.status(200).json(data);
   } catch {
@@ -38,7 +38,7 @@ router.delete('/me', authToken, async (req, res) => {
   try {
     if (!req.user) return res.status(204).send({ message: 'Algo deu errado' });
     const { email } = req.user;
-    await User.destroy({ where: { email } });
+    await Users.destroy({ where: { email } });
     return res.status(204).send();
   } catch (err) {
     console.log(err);

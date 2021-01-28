@@ -1,7 +1,7 @@
 const displayNameValidation = require('./displayNameValidation');
 const emailValidation = require('./emailValidation');
 const passwordValidation = require('./passwordValidation');
-const { User } = require('../models');
+const { Users } = require('../models');
 const { createToken } = require('../auth/token');
 
 const userPostMiddleware = async (req) => {
@@ -17,8 +17,10 @@ const userPostMiddleware = async (req) => {
   try {
     const { displayName, email, password, image } = req.body;
 
-    const newUser = await User.create({ displayName, email, password, image });
-    const token = createToken({ newUser });
+    const user = await Users.create({ displayName, email, password, image });
+    console.log(user, 'newuser');
+    const token = createToken({ user });
+    console.log(token, 'token');
     return { token };
   } catch {
     return { err: { status: 500, message: 'Algo deu errado' } };

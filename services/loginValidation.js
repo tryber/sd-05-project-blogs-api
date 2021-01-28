@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { Users } = require('../models');
 
 const loginValidation = async (req) => {
   const { email, password } = req.body;
@@ -11,7 +11,7 @@ const loginValidation = async (req) => {
 
   if (!password) return { err: { status: 400, message: '"password" is required' } };
 
-  const user = await User.findOne({ where: { email } });
+  const user = await Users.findOne({ where: { email } });
 
   if (!user) return { err: { status: 400, message: 'Campos inválidos' } };
 

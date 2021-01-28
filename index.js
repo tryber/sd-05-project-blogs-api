@@ -8,6 +8,7 @@ app.use(express.json());
 
 app.use('/user/', controllers.Users);
 app.use('/login/', controllers.Login);
+app.use('/post/', controllers.Posts);
 
 const PORT = process.env.PORT || 3000;
 
