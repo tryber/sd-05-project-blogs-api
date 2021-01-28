@@ -82,15 +82,25 @@ postRouter.put(
 // 10 - Sua aplicação deve ter o endpoint GET post/search?q=:searchTerm
 
 // 11 - Sua aplicação deve ter o endpoint DELETE post/:id
-// // 5 - Sua aplicação deve ter o endpoint DELETE /user/me
-// postRouter.delete(
-//   '/:id',
-//   validateToken,
-//   rescue(async (req, res) => {
-//     const { id } = req.params;
-//     await User.destroy({ where: { id } });
-//     return res.status(204).send();
-//   }),
-// );
+postRouter.delete(
+  '/:id',
+  validateToken,
+  rescue(async (req, res) => {
+    const { id } = req.params;
+    // 1. Check if post exists
+    const postById = await Post.findByPk(id);
+    if (!postById) {
+      return res.status(404).json({ message: 'Post não existe' });
+    }
+    // 2. Check if user is authorized to delete
+    const authenticatedUserId = req.userPayload.id;
+    if (postById.userId !== authenticatedUserId) {
+      return res.status(401).json({ message: 'Usuário não autorizado' });
+    }
+    // 3. Delete
+    await Post.destroy({ where: { id } });
+    return res.status(204).send();
+  }),
+);
 
 module.exports = postRouter;
