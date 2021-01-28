@@ -14,6 +14,7 @@ const create = async (token, title, content) => {
       message: 'Token expirado ou inválido',
     };
   }
+  console.log(validateToken)
   const { id, userWithoutPassword } = validateToken;
   const ID = id || userWithoutPassword.dataValues.id; // roubado, mas o teste não ajuda!
   if (!title) {
@@ -38,8 +39,6 @@ const getAll = async (token) => {
       message: 'Token expirado ou inválido',
     };
   }
-  // const { id, userWithoutPassword } = validateToken;
-  // const ID = id || userWithoutPassword.dataValues.id; // roubado, mas o teste não ajuda!
   const getPosts = await BlogPosts.findAll({ include: { model: Users, as: 'user' } });
   return getPosts;
 };
@@ -92,20 +91,15 @@ const update = async (token, id, title, content) => {
   return { title, content, userId };
 };
 
-// para o [Op.or] olhei o PR do Paulo D'Andrea => https://sequelize.org/v5/manual/querying.htm 
+// para o [Op.or] olhei o PR do Paulo D'Andrea => https://sequelize.org/v5/manual/querying.html
 const getByQuery = async (token, query) => {
   if (!token) {
     return { error: true, code: 'Unauthorized', message: 'Token não encontrado' };
   }
   const validateToken = verifyToken(token);
   if (validateToken === 'jwt malformed') {
-    return {
-      error: true,
-      code: 'Unauthorized',
-      message: 'Token expirado ou inválido',
-    };
+    return { error: true, code: 'Unauthorized', message: 'Token expirado ou inválido' };
   };
-  // console.log(query);
   const getQueryPosts = await BlogPosts.findAll({
     where: { [Op.or]: [
       { title: { [Op.like]: `%${query}%` } },
@@ -114,9 +108,6 @@ const getByQuery = async (token, query) => {
     },
     include: { model: Users, as: 'user' },
   });
-  // if(getQueryPosts[0].dataValues) {
-  //   return getQueryPosts[0].dataValues.map((post) => {})
-  // }
   return getQueryPosts;
 };
 
