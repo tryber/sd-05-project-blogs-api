@@ -4,19 +4,19 @@ const tokenJWT = async (user) => {
   const secret = 'backEndInfluencer';
 
   const jwtConfig = {
-    expiresIn: '1d',
+    expiresIn: '7d',
     algorithm: 'HS256',
   };
 
   const { password: _, ...userWithoutPassword } = user;
-  const { _id: id } = userWithoutPassword;
+  // const { _id: id } = userWithoutPassword;
 
-  const payload = {
-    sub: id,
-    userData: userWithoutPassword,
-  };
+  // const payload = {
+  //   sub: id,
+  //   userData: userWithoutPassword,
+  // };
 
-  const token = jwt.sign(payload, secret, jwtConfig);
+  const token = jwt.sign(userWithoutPassword, secret, jwtConfig);
   return token;
 };
 

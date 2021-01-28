@@ -9,6 +9,7 @@ class CodeError extends Error {
     this.code = code;
   }
 }
+
 const checkData = (email, password) => {
   if (email === '') {
     throw new CodeError('"email" is not allowed to be empty', 'invalid_data');

@@ -26,14 +26,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      // createdAt: {
-      //   type: Sequelize.DATE,
-      //   allowNull: false,
-      // },
-      // updatedAt: {
-      //   type: Sequelize.DATE,
-      //   allowNull: false,
-      // }
     });
     return UsersTable;
   },
