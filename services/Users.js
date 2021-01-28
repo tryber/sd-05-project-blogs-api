@@ -9,6 +9,13 @@ const CREATE_SCHEMA = Joi.object({
   image: Joi.string().required(),
 });
 
+const treatData = (id, displayName, email, image) => ({
+  id,
+  displayName,
+  email,
+  image,
+});
+
 const createUser = async (displayName, email, password, image) => {
   const { error } = CREATE_SCHEMA.validate({
     displayName,
@@ -30,21 +37,27 @@ const createUser = async (displayName, email, password, image) => {
 };
 
 const findAllUsers = async (token) => {
-  console.log(checkToken(token));
+  checkToken(token);
   const usersList = await User.findAll();
   const userListWithoutPassword = usersList.map(
-    ({ id, displayName, email, image }) => ({
-      id,
-      displayName,
-      email,
-      image,
-    }),
+    ({ id, displayName, email, image }) =>
+      treatData(id, displayName, email, image),
   );
-  console.log(usersList);
   return userListWithoutPassword;
+};
+
+const findUserById = async (token, idParam) => {
+  checkToken(token);
+  const user = await User.findAll({ where: { id: idParam } });
+  const userFiltered = user.map(
+    ({ id, displayName, email, image }) =>
+      treatData(id, displayName, email, image),
+  );
+  return userFiltered[0];
 };
 
 module.exports = {
   createUser,
   findAllUsers,
+  findUserById,
 };
