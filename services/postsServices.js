@@ -91,11 +91,29 @@ const update = async (token, id, title, content) => {
   return { title, content, userId };
 };
 
+const exclude = async (token, id) => {
+  if (!token) { return { error: true, code: 'Unauthorized', message: 'Token não encontrado' }; }
+  const validateToken = verifyToken(token);
+  if (validateToken === 'jwt malformed' || !validateToken) {
+    return { error: true, code: 'Unauthorized', message: 'Token expirado ou inválido' };
+  }
+  const reqId = validateToken.id || validateToken.userWithoutPassword.dataValues.id;
+  const getPostById = await BlogPosts.findOne({ where: { id } });
+  if (!getPostById) { return { error: true, code: 'Not Found', message: 'Post não existe' }; }
+  const { userId } = getPostById;
+  const getUser = await Users.findOne({ where: { id: userId } });
+  if (!getUser || userId !== reqId) {
+    return { error: true, code: 'Unauthorized', message: 'Usuário não autorizado' };
+  }
+  BlogPosts.destroy({ where: { id } });
+  return { error: false };
+};
+
 module.exports = {
   // login,
   getAll,
   getById,
   create,
   update,
-  // exclude,
+  exclude,
 };

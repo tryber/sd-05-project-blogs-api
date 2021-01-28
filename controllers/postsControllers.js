@@ -83,11 +83,32 @@ const update = async (req, res) => {
   }
 };
 
+const remove = async (req, res) => {
+  try {
+    const { authorization } = req.headers;
+    const { id } = req.params;
+    const getRemoved = await service.exclude(authorization, id);
+    if (getRemoved.error) {
+      if (getRemoved.code === 'Unauthorized') {
+        return res.status(401).json({ message: getRemoved.message });
+      }
+      if (getRemoved.code === 'Not Found') {
+        return res.status(404).json({ message: getRemoved.message });
+      }
+      return res.status(500).json({ message: 'Algo deu ruim no getRemoved' });
+    }
+    res.status(204).json(getRemoved);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: 'Algo deu ruim no GETREMOVED' });
+  }
+};
+
 module.exports = {
   // login,
   getAll,
   getById,
   create,
   update,
-  // remove,
+  remove,
 };

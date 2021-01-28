@@ -29,6 +29,8 @@ app.get('/post/:id', postsController.getById);
 
 app.put('/post/:id', postsController.update);
 
+app.delete('/post/:id', postsController.remove);
+
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (request, response) => {
   response.send();
