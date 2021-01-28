@@ -31,6 +31,20 @@ postRouter.get(
 );
 
 postRouter.get(
+  '/search',
+  validateToken,
+  rescue(async (req, res) => {
+    const query = req.query.q;
+    console.log(query, 'LOOK AT MEEEEEEEEE!!');
+    const posts = await services.searchPosts(query);
+
+    return posts
+      ? res.status(200).json(posts)
+      : res.status(500).json({ message: 'Something went wrong' });
+  }),
+);
+
+postRouter.get(
   '/:id',
   validateToken,
   rescue(async (req, res) => {

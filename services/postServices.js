@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { Posts, Users } = require('../models');
 
 async function createPost(title, content, id) {
@@ -70,6 +71,18 @@ async function updatePost(id, title, content, userId) {
   return update[0] === 1 ? Posts.findOne({ where: { id } }) : update;
 }
 
+// https://sequelize.org/master/manual/model-querying-basics.html
+async function searchPosts(query) {
+  const posts = await Posts.findAll({
+    where: {
+      [Op.or]: [{ title: { [Op.substring]: query } }, { content: { [Op.substring]: query } }],
+    },
+    include: { model: Users, as: 'user', attributes: { exclude: ['password'] } },
+  });
+
+  return posts;
+}
+
 async function deletePost(id, userId) {
   const post = await Posts.findOne({ where: { id } });
 
@@ -86,4 +99,4 @@ async function deletePost(id, userId) {
   return { error: true, code: 401, message: 'Usuário não autorizado' };
 }
 
-module.exports = { createPost, getAllPosts, getPostById, updatePost, deletePost };
+module.exports = { createPost, getAllPosts, getPostById, updatePost, searchPosts, deletePost };
