@@ -9,9 +9,18 @@ const createPost = async (title, content, userId) => {
   return Post.create({ title, content, userId });
 };
 
-const getAllPosts = async () => Post.findAll({ include: { model: User, as: 'user' } });
+const getAllPosts = async () => Post.findAll({ include: { model: User, as: 'user', attributes: { exclude: ['password'] } } });
+
+const getOnePost = async (id) => {
+  const post = await Post.findOne({ where: { id }, include: { model: User, as: 'user', attributes: { exclude: ['password'] } } });
+
+  if (!post) return throwErr('not-found', 'Post não existe', 404);
+
+  return post;
+};
 
 module.exports = {
   createPost,
   getAllPosts,
+  getOnePost,
 };

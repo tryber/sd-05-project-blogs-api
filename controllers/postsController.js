@@ -35,4 +35,20 @@ postsRouter.get('/post', validateToken, async (req, res) => {
   }
 });
 
+postsRouter.get('/post/:id', validateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const getOnePost = await postsService.getOnePost(id);
+
+    if (getOnePost.error) {
+      return res.status(getOnePost.statusCode).json({ message: getOnePost.message });
+    }
+
+    return res.status(200).json(getOnePost);
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+});
+
 module.exports = postsRouter;
