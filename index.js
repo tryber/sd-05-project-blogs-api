@@ -9,6 +9,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/user/', controller.user);
+app.use('/login/', controller.login);
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));
 

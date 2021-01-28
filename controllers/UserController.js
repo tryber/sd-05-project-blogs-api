@@ -3,6 +3,7 @@ const { Router } = require('express');
 const router = Router();
 const service = require('../services/userService');
 /* const { User } = require('../models'); */
+const createJWT = require('../middlewares/createTokenJWT');
 
 router.post('/', async (req, res) => {
   try {
@@ -11,7 +12,8 @@ router.post('/', async (req, res) => {
     if (userCreate.error) {
       return res.status(userCreate.statusCode).json({ message: userCreate.message });
     }
-    return res.status(201).json(userCreate);
+    const tokenOn = createJWT(userCreate);
+    return res.status(201).json({ token: tokenOn });
   } catch (err) {
     console.log(err.message);
     res.status(500).send(err.message);
