@@ -21,4 +21,18 @@ postsRouter.post('/post', validateToken, async (req, res) => {
   }
 });
 
+postsRouter.get('/post', validateToken, async (req, res) => {
+  try {
+    const getAllPosts = await postsService.getAllPosts();
+
+    if (getAllPosts.error) {
+      return res.status(getAllPosts.statusCode).json({ message: getAllPosts.message });
+    }
+
+    res.status(200).json(getAllPosts);
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+});
+
 module.exports = postsRouter;

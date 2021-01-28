@@ -1,4 +1,4 @@
-const { Post } = require('../models');
+const { Post, User } = require('../models');
 const throwErr = require('../utils/throwErr');
 
 const createPost = async (title, content, userId) => {
@@ -9,6 +9,9 @@ const createPost = async (title, content, userId) => {
   return Post.create({ title, content, userId });
 };
 
+const getAllPosts = async () => Post.findAll({ include: { model: User, as: 'user' } });
+
 module.exports = {
   createPost,
+  getAllPosts,
 };
