@@ -52,4 +52,20 @@ users.get('/:id', authToken, (req, res) => {
     });
 });
 
+users.delete('/me', authToken, (req, res) => {
+  const { tokenId } = req;
+  Users.destroy({
+    where: {
+      id: tokenId,
+    },
+  })
+    .then(() => {
+      res.status(204).send();
+    })
+    .catch((e) => {
+      console.log(e.message);
+      res.status(500).send({ message: 'deu ruim' });
+    });
+});
+
 module.exports = users;
