@@ -2,15 +2,12 @@ const { Router } = require('express');
 const rescue = require('express-rescue');
 const services = require('../services/userServices');
 const { createToken, validateToken } = require('../authentication');
-const { validateUser, validateExistence } = require('../middlewares');
 
 const userRouter = Router();
 
 userRouter.post(
   '/',
-  validateUser,
-  validateExistence,
-  rescue(async (req, res) => {
+  async (req, res) => {
     const { displayName, email, password, image } = req.body;
     const newUser = await services.createUser(displayName, email, password, image);
 
@@ -20,7 +17,7 @@ userRouter.post(
     const token = await createToken(userData);
 
     return res.status(201).json({ token });
-  }),
+  },
 );
 
 userRouter.get(

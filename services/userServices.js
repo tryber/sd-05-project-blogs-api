@@ -1,7 +1,16 @@
 const { Users } = require('../models');
+const validateUser = require('./validateUser');
 
 async function createUser(displayName, email, password, image) {
-  return Users.create({ displayName, email, password, image });
+  const validUser = await validateUser(displayName, email, password);
+
+  if (validUser === true) {
+    const newUser = await Users.create({ displayName, email, password, image });
+
+    return newUser;
+  }
+
+  return validUser;
 }
 
 async function getAllUsers() {
