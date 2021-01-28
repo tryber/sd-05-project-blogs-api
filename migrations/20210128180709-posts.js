@@ -11,11 +11,11 @@ module.exports = {
       },
       title: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       content: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       userId: {
         type: Sequelize.INTEGER,
