@@ -65,4 +65,15 @@ usersRouter.get('/user', validateToken, async (req, res) => {
   }
 });
 
+usersRouter.delete('/user/me', validateToken, async (req, res) => {
+  try {
+    const { id } = req.userData;
+    await usersService.deleteActualUser(id);
+
+    return res.status(204).json();
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+});
+
 module.exports = usersRouter;
