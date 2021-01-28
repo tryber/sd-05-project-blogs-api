@@ -33,4 +33,20 @@ userRouter.get(
   }),
 );
 
+userRouter.get(
+  '/:id',
+  validateToken,
+  rescue(async (req, res) => {
+    const { id } = req.params;
+
+    const user = await services.getUserById(id);
+
+    if (user.error) {
+      return res.status(user.code).json({ message: user.message });
+    }
+
+    return res.status(200).json(user);
+  }),
+);
+
 module.exports = userRouter;

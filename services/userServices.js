@@ -11,4 +11,18 @@ async function getAllUsers() {
   return users;
 }
 
-module.exports = { createUser, getAllUsers };
+async function getUserById(id) {
+  const userID = await Users.findOne({ where: { id } });
+
+  if (!userID) {
+    return {
+      error: true,
+      code: 404,
+      message: 'Usuário não existe',
+    };
+  }
+
+  return userID;
+}
+
+module.exports = { createUser, getAllUsers, getUserById };
