@@ -2,6 +2,7 @@ const express = require('express');
 const { Posts, Users } = require('../models');
 const {
   postValidation,
+  postAuth,
 } = require('../services/PostsServices');
 const { authValidation } = require('../services/UsersServices');
 
@@ -32,4 +33,25 @@ router.get('/post/:id', authValidation, async (req, res) => {
     res.status(200).json(post);
   }).catch(() => res.status(500).json({ message: 'esses bugs danados tsc tsc' }));
 });
+
+router.put('/post/:id',
+  authValidation,
+  postValidation,
+  postAuth,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { title, content } = req.body;
+      await Posts.update({ title, content }, { where: { id } });
+      const post = await Posts.findOne({ where: { id },
+        attributes: { exclude: [
+          'id',
+          'publised',
+          'updated',
+        ] } });
+      res.status(200).json(post);
+    } catch (e) {
+      res.status(500).json(e.message);
+    }
+  });
 module.exports = router;
