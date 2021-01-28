@@ -9,7 +9,6 @@ function MiddleEmail(req, _res, next) {
   if (email === undefined) { next(err); }
   err.message = '"email" is not allowed to be empty';
   if (email === '') { next(err); }
-  
   err.message = '"email" must be a valid email';
   return regexEmail.test(email) ? next() : next(err);
 }

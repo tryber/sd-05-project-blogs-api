@@ -2,7 +2,7 @@ const express = require('express');
 const MiddleError = require('../middlewares/middlewareErrorUser');
 const MiddleEmail = require('../middlewares/validEmail');
 const MiddlePassword = require('../middlewares/validPassword');
-const { Users } = require('../models');
+// const { Users } = require('../models');
 const { checkEmailPassDB } = require('../services/loginService');
 
 const loginRouter = express.Router();
@@ -17,7 +17,6 @@ loginRouter.post('/', middleWareUser, async (req, res, next) => {
   }
   delete err.isError;
   res.status(200).json({ token: err.token });
-
 });
 
 loginRouter.use(MiddleError);

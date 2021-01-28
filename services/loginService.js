@@ -1,5 +1,7 @@
 const { createToken } = require('../functions/tokenOp');
+
 const { Users } = require('../models');
+
 const criaError = (message, status) => ({
   isError: false,
   message,
@@ -9,7 +11,6 @@ const criaError = (message, status) => ({
 async function checkEmailPassDB(password, email) {
   const err = criaError('Campos inválidos', 400);
   const usedEmail = await Users.findOne({ where: { email } });
-  console.log(usedEmail, err)
   if (!usedEmail) { return { ...err, isError: true }; }
   const dataValues = { ...usedEmail.dataValues };
   err.status = 409;
