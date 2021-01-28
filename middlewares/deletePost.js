@@ -1,4 +1,4 @@
-const { Posts, Users } = require('../models');
+const { Posts } = require('../models');
 const checkOwner = require('../services/checkOwner');
 
 const deletePost = async (req, res, next) => {
