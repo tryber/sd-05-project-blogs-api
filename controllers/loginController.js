@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const rescue = require('express-rescue');
 const services = require('../services/loginServices');
-const { createToken } = require('../authentication/token');
+const { createToken } = require('../authentication');
 
 const loginRouter = Router();
 
