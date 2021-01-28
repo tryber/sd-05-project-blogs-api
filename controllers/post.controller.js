@@ -10,6 +10,10 @@ postRouter.post('/', service.registerPost, (req, res) => {
   res.status(POST_SUCESS).json(req.data);
 });
 
+postRouter.put('/:id', service.editPost, (req, res) => {
+  res.status(GET_SUCCESS).json(req.data);
+});
+
 postRouter.get('/', service.getAllPosts, (req, res) => {
   res.status(GET_SUCCESS).json(req.data);
 });

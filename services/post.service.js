@@ -18,6 +18,20 @@ const registerPost = rescue(async (req, _res, next) => {
   next();
 });
 
+const editPost = rescue(async (req, _res, next) => {
+  const userId = validateAuth(req)();
+  validate(POST_SCHEMA)(req.body);
+  const { id } = req.params;
+  if (!await Post.findByPk(id)) throw new Error('Post não existe;404');
+  const [response] = await Post.update(
+    { ...req.body, updated: new Date() },
+    { where: { id, userId } },
+  );
+  if (!response) throw new Error('Usuário não autorizado;401');
+  req.data = { ...req.body, userId };
+  next();
+});
+
 const deletePost = rescue(async (req, _res, next) => {
   const userId = validateAuth(req)();
   const { id } = req.params;
@@ -44,7 +58,6 @@ const getAllPosts = rescue(async (req, _res, next) => {
   validateAuth(req)();
   const { q = '' } = req.query;
   const exclude = ['password', 'createdAt', 'updatedAt'];
-  console.log(q);
   const postList = await Post.findAll({
     where: {
       [Op.or]: [
@@ -60,6 +73,7 @@ const getAllPosts = rescue(async (req, _res, next) => {
 
 module.exports = {
   registerPost,
+  editPost,
   getAllPosts,
   getPost,
   deletePost,
