@@ -1,5 +1,5 @@
 const Joi = require('@hapi/joi');
-const { digestToken } = require('../utils/jwt.util');
+const { digestToken } = require('./jwt.util');
 
 const NAME_MIN = 8;
 const PASS_MIN = 6;
@@ -36,7 +36,7 @@ const validateAuth = ({ headers }) => (errMessage) => {
         throw new Error(errMessage || 'Erro desconhecido;500');
     }
   }
-}
+};
 
 const validate = (schema) => (data) => {
   const { error } = schema.validate(data || {});
