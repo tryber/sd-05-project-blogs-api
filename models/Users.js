@@ -1,11 +1,15 @@
 function Users(sequelize, DataTypes) {
-  const users = sequelize.define('Users', {
-    displayName: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    image: DataTypes.STRING,
-  });
-
+  const users = sequelize.define(
+    'Users',
+    {
+      displayName: DataTypes.STRING,
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      image: DataTypes.STRING,
+    },
+    { timestamps: false },
+  );
+  // https://sequelize.org/master/manual/assocs.html
   users.associate = (models) => {
     users.hasMany(models.Posts, {
       foreignKey: 'userId',
@@ -16,4 +20,4 @@ function Users(sequelize, DataTypes) {
   return users;
 }
 
-module.exports = { Users };
+module.exports = Users;
