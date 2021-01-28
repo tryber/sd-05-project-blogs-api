@@ -21,15 +21,13 @@ postsRouter.post('/post', validateToken, async (req, res) => {
   }
 });
 
-postsRouter.get('/post', validateToken, async (req, res) => {
+postsRouter.get('/post/search', validateToken, async (req, res) => {
   try {
-    const getAllPosts = await postsService.getAllPosts();
+    const { q } = req.query;
 
-    if (getAllPosts.error) {
-      return res.status(getAllPosts.statusCode).json({ message: getAllPosts.message });
-    }
+    const getPostsBySearch = await postsService.getPostsBySearch(q);
 
-    res.status(200).json(getAllPosts);
+    return res.status(200).json(getPostsBySearch);
   } catch (error) {
     return res.status(500).json(error.message);
   }
@@ -46,6 +44,20 @@ postsRouter.get('/post/:id', validateToken, async (req, res) => {
     }
 
     return res.status(200).json(getOnePost);
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+});
+
+postsRouter.get('/post', validateToken, async (req, res) => {
+  try {
+    const getAllPosts = await postsService.getAllPosts();
+
+    if (getAllPosts.error) {
+      return res.status(getAllPosts.statusCode).json({ message: getAllPosts.message });
+    }
+
+    res.status(200).json(getAllPosts);
   } catch (error) {
     return res.status(500).json(error.message);
   }
