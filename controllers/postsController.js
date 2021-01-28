@@ -56,19 +56,28 @@ postRouter.get(
 );
 
 // 9 - Sua aplicação deve ter o endpoint PUT /post/:id
-// postRouter.put(
-//   '/:id',
-//   rescue(async (req, res) => {
-//   const { title, content } = req.body;
-//   const updatedPost = Post.update(
-//     { title, content },
-//     {
-//       where: { id: req.params.id },
-//     }
-//   );
-//   return res.status(200).json(updatedPost);
-//   }),
-// );
+postRouter.put(
+  '/:id',
+  validateToken,
+  validatePost,
+  rescue(async (req, res) => {
+    // 1. Find & see post
+    const { id } = req.params;
+    // console.log(`Post id: ${id}`);
+    const postById = await Post.findByPk(id);
+    // 2. Check if user who made the post is the same as user trying to update post
+    const authenticatedUserId = req.userPayload.id;
+    // console.log(`Token user id: ${authenticatedUserId}`);
+    // console.log(`Post user id: ${postById.userId}`);
+    if (postById.userId !== authenticatedUserId) {
+      return res.status(401).json({ message: 'Usuário não autorizado' });
+    }
+    // 3. Update the post
+    const { title, content } = req.body;
+    await Post.update({ title, content }, { where: { id } });
+    return res.status(200).json({ title, content, userId: postById.userId });
+  }),
+);
 
 // 10 - Sua aplicação deve ter o endpoint GET post/search?q=:searchTerm
 
