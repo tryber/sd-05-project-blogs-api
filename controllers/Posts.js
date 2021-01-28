@@ -2,6 +2,7 @@ const express = require('express');
 const { Posts, Users } = require('../models');
 const authToken = require('../middlewares/authToken');
 const postPost = require('../middlewares/postPost');
+const postById = require('../middlewares/postById');
 // const services = require('../services');
 
 const router = express.Router();
@@ -15,6 +16,17 @@ router.post('/', authToken, postPost, async (req, res) => {
 
     res.status(201).json(newPost);
   } catch (e) {
+    res.status(500).send({ message: 'Algo deu errado' });
+  }
+});
+
+router.get('/:id', authToken, postById, async (req, res) => {
+  try {
+    const { postData } = req;
+
+    res.status(200).json(postData);
+  } catch (e) {
+    console.log(e);
     res.status(500).send({ message: 'Algo deu errado' });
   }
 });
