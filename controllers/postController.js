@@ -30,4 +30,18 @@ postRouter.get(
   }),
 );
 
+postRouter.get(
+  '/:id',
+  validateToken,
+  rescue(async (req, res) => {
+    const { id } = req.params;
+
+    const post = await services.getPostById(id);
+
+    return post.error
+      ? res.status(post.code).json({ message: post.message })
+      : res.status(200).json(post);
+  }),
+);
+
 module.exports = postRouter;

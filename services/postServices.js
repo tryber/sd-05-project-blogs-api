@@ -32,4 +32,21 @@ async function getAllPosts() {
   return posts;
 }
 
-module.exports = { createPost, getAllPosts };
+async function getPostById(id) {
+  const postID = await Posts.findAll({
+    where: { id },
+    include: { model: Users, as: 'user' },
+  });
+
+  if (postID.length === 0) {
+    return {
+      error: true,
+      code: 404,
+      message: 'Post não existe',
+    };
+  }
+
+  return postID[0].dataValues;
+}
+
+module.exports = { createPost, getAllPosts, getPostById };
