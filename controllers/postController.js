@@ -67,7 +67,7 @@ postRouter.delete(
   validateToken,
   rescue(async (req, res) => {
     const { id } = req.params;
-    const userId = req.user.id;
+    const userId = req.payload.id;
 
     const post = await services.deletePost(id, userId);
 

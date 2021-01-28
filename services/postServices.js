@@ -71,7 +71,7 @@ async function updatePost(id, title, content, userId) {
 }
 
 async function deletePost(id, userId) {
-  const post = Posts.findOne({ where: { id } });
+  const post = await Posts.findOne({ where: { id } });
 
   if (!post) {
     return { error: true, code: 404, message: 'Post não existe' };
