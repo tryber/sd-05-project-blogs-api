@@ -1,3 +1,4 @@
 const UserRouter = require('./UsersControllers');
+const PostRouter = require('./PostsControllers');
 
-module.exports = { UserRouter };
+module.exports = { UserRouter, PostRouter };

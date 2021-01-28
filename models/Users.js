@@ -1,12 +1,12 @@
 const Users = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+  const User = sequelize.define('Users', {
     displayName: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     image: DataTypes.STRING,
   });
-  User.assossiate = (models) => {
-    User.hasOne(models.Posts, { as: 'Posts', foreignKey: 'userId' });
+  User.associate = (models) => {
+    User.hasMany(models.Posts, { foreignKey: 'userId', as: 'posts' });
   };
   return User;
 };

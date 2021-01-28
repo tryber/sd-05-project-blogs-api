@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { User } = require('../models');
+const { Users } = require('../models');
 
 const validEmail = /^[\w+.]+@\w+\.\w{2,}(?:\.\w{2})?$/;
 const secret = 'lyraah';
@@ -44,11 +44,15 @@ const loginValidation = async (req, res, next) => {
   if (password === '') {
     return res.status(400).json({ message: '"password" is not allowed to be empty' });
   }
-  const findByEmail = await User.findAll()
-    .then((users) => users.find((item) => item.email === email));
-  if (!findByEmail || String(findByEmail.dataValues.password) !== String(password)) {
+  const findByEmail = await Users.findOne({
+    where: {
+      email, password,
+    },
+  });
+  if (!findByEmail) {
     return res.status(400).json({ message: 'Campos inválidos' });
   }
+  req.userInformation = findByEmail.dataValues;
   next();
 };
 
@@ -58,10 +62,11 @@ const authValidation = async (req, res, next) => {
     return res.status(401).json({ message: 'Token não encontrado' });
   }
   try {
-    await jwt.verify(authorization, secret);
+    const user = await jwt.verify(authorization, secret);
+    req.userInformation = user;
     next();
-  } catch (e) {
-    res.status(401).json({ message: 'Token expirado ou inválido' });
+  } catch (_e) {
+    return res.status(401).json({ message: 'Token expirado ou inválido' });
   }
 };
 

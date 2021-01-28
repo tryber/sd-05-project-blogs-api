@@ -1,7 +1,7 @@
 const express = require('express');
 const rescue = require('express-rescue');
 const jwt = require('jsonwebtoken');
-const { User } = require('../models');
+const { Users } = require('../models');
 const {
   userValidation,
   loginValidation,
@@ -20,9 +20,9 @@ router.post(
   userValidation,
   rescue(async (req, res, _next) => {
     const { displayName, email, password, image } = req.body;
-    User.create({ displayName, email, password, image })
-      .then((_newUser) => {
-        const token = jwt.sign({ data: email }, secret, jwtConfig);
+    Users.create({ displayName, email, password, image })
+      .then((newUser) => {
+        const token = jwt.sign({ user: newUser }, secret, jwtConfig);
         res.status(201).json({ token });
       })
       .catch(() => res.status(409).json({ message: 'Usuário já existe' }));
@@ -34,8 +34,8 @@ router.post(
   loginValidation,
   rescue(async (req, res) => {
     try {
-      const { email } = req.body;
-      const token = jwt.sign({ data: email }, secret, jwtConfig);
+      const { userInformation } = req;
+      const token = jwt.sign({ user: userInformation }, secret, jwtConfig);
       res.status(200).json({ token });
     } catch (e) {
       res.status(500).send(e.message);
@@ -47,13 +47,13 @@ router.get(
   '/user',
   authValidation,
   rescue(async (_req, res) => {
-    User.findAll().then((users) => res.status(200).json(users));
+    Users.findAll().then((users) => res.status(200).json(users));
   }),
 );
 
 router.get('/user/:id', authValidation, (req, res) => {
   const { id } = req.params;
-  User.findByPk(id)
+  Users.findByPk(id)
     .then((user) => {
       if (user === null) {
         return res.status(404).json({ message: 'Usuário não existe' });
@@ -69,8 +69,8 @@ router.get('/user/:id', authValidation, (req, res) => {
 router.delete('/user/me', authValidation, (req, res) => {
   const { authorization } = req.headers;
   const decode = jwt.verify(authorization, secret);
-  const email = decode.data;
-  User.destroy({
+  const { email } = decode.user;
+  Users.destroy({
     where: {
       email,
     },

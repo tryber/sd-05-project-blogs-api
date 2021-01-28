@@ -20,7 +20,6 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 1,
         references: {
           model: 'Users',
           key: 'id',
@@ -31,10 +30,12 @@ module.exports = {
       published: {
         type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: new Date()
       },
       updated: {
         type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: new Date()
       }
     })
   },
