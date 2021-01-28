@@ -1,4 +1,4 @@
-// SOLID architecture (for refactoring later);
+// SOLID architecture (for refactoring);
 
 // const { Users } = require('../models');
 
