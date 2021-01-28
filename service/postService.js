@@ -4,7 +4,6 @@ const update = async (title, content, id, userId) => {
   const validatePost = await Posts.findOne({ where: { id } });
   if (!title) return { error: true, message: '"title" is required', statusCode: 400 };
   if (!content) return { error: true, message: '"content" is required', statusCode: 400 };
-  // console.log('validadePost===>',validatePost);
   if (validatePost.userId !== userId) {
     return {
       error: true,

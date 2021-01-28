@@ -48,10 +48,33 @@ posts.get('/', checkToken, async (_req, res) => {
   }
 });
 
+posts.get('/search', checkToken, async (req, res) => {
+  try {
+    const { q } = req.query;
+    /* const readPosts = await Posts.findAll({
+      include: [{ model: Users, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] }]
+    }); */
+    const findPosts = await Posts.findAll({
+      include: [{ model: Users, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] }],
+    });
+    // console.log('findPosts===>', findPosts.map((e) => e.dataValues) );
+    const searchPost = findPosts.filter(
+      (post) => post.title.includes(q) || post.content.includes(q),
+    );
+    return res.status(200).json(searchPost);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    // res.status(500).json({ message: 'Deu ruim' });
+  }
+});
+
 posts.get('/:id', checkToken, async (req, res) => {
   try {
     const { id } = req.params;
-    const findPostId = await Posts.findOne({ where: { id }, include: [{ model: Users, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] }] });
+    const findPostId = await Posts.findOne({
+      where: { id },
+      include: [{ model: Users, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] }],
+    });
     if (!findPostId) {
       return res.status(404).json({ message: 'Post não existe' });
     }
@@ -83,5 +106,14 @@ posts.put('/:id', checkToken, async (req, res) => {
     res.status(500).json({ message: 'Deu ruim' });
   }
 });
+
+/* posts.delete(':id', async (req, res) => {
+  try {
+  } catch (error) {
+    // res.status(500).json({ message: error.message });
+    res.status(500).json({ message: 'Deu ruim' });
+  }
+});
+ */
 
 module.exports = posts;
