@@ -24,8 +24,19 @@ const getOnePost = (id) =>
     },
   });
 
+const savePostNewInfo = async (title, content, id) => {
+  await Posts.update({ title, content }, { where: { id } });
+  const newPost = await Posts.findOne(
+    { where: { id } },
+    { attributes: ['title', 'content', 'userId'] },
+  );
+
+  return newPost;
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getOnePost,
+  savePostNewInfo,
 };

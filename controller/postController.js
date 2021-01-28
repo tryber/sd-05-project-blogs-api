@@ -1,5 +1,6 @@
 const express = require('express');
 const hasToken = require('../middleware/hasToken');
+const samePostAuthor = require('../middleware/samePostAuthor');
 const validatePostInformation = require('../middleware/validatePostInformation');
 const postsService = require('../service/postsService');
 
@@ -15,7 +16,6 @@ route.post('/', hasToken, validatePostInformation, async (req, res) => {
 
 route.get('/', hasToken, async (req, res) => {
   const posts = await postsService.getAllPosts();
-  console.log(posts);
   return res.status(200).json(posts);
 });
 
@@ -30,5 +30,29 @@ route.get('/:id', hasToken, async (req, res) => {
 
   return res.status(200).json(post);
 });
+
+route.put(
+  '/:id',
+  hasToken,
+  validatePostInformation,
+  samePostAuthor,
+  async (req, res) => {
+    const { title, content } = req.body;
+    const { id } = req.params;
+    const post = await postsService.savePostNewInfo(
+      title,
+      content,
+      id,
+    );
+
+    if (!post) {
+      return res.json(404).json({
+        message: 'Post não existe',
+      });
+    }
+    console.log('post: ', post);
+    return res.status(200).json(post);
+  },
+);
 
 module.exports = route;

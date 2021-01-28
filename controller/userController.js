@@ -41,7 +41,6 @@ route.get('/:id', hasToken, async (req, res) => {
 
 route.delete('/me', hasToken, async (req, res) => {
   const { user } = req;
-  console.log(user.id);
   await userService.deleteUser(parseInt(user.id, 10));
 
   return res.status(204).json();
