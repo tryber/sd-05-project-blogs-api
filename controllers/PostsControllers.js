@@ -18,7 +18,18 @@ router.post('/post', postValidation, authValidation, (req, res) => {
 router.get('/post', authValidation, async (_req, res) => {
   Posts.findAll({ include: { model: Users, as: 'user' }, attributes: { exclude: ['password'] } })
     .then((post) => res.status(200).json(post))
-    .catch((e) => res.status(500).json(e.message));
+    .catch(() => res.status(500).json({ message: 'Os bugs passaram por aqui novamente :C' }));
 });
 
+router.get('/post/:id', authValidation, async (req, res) => {
+  const { id } = req.params;
+  Posts.findOne({
+    where: { id }, include: { model: Users, as: 'user' }, attributes: { exclue: ['password'] },
+  }).then((post) => {
+    if (!post) {
+      return res.status(404).json({ message: 'Post não existe' });
+    }
+    res.status(200).json(post);
+  }).catch(() => res.status(500).json({ message: 'esses bugs danados tsc tsc' }));
+});
 module.exports = router;
