@@ -1,6 +1,6 @@
 const token = require('jsonwebtoken');
 
-const secret = 'localizaOPai';
+const secret = 'localiza';
 
 function createToken(payload) {
   const headers = {

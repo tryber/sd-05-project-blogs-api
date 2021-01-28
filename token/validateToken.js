@@ -1,15 +1,15 @@
-const token = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
-const secret = 'localizaOPai';
+const secret = 'localiza';
 
 const validateJWT = (req, res, next) => {
   const JWtoken = req.headers.authorization;
-  if (!JWtoken) return res.status(410).json({ message: 'No token' });
+  if (!JWtoken) return res.status(401).json({ message: 'Token não encontrado' });
   try {
-    token.verify(JWtoken, secret);
+    jwt.verify(JWtoken, secret);
     next();
   } catch (error) {
-    return res.status(410).json({ message: error.message });
+    return res.status(401).json({ message: 'Token expirado ou inválido' });
   }
 };
 

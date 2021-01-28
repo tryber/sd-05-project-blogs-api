@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const loginService = require('../services/loginServices');
-const token = require('../token/createToken');
+const createToken = require('../token/createToken');
 const credentials = require('../middlewares/credentials');
 
 const route = Router();
@@ -15,9 +15,9 @@ route.post('/', credentials, async (req, res) => {
     if (check.error) {
       return res.status(check.code).json({ message: check.message });
     }
-    const { password: _, ...userData } = check;
-    const tkn = token(userData);
-    return res.status(200).json({ tkn });
+    const { password: _, ...userData } = check.dataValues;
+    const token = createToken(userData);
+    return res.status(200).json({ token });
   } catch (error) {
     res.send(error.message);
   }
