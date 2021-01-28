@@ -2,7 +2,7 @@ const { Router } = require('express');
 
 const { Posts, Users } = require('../models');
 
-// const service = require('../service/postService');
+const service = require('../service/postService');
 
 const checkToken = require('../Middlewares/checkToken');
 
@@ -56,6 +56,28 @@ posts.get('/:id', checkToken, async (req, res) => {
       return res.status(404).json({ message: 'Post não existe' });
     }
     res.status(200).json(findPostId);
+  } catch (error) {
+    // res.status(500).json({ message: error.message });
+    res.status(500).json({ message: 'Deu ruim' });
+  }
+});
+
+posts.put('/:id', checkToken, async (req, res) => {
+  try {
+    const { title, content } = req.body;
+    const { id: userId } = req.payload;
+    // console.log('userId====> ',userId);
+    const { id } = req.params;
+    // const updatePost = await Posts.update({ title, content }, { where: { id, userId } });
+
+    // const updatePost = await service.update({ title, content }, { where: { id, userId } });
+    const updatePost = await service.update(title, content, id, userId);
+    if (updatePost.error) {
+      return res.status(updatePost.statusCode).json({ message: updatePost.message });
+    }
+    // const findPost = await Posts.findOne({ where: { id } });
+    // console.log('findPost===>',findPost)
+    return res.status(200).json(updatePost);
   } catch (error) {
     // res.status(500).json({ message: error.message });
     res.status(500).json({ message: 'Deu ruim' });
