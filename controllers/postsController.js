@@ -10,7 +10,7 @@ const {
   validatePost,
 } = require('../middlewares');
 
-// const generateJWT = require('../services/generateToken');
+const { Op } = require('sequelize');
 
 // 6 - Sua aplicação deve ter o endpoint POST /post
 postRouter.post(
@@ -38,6 +38,31 @@ postRouter.get(
     res.status(200).json(allPosts);
   }),
 );
+
+// 10 - Sua aplicação deve ter o endpoint GET post/search?q=:searchTerm
+postRouter.get(
+  '/search',
+  validateToken,
+  rescue(async (req, res) => {
+    const { q } = req.query;
+    const postsBySearch = await Post.findAll({
+      where: {
+        [Op.or]: [
+          { title: { [Op.like]: `%${q}%` } },
+          { content: { [Op.like]: `%${q}%` } },
+        ],
+      },
+      include: { model: User, as: 'user', attributes: { exclude: ['password'] } },
+    });
+    // Sequelize operators https://sequelize.org/master/manual/model-querying-basics.html#operators
+    // How to write it on Postman https://learning.postman.com/docs/sending-requests/requests/#:~:text=authentication%20and%20headers.-,Sending%20parameters,field%20and%20the%20Params%20tab.&text=To%20send%20a%20query%20parameter,be%20reflected%20in%20the%20others.
+    // Honestidade acadêmica: PR do aluno Felipe Vieira para lembrar de tirar password
+    return res.status(200).json(postsBySearch);
+    // naturally sends empty [] in case of no match
+  }),
+);
+// Reference for Trybe content on req.query: Block 26 - crush manager project 
+// Req10 before req8 because search term would be interpreted as id, returning l77.
 
 // 8 - Sua aplicação deve ter o endpoint GET post/:id
 postRouter.get(
@@ -78,8 +103,6 @@ postRouter.put(
     return res.status(200).json({ title, content, userId: postById.userId });
   }),
 );
-
-// 10 - Sua aplicação deve ter o endpoint GET post/search?q=:searchTerm
 
 // 11 - Sua aplicação deve ter o endpoint DELETE post/:id
 postRouter.delete(
