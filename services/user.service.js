@@ -6,11 +6,9 @@ const {
   REGISTER_SCHEMA,
   LOGIN_SCHEMA,
   validate,
+  validateAuth,
 } = require('../utils/validation.util');
-const {
-  createToken,
-  digestToken,
-} = require('../utils/jwt.util');
+const { createToken } = require('../utils/jwt.util');
 
 const registerUser = rescue(async (req, _res, next) => {
   validate(REGISTER_SCHEMA)(req.body);
@@ -35,48 +33,32 @@ const loginUser = rescue(async (req, _res, next) => {
 });
 
 const getUser = rescue(async (req, _res, next) => {
-  try {
-    const { authorization: token } = req.headers;
-    await digestToken(token);
-    const { id } = req.params;
-    const { displayName, email, image } = await User.findByPk(id);
-    req.data = { id: Number(id), displayName, email, image };
-    next();
-  } catch ({ message }) {
-    switch (message) {
-      case 'jwt must be provided':
-        throw new Error('Token não encontrado;401');
-      case 'jwt malformed':
-        throw new Error('Token expirado ou inválido;401');
-      default:
-        console.error(message);
-        throw new Error('Usuário não existe;404');
-    }
-  }
+  validateAuth(req)();
+  const { id } = req.params;
+  const user = await User.findByPk(id);
+  if (!user) throw new Error('Usuário não existe;404');
+  const { displayName, email, image } = user;
+  req.data = { id: Number(id), displayName, email, image };
+  next();
+});
+
+const deleteUser = rescue(async (req, _res, next) => {
+  const id = await validateAuth(req)();
+  await User.destroy({ where: { id } });
+  next();
 });
 
 const getAllUsers = rescue(async (req, _res, next) => {
-  try {
-    const { authorization: token } = req.headers;
-    await digestToken(token);
-    const userList = await User.findAll();
-    req.data = userList.map(
-      ({ id, displayName, email, image }) => ({ id, displayName, email, image }),
-    );
-    next();
-  } catch ({ message }) {
-    switch (message) {
-      case 'jwt must be provided':
-        throw new Error('Token não encontrado;401');
-      case 'jwt malformed':
-        throw new Error('Token expirado ou inválido;401');
-      default:
-        throw new Error('Erro desconhecido;401');
-    }
-  }
+  validateAuth(req)();
+  const userList = await User.findAll();
+  req.data = userList.map(
+    ({ id, displayName, email, image }) => ({ id, displayName, email, image }),
+  );
+  next();
 });
 
 module.exports = {
+  deleteUser,
   loginUser,
   registerUser,
   getAllUsers,

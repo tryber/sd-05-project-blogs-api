@@ -3,6 +3,7 @@ const user = require('../services/user.service');
 
 const userRouter = Router();
 const GET_SUCCESS = 200;
+const DELETE_SUCCESS = 204;
 const POST_SUCESS = 201;
 
 userRouter.get('/', (_req, res) => {
@@ -18,6 +19,10 @@ userRouter.get('/user', user.getAllUsers, (req, res) => {
 
 userRouter.get('/user/:id', user.getUser, (req, res) => {
   res.status(GET_SUCCESS).json(req.data);
+});
+
+userRouter.delete('/user/me', user.deleteUser, (_req, res) => {
+  res.status(DELETE_SUCCESS).json();
 });
 
 userRouter.post('/user', user.registerUser, (req, res) => {
