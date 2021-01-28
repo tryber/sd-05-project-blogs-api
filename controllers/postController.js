@@ -20,4 +20,14 @@ postRouter.post(
   }),
 );
 
+postRouter.get(
+  '/',
+  validateToken,
+  rescue(async (_req, res) => {
+    const posts = await services.getAllPosts();
+
+    return res.status(200).json(posts);
+  }),
+);
+
 module.exports = postRouter;
