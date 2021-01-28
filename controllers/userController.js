@@ -14,7 +14,7 @@ route.post('/', emailSword, checkUser, async (req, res) => {
     if (newUser.error) {
       return res.status(newUser.code).json({ message: newUser.message });
     }
-    const { password: _, ...userData } = newUser.dataValue;
+    const { password: _, ...userData } = newUser.dataValues;
     const token = createJWT(userData);
     return res.status(201).json({ token });
   } catch (error) {
