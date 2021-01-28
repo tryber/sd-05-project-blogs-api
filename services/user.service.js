@@ -13,7 +13,9 @@ const { createToken } = require('../utils/jwt.util');
 const registerUser = rescue(async (req, _res, next) => {
   validate(REGISTER_SCHEMA)(req.body);
   try {
-    const { id } = await User.create(req.body);
+    const createdAt = new Date();
+    const updatedAt = new Date();
+    const { id } = await User.create({ ...req.body, createdAt, updatedAt });
     req.data = { token: createToken(id) };
     next();
   } catch {

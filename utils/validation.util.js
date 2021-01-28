@@ -11,7 +11,13 @@ const USER_BASE = {
   ).required(),
 };
 
+const POST_BASE = {
+  title: Joi.string().required(),
+  content: Joi.string().required(),
+};
+
 const LOGIN_SCHEMA = Joi.object(USER_BASE);
+const POST_SCHEMA = Joi.object(POST_BASE);
 
 const REGISTER_SCHEMA = Joi.object({
   ...USER_BASE,
@@ -20,7 +26,6 @@ const REGISTER_SCHEMA = Joi.object({
 });
 
 const validateAuth = ({ headers }) => (errMessage) => {
-  console.log('token');
   try {
     const { authorization: token } = headers;
     const { payload } = digestToken(token);
@@ -30,6 +35,7 @@ const validateAuth = ({ headers }) => (errMessage) => {
       case 'jwt must be provided':
         throw new Error('Token não encontrado;401');
       case 'jwt malformed':
+      case 'jwt expired':
         throw new Error('Token expirado ou inválido;401');
       default:
         console.error(message);
@@ -46,6 +52,7 @@ const validate = (schema) => (data) => {
 module.exports = {
   REGISTER_SCHEMA,
   LOGIN_SCHEMA,
+  POST_SCHEMA,
   validate,
   validateAuth,
 };

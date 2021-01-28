@@ -9,5 +9,9 @@ module.exports = (sequelize, dataTypes) => {
     image: dataTypes.STRING,
   });
 
+  user.associate = (model) => {
+    user.hasMany(model.Post, { foreignKey: 'userId', as: 'posts' });
+  };
+
   return user;
 };
