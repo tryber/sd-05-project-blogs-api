@@ -18,7 +18,7 @@ route.post('/', emailSword, checkUser, async (req, res) => {
     const token = createJWT(userData);
     return res.status(201).json({ token });
   } catch (error) {
-    res.send(error.message);
+    return res.send(error.message);
   }
 });
 

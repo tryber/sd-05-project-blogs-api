@@ -19,7 +19,7 @@ route.post('/', credentials, async (req, res) => {
     const token = createToken(userData);
     return res.status(200).json({ token });
   } catch (error) {
-    res.send(error.message);
+    return res.send(error.message);
   }
 });
 
