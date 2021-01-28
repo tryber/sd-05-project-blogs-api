@@ -22,4 +22,15 @@ const getAll = async (req, res) => {
   }
 };
 
-module.exports = { create, getAll };
+const getById = async (req, res) => {
+  try {
+    const getUser = await services.users.getById(req.params);
+    res.status(200).json(getUser);
+  } catch (err) {
+    if (err.code === 'invalid_id') return res.status(404).json({ message: err.message });
+    console.error(err.message);
+    return res.status(500).json({ message: 'Something went wrong' });
+  }
+};
+
+module.exports = { create, getAll, getById };

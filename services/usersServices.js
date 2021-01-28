@@ -52,6 +52,14 @@ const create = async ({ displayName, email, password, image }) => {
 
 const getAll = async () => User.findAll();
 
+const getById = async ({ id }) => {
+  const getUserById = await User.findByPk(id);
+  if (!getUserById) {
+    throw new CodeError('Usuário não existe', 'invalid_id');
+  }
+  return getUserById;
+};
+
 const login = async ({ email, password }) => {
   checkData(email, password);
   // const verifyUser = await User.findOne({ where: {
@@ -63,4 +71,4 @@ const login = async ({ email, password }) => {
   throw new CodeError('Campos inválidos', 'invalid_data');
 };
 
-module.exports = { create, getAll, login };
+module.exports = { create, getAll, getById, login };
