@@ -51,4 +51,22 @@ postsRouter.get('/post/:id', validateToken, async (req, res) => {
   }
 });
 
+postsRouter.put('/post/:id', validateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.userData.id;
+    const { title, content } = req.body;
+
+    const editPost = await postsService.editPost(Number(id), userId, title, content);
+
+    if (editPost.error) {
+      return res.status(editPost.statusCode).json({ message: editPost.message });
+    }
+
+    return res.status(200).json({ title, content, userId });
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+});
+
 module.exports = postsRouter;
