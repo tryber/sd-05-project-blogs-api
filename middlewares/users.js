@@ -39,7 +39,7 @@ const verifyLogin = async (req, res, next) => {
   } catch (e) {
     if (e) {
       const { details } = e;
-      res.status(400).json({ message: details[0].message });
+      return res.status(400).json({ message: details[0].message });
     }
   }
   next();
