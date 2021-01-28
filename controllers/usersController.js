@@ -12,4 +12,14 @@ const create = async (req, res) => {
   }
 };
 
-module.exports = { create };
+const getAll = async (req, res) => {
+  try {
+    const showUsers = await services.users.getAll();
+    res.status(200).json(showUsers);
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).json({ message: 'Something went wrong' });
+  }
+};
+
+module.exports = { create, getAll };

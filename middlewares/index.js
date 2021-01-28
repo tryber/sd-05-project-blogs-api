@@ -1,3 +1,3 @@
-// const tokenJWT = require('./tokenJWT');
+const auth = require('./auth');
 
-// module.exports = { tokenJWT };
+module.exports = { auth };

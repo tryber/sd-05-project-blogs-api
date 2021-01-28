@@ -1,5 +1,4 @@
-// const Sequelize = require('sequelize');
-// const { Op } = Sequelize;
+// const { Op } = require('sequelize');
 const { User } = require('../models');
 const { checkName, checkEmail, checkPassword } = require('../utils/validation');
 
@@ -51,19 +50,17 @@ const create = async ({ displayName, email, password, image }) => {
   return User.create({ displayName, email, password, image });
 };
 
+const getAll = async () => User.findAll();
+
 const login = async ({ email, password }) => {
   checkData(email, password);
   // const verifyUser = await User.findOne({ where: {
   // [Op.and]: [{ email: email.toLowerCase() }, { password }]}});
   const verifyUser = await User.findOne({ where: { email, password } });
-  console.log(verifyUser);
-  // if (!verifyUser) {
-  //   throw new CodeError('Campos inválidos', 'invalid_data');
-  // }
   if (verifyUser) {
     return verifyUser;
   }
   throw new CodeError('Campos inválidos', 'invalid_data');
 };
 
-module.exports = { create, login };
+module.exports = { create, getAll, login };
