@@ -33,4 +33,13 @@ const getById = async (req, res) => {
   }
 };
 
-module.exports = { create, getAll, getById };
+const removeUser = async (req, res) => {
+  try {
+    const removedUser = await services.users.removeUser(req.userPayload.dataValues);
+    res.status(204).json(removedUser);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports = { create, getAll, getById, removeUser };

@@ -60,6 +60,8 @@ const getById = async ({ id }) => {
   return getUserById;
 };
 
+const removeUser = async ({ id }) => User.destroy({ where: { id } });
+
 const login = async ({ email, password }) => {
   checkData(email, password);
   // const verifyUser = await User.findOne({ where: {
@@ -71,4 +73,4 @@ const login = async ({ email, password }) => {
   throw new CodeError('Campos inválidos', 'invalid_data');
 };
 
-module.exports = { create, getAll, getById, login };
+module.exports = { create, getAll, getById, login, removeUser };

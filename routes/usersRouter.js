@@ -10,4 +10,6 @@ usersRouter.get('/', middlewares.auth.auth, controllers.users.getAll);
 
 usersRouter.get('/:id', middlewares.auth.auth, controllers.users.getById);
 
+usersRouter.delete('/me', middlewares.auth.auth, controllers.users.removeUser);
+
 module.exports = usersRouter;
