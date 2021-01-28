@@ -21,11 +21,14 @@ const create = async ({ content, title }, { id }) => {
   return Post.create({ content, title, userId: id });
 };
 
-// const getAll = async () => {
-//   const allPosts = await Post.findAll({ include: {model: User, as: 'user'}});
-//   return allPosts;
-// };
-
 const getAll = async () => Post.findAll({ include: { model: User, as: 'user' } });
 
-module.exports = { create, getAll };
+const getById = async ({ id }) => {
+  const getPostById = await Post.findOne({ where: { id }, include: { model: User, as: 'user' } });
+  if (!getPostById) {
+    throw new CodeError('Post não existe', 'invalid_entries');
+  }
+  return getPostById;
+};
+
+module.exports = { create, getAll, getById };

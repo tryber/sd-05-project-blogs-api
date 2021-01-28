@@ -14,7 +14,6 @@ const create = async (req, res) => {
 const getAll = async (req, res) => {
   try {
     const showPosts = await services.posts.getAll();
-    console.log(showPosts);
     res.status(200).json(showPosts);
   } catch (err) {
     console.error(err.message);
@@ -22,4 +21,15 @@ const getAll = async (req, res) => {
   }
 };
 
-module.exports = { create, getAll };
+const getById = async (req, res) => {
+  try {
+    const getPost = await services.posts.getById(req.params);
+    res.status(200).json(getPost);
+  } catch (err) {
+    if (err.code === 'invalid_entries') return res.status(404).json({ message: err.message });
+    console.error(err.message);
+    return res.status(500).json({ message: 'Something went wrong' });
+  }
+};
+
+module.exports = { create, getAll, getById };
