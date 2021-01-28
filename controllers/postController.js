@@ -45,4 +45,20 @@ posts.get('/:id', authToken, async (req, res) => {
     });
 });
 
+posts.put('/:id', authToken, postM.verifyPost, async (req, res) => {
+  const { title, content } = req.body;
+  const postId = req.params.id;
+  const userId = req.tokenId;
+  const post = await Posts.findByPk(postId);
+  if (post.userId !== userId) {
+    return res.status(401).json({ message: 'Usuário não autorizado' });
+  }
+  Posts.update({ title, content }, { where: { id: postId } })
+    .then(() => res.status(200).json({ title, content, userId }))
+    .catch((e) => {
+      console.log(e.message);
+      return res.status(500).json({ message: 'deu ruim' });
+    });
+});
+
 module.exports = posts;
