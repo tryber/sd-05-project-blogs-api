@@ -49,4 +49,16 @@ userRouter.get(
   }),
 );
 
+userRouter.delete(
+  '/me',
+  validateToken,
+  rescue(async (req, res) => {
+    const { email } = req.payload;
+
+    await services.deleteUser(email);
+
+    return res.status(204).json({ message: 'Usuário apagado' });
+  }),
+);
+
 module.exports = userRouter;
