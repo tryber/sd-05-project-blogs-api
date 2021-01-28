@@ -32,4 +32,15 @@ const getById = async (req, res) => {
   }
 };
 
-module.exports = { create, getAll, getById };
+const removePost = async (req, res) => {
+  try {
+    const removedPost = await services.posts.removePost(req.params, req.userPayload);
+    res.status(204).json(removedPost);
+  } catch (err) {
+    if (err.code === 'invalid_entries') return res.status(404).json({ message: err.message });
+    if (err.code === 'invalid_data') return res.status(401).json({ message: err.message });
+    res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports = { create, getAll, getById, removePost };
