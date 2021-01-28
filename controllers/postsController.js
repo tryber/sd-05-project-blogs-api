@@ -69,4 +69,21 @@ postsRouter.put('/post/:id', validateToken, async (req, res) => {
   }
 });
 
+postsRouter.delete('/post/:id', validateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.userData.id;
+
+    const deletePost = await postsService.deletePost(Number(id), userId);
+
+    if (deletePost.error) {
+      return res.status(deletePost.statusCode).json({ message: deletePost.message });
+    }
+
+    return res.status(204).json();
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+});
+
 module.exports = postsRouter;

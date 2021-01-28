@@ -33,9 +33,20 @@ const editPost = async (id, userId, title, content) => {
   return post;
 };
 
+const deletePost = async (id, userId) => {
+  const postExists = await Post.findOne({ where: id, userId });
+
+  if (!postExists) return throwErr('not-found', 'Post não existe', 404);
+
+  if (id !== userId) return throwErr('unauthorized', 'Usuário não autorizado', 401);
+
+  return Post.destroy({ where: { id, userId } });
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getOnePost,
   editPost,
+  deletePost,
 };
