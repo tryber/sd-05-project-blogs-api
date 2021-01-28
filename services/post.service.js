@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const rescue = require('express-rescue');
 const { Post, User } = require('../models');
 
@@ -17,6 +18,16 @@ const registerPost = rescue(async (req, _res, next) => {
   next();
 });
 
+const deletePost = rescue(async (req, _res, next) => {
+  const userId = validateAuth(req)();
+  const { id } = req.params;
+  if (!await Post.findByPk(id)) throw new Error('Post não existe;404')
+  if (!await Post.destroy({ where: { id, userId } })) {
+    throw new Error('Usuário não autorizado;401');
+  }
+  next();
+});
+
 const getPost = rescue(async (req, _res, next) => {
   validateAuth(req)();
   const { id } = req.params;
@@ -31,8 +42,16 @@ const getPost = rescue(async (req, _res, next) => {
 
 const getAllPosts = rescue(async (req, _res, next) => {
   validateAuth(req)();
+  const { q = '' } = req.query;
   const exclude = ['password', 'createdAt', 'updatedAt'];
+  console.log(q);
   const postList = await Post.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.like]: `%${q}%` } },
+        { content: { [Op.like]: `%${q}%` } },
+      ],
+    },
     include: { model: User, as: 'user', attributes: { exclude } },
   });
   req.data = postList;
@@ -43,4 +62,5 @@ module.exports = {
   registerPost,
   getAllPosts,
   getPost,
+  deletePost,
 };
