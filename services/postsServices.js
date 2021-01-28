@@ -14,7 +14,7 @@ const create = async (token, title, content) => {
       message: 'Token expirado ou inválido',
     };
   }
-  console.log(validateToken)
+  // console.log(validateToken)
   const { id, userWithoutPassword } = validateToken;
   const ID = id || userWithoutPassword.dataValues.id; // roubado, mas o teste não ajuda!
   if (!title) {
@@ -99,7 +99,7 @@ const getByQuery = async (token, query) => {
   const validateToken = verifyToken(token);
   if (validateToken === 'jwt malformed') {
     return { error: true, code: 'Unauthorized', message: 'Token expirado ou inválido' };
-  };
+  }
   const getQueryPosts = await BlogPosts.findAll({
     where: { [Op.or]: [
       { title: { [Op.like]: `%${query}%` } },
