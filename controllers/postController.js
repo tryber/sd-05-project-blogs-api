@@ -44,6 +44,24 @@ postRouter.get(
   }),
 );
 
+postRouter.put(
+  '/:id',
+  validateToken,
+  rescue(async (req, res) => {
+    const { id } = req.params;
+    const { title, content } = req.body;
+    const userId = req.payload.id;
+
+    const update = await services.updatePost(id, title, content, userId);
+
+    if (update.error) return res.status(update.code).json({ message: update.message });
+
+    return update[0] === 0
+      ? res.status(401).json({ message: 'Usuário não autorizado' })
+      : res.status(200).json(update);
+  }),
+);
+
 postRouter.delete(
   '/:id',
   validateToken,

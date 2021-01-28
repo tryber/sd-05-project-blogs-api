@@ -49,6 +49,27 @@ async function getPostById(id) {
   return postID[0].dataValues;
 }
 
+async function updatePost(id, title, content, userId) {
+  if (!title) {
+    return {
+      error: true,
+      code: 400,
+      message: '"title" is required',
+    };
+  }
+  if (!content) {
+    return {
+      error: true,
+      code: 400,
+      message: '"content" is required',
+    };
+  }
+
+  const update = await Posts.update({ title, content }, { where: { id, userId } });
+
+  return update[0] === 1 ? Posts.findOne({ where: { id } }) : update;
+}
+
 async function deletePost(id, userId) {
   const post = Posts.findOne({ where: { id } });
 
@@ -65,4 +86,4 @@ async function deletePost(id, userId) {
   return { error: true, code: 401, message: 'Usuário não autorizado' };
 }
 
-module.exports = { createPost, getAllPosts, getPostById, deletePost };
+module.exports = { createPost, getAllPosts, getPostById, updatePost, deletePost };
