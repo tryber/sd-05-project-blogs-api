@@ -2,7 +2,6 @@ const { Router } = require('express');
 
 const router = Router();
 const service = require('../services/loginService');
-/* const { User } = require('../models'); */
 const createJWT = require('../middlewares/createTokenJWT');
 
 router.post('/', async (req, res) => {

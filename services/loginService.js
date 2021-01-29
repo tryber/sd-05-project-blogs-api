@@ -2,7 +2,6 @@ const { Op } = require('sequelize');
 const { User } = require('../models');
 
 const find = async (email, password) => {
-  console.log(email);
   if (email === undefined) {
     return { error: true, message: '"email" is required', statusCode: 400 };
   }
