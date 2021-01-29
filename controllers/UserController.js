@@ -44,6 +44,18 @@ router.get('/:id', autJWT, async (req, res) => {
     });
 });
 
+router.delete('/me', autJWT, (req, res) => {
+  const { id } = req.payload.useData.dataValues;
+  User.destroy({ where: { id } })
+    .then(() => {
+      res.status(204).send({ message: 'Usuario excluído com sucesso.' });
+    })
+    .catch((e) => {
+      console.log(e.message);
+      res.status(500).send({ message: 'Algo deu errado' });
+    });
+});
+
 /* router.put('/:id', (req, res) => {
   const { author, pageQuantity } = req.body;
 
@@ -57,21 +69,6 @@ router.get('/:id', autJWT, async (req, res) => {
   )
     .then((Users) => {
       res.status(200).send({ message: 'Usuario atualizado com sucesso.' });
-    })
-    .catch((e) => {
-      console.log(e.message);
-      res.status(500).send({ message: 'Algo deu errado' });
-    });
-}); */
-
-/* router.delete('/:id', (req, res) => {
-  User.destroy({
-    where: {
-      id: req.params.id
-    }
-  })
-    .then((Users) => {
-      res.status(200).send({ message: 'Usuario excluído com sucesso.' });
     })
     .catch((e) => {
       console.log(e.message);

@@ -1,6 +1,8 @@
+const { Op } = require('sequelize');
 const { User } = require('../models');
 
 const find = async (email, password) => {
+  console.log(email);
   if (email === undefined) {
     return { error: true, message: '"email" is required', statusCode: 400 };
   }
@@ -17,7 +19,7 @@ const find = async (email, password) => {
   if (emailExists === null) {
     return { error: true, message: 'Campos inválidos', statusCode: 400 };
   }
-  return User.findOne({ email, password });
+  return User.findOne({ where: { [Op.and]: [{ email }, { password }] } });
 };
 
 module.exports = {

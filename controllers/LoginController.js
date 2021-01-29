@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
     const tokenOn = createJWT(userLogin);
     return res.status(200).json({ token: tokenOn });
   } catch (err) {
-    /* console.log(err.message); */
+    console.log(err.message);
     res.status(500).send(err.message);
   }
 });
