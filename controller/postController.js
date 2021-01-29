@@ -4,6 +4,7 @@ const MiddleToken = require('../middlewares/tokenMiddleware');
 const MiddleContent = require('../middlewares/validContent');
 const MiddleTitle = require('../middlewares/validTitle');
 const { Posts } = require('../models');
+const createUsers = require('../models/Users');
 
 const postRouter = express.Router();
 
@@ -12,9 +13,9 @@ const middleWarePost = [MiddleTitle, MiddleContent];
 postRouter.post('/', middleWarePost, MiddleToken, async (req, res) => {
   const { content, title } = req.body;
   const user = req.payload;
-  console.log('POST', content, title, req.payload);
   try {
-    const result = await Posts.create({ content, title, idUser: user.id });
+    const result = await Posts.create({ content, title, userId: user.id },
+      { includes: { model: createUsers, as: user } });
     res.status(201).json(result);
   } catch (error) {
     console.log(error);

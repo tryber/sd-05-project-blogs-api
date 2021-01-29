@@ -4,7 +4,7 @@ function MiddleTitle(req, _res, next) {
     message: '"title" is required',
     status: 400,
   };
-  if (!title === undefined) { next(err); }
+  if (title === undefined) { next(err); }
   return next();
 }
 
