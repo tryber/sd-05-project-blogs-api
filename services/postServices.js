@@ -18,9 +18,9 @@ const create = async (title, content, userId) => {
   const createPost = await Posts.create({
     title,
     content,
-    userId
+    userId,
   });
-  console.log(userId)
+  console.log(userId);
   return createPost;
 };
 
