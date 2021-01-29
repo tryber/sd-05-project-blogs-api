@@ -72,8 +72,31 @@ userController.get('/:id', async (req, res) => {
     return res.status(500).json({ message: 'algo deu ruim' });
   }
 });
-// DELETE /user/:id
-// userController.delete('/:id', (req, res) => {});
+
+// DELETE /user/me
+userController.delete('/me', async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    if (!token) {
+      return res.status(401).json({ message: 'Token não encontrado' });
+    }
+    console.log(token.split('.')[1]);
+    const payload = JSON.parse(
+      Buffer.from(token.split('.')[1], 'base64').toString('utf-8'),
+    );
+    console.log(payload.payload.id);
+    const { id } = payload.payload;
+    console.log(id);
+    await services.deleteUser(token, id);
+    return res.status(204).json();
+  } catch (error) {
+    console.error(error);
+    if (error.message) {
+      return res.status(401).json({ message: 'Token expirado ou inválido' });
+    }
+    return res.status(500).json({ message: 'algo deu ruim' });
+  }
+});
 // PUT /user:id
 // userController.put('/:id', (req, res) => {});
 

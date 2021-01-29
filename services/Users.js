@@ -16,11 +16,11 @@ const treatData = (id, displayName, email, image) => ({
   image,
 });
 
-const createUser = async (displayName, email, password, image) => {
+const createUser = async (displayName, email, passwordParam, image) => {
   const { error } = CREATE_SCHEMA.validate({
     displayName,
     email,
-    password,
+    password: passwordParam,
     image,
   });
   if (error) {
@@ -30,10 +30,12 @@ const createUser = async (displayName, email, password, image) => {
   const createdUser = await User.create({
     displayName,
     email,
-    password,
+    password: passwordParam,
     image,
   });
-  return createToken(createdUser.dataValues.id);
+  const { dataValues } = createdUser;
+  const { password, ...dataValuesTreated } = dataValues;
+  return createToken(dataValuesTreated);
 };
 
 const findAllUsers = async (token) => {
@@ -49,15 +51,24 @@ const findAllUsers = async (token) => {
 const findUserById = async (token, idParam) => {
   checkToken(token);
   const user = await User.findAll({ where: { id: idParam } });
-  const userFiltered = user.map(
-    ({ id, displayName, email, image }) =>
-      treatData(id, displayName, email, image),
-  );
+  const userFiltered = user.map(({ id, displayName, email, image }) =>
+    treatData(id, displayName, email, image));
   return userFiltered[0];
+};
+
+const deleteUser = async (token, id) => {
+  checkToken(token);
+
+  await User.destroy({
+    where: {
+      id,
+    },
+  });
 };
 
 module.exports = {
   createUser,
   findAllUsers,
   findUserById,
+  deleteUser,
 };

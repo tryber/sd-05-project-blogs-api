@@ -7,21 +7,23 @@ const LOGIN_SCHEMA = Joi.object({
   password: Joi.string().length(6).required(),
 });
 
-const login = async (email, password) => {
+const login = async (email, passwordParam) => {
   const { error } = LOGIN_SCHEMA.validate({
     email,
-    password,
+    password: passwordParam,
   });
   if (error) {
     throw new Error(error.message);
   }
 
   const user = await User.findOne({ where: { email } });
-  console.log(user);
-  if (!user || user.dataValues.password !== password) {
+  const { dataValues } = user;
+  const { password, ...dataValuesTreated } = dataValues;
+  console.log(dataValuesTreated);
+  if (!user || user.dataValues.password !== passwordParam) {
     throw new Error('Campos inválidos');
   }
-  return createToken(user);
+  return createToken(dataValuesTreated);
 };
 
 module.exports = {
