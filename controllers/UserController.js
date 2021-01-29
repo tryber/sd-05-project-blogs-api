@@ -17,48 +17,32 @@ router.post('/', async (req, res) => {
     return res.status(201).json({ token: tokenOn });
   } catch (err) {
     console.log(err.message);
-    res.status(500).send(err.message);
+    return res.status(500).send(err.message);
   }
 });
-
-/* router.get('/', autJWT, (_req, res) => {
-  try {
-    const userGet = await service.findAll();
-    if (userGet.error) {
-      return res.status(userGet.statusCode).json({ message: userGet.message });
-    }
-    return res.status(201).json({ User });
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).send(err.message);
-  }
-}); */
 
 router.get('/', autJWT, (_req, res) => {
   User.findAll()
-    .then((Users) => {
-      res.status(200).json(Users);
-    })
+    .then((Users) => res.status(200).json(Users))
     .catch((err) => {
       console.log(err.message);
-      res.status(500).json({ message: 'Erro' });
+      return res.status(500).json({ message: 'Erro' });
     });
 });
 
-/* router.get('/:id', (req, res) => {
-  User.findByPk(req.params.id)
+router.get('/:id', autJWT, async (req, res) => {
+  await User.findByPk(req.params.id)
     .then((Users) => {
       if (Users === null) {
-        res.status(404).send({ message: 'Usuario não encontrado' });
+        return res.status(404).send({ message: 'Usuário não existe' });
       }
-
-      res.status(200).json(Users);
+      return res.status(200).json(Users);
     })
     .catch((e) => {
       console.log(e.message);
-      res.status(500).json({ message: 'Algo deu errado' });
+      return res.status(500).json({ message: 'Algo deu errado' });
     });
-}); */
+});
 
 /* router.put('/:id', (req, res) => {
   const { author, pageQuantity } = req.body;
