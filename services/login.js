@@ -17,12 +17,12 @@ const login = async (email, passwordParam) => {
   }
 
   const user = await User.findOne({ where: { email } });
-  const { dataValues } = user;
-  const { password, ...dataValuesTreated } = dataValues;
-  console.log(dataValuesTreated);
   if (!user || user.dataValues.password !== passwordParam) {
     throw new Error('Campos inválidos');
   }
+  const { dataValues } = user;
+  const { password, ...dataValuesTreated } = dataValues;
+  console.log(dataValuesTreated);
   return createToken(dataValuesTreated);
 };
 
