@@ -40,4 +40,14 @@ route.get('/:id', validateJWT, async (req, res) => {
   return res.status(200).json(userById);
 });
 
+route.delete('/me', validateJWT, async (req, res, next) => {
+  const { id } = req.payload;
+  try {
+    const user = await service.deleteUser(id);
+    res.status(204).json(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = route;
