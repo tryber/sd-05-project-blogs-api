@@ -10,7 +10,6 @@ router.post('/', async (req, res) => {
     const { email, password } = req.body;
     const userLogin = await service.find(email, password);
     if (userLogin.error) {
-      console.log(userLogin);
       return res.status(userLogin.statusCode).json({ message: userLogin.message });
     }
     const tokenOn = createJWT(userLogin);

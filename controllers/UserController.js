@@ -2,8 +2,9 @@ const { Router } = require('express');
 
 const router = Router();
 const service = require('../services/userService');
-/* const { User } = require('../models'); */
+const { User } = require('../models');
 const createJWT = require('../middlewares/createTokenJWT');
+const autJWT = require('../middlewares/autTokenJWT');
 
 router.post('/', async (req, res) => {
   try {
@@ -20,16 +21,29 @@ router.post('/', async (req, res) => {
   }
 });
 
-/* router.get('/', (_req, res) => {
+/* router.get('/', autJWT, (_req, res) => {
+  try {
+    const userGet = await service.findAll();
+    if (userGet.error) {
+      return res.status(userGet.statusCode).json({ message: userGet.message });
+    }
+    return res.status(201).json({ User });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send(err.message);
+  }
+}); */
+
+router.get('/', autJWT, (_req, res) => {
   User.findAll()
     .then((Users) => {
       res.status(200).json(Users);
     })
     .catch((err) => {
       console.log(err.message);
-      res.status(500).json({ message: 'Erro'});
+      res.status(500).json({ message: 'Erro' });
     });
-}); */
+});
 
 /* router.get('/:id', (req, res) => {
   User.findByPk(req.params.id)

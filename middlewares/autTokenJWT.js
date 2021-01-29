@@ -1,22 +1,23 @@
 const jwt = require('jsonwebtoken');
-const usersModels = require('../models/Users');
 
 const funAuthorization = (async (req, res, next) => {
-  try {
-    const auth = req.headers.authorization;
-    if (!auth) {
-      return res.status(401).json({ message: 'missing auth token' });
-    }
+  const verifyToken = async (token) => {
     const secret = 'segredo';
-    const payload = jwt.verify(auth, secret);
-    const user = await usersModels.findByEmail(payload.useData.email);
-    if (!user) {
-      return res.status(401).json({ message: 'jwt malformed' });
-    }
-    return next();
-  } catch (err) {
-    return res.status(401).json({ message: err.message });
+    const payload = jwt.verify(token, secret);
+    return payload;
+  };
+  const auth = req.headers.authorization;
+  if (!auth) {
+    return res.status(401).json({ message: 'Token não encontrado' });
   }
+  try {
+    const payload = await verifyToken(auth);
+    req.payload = payload;
+  } catch (err) {
+    console.error(err);
+    return res.status(401).json({ message: 'Token expirado ou inválido' });
+  }
+  return next();
 });
 
 module.exports = funAuthorization;

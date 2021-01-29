@@ -14,7 +14,6 @@ const find = async (email, password) => {
     return { error: true, message: '"password" is not allowed to be empty', statusCode: 400 };
   }
   const emailExists = await User.findOne({ where: { email } });
-  console.log(emailExists);
   if (emailExists === null) {
     return { error: true, message: 'Campos inválidos', statusCode: 400 };
   }
