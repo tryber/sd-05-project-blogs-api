@@ -32,4 +32,17 @@ posts.get('/', validateJWT, async (req, res) => {
   }
 });
 
+posts.get('/:id', validateJWT, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const getPostById = await service.getById(id);
+    if (getPostById.error) {
+      return res.status(getPostById.code).json({ message: getPostById.message });
+    }
+    return res.status(200).json(getPostById);
+  } catch (err) {
+    return res.send(err.message);
+  }
+});
+
 module.exports = posts;
