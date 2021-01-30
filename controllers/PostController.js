@@ -32,13 +32,29 @@ router.get('/', autJWT, async (_req, res) => {
   }
 });
 
+router.get('/:id', autJWT, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const findPosts = await Post.findOne({ where: { id }, include: [{ model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] }] });
+    if (findPosts === null) {
+      return res.status(404).send({ message: 'Post não existe' });
+    }
+    return res.status(200).json(findPosts);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send(err.message);
+  }
+});
+
 /* router.get('/:id', autJWT, async (req, res) => {
-  await User.findByPk(req.params.id)
-    .then((Users) => {
-      if (Users === null) {
-        return res.status(404).send({ message: 'Usuário não existe' });
+  await Post.findByPk(req.params.id)
+    .then((Posts) => {
+      if (Posts === null) {
+        return res.status(404).send({ message: 'Post não existe' });
       }
-      return res.status(200).json(Users);
+      return res.status(200).json(Posts.findOne({
+        include: [{ model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] }],
+      }));
     })
     .catch((e) => {
       console.log(e.message);
