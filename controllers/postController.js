@@ -23,4 +23,13 @@ posts.post('/', validateJWT, async (req, res) => {
   }
 });
 
+posts.get('/', validateJWT, async (req, res) => {
+  try {
+    const getAllPosts = await service.getAll();
+    return res.status(200).json(getAllPosts);
+  } catch (err) {
+    return res.send(err.message);
+  }
+});
+
 module.exports = posts;
