@@ -2,7 +2,7 @@ const { Router } = require('express');
 
 const router = Router();
 const service = require('../services/postService');
-/* const { Post } = require('../models'); */
+const { User, Post } = require('../models');
 const autJWT = require('../middlewares/autTokenJWT');
 
 router.post('/', autJWT, async (req, res) => {
@@ -20,14 +20,17 @@ router.post('/', autJWT, async (req, res) => {
   }
 });
 
-/* router.get('/', autJWT, (_req, res) => {
-  User.findAll()
-    .then((Users) => res.status(200).json(Users))
-    .catch((err) => {
-      console.log(err.message);
-      return res.status(500).json({ message: 'Erro' });
+router.get('/', autJWT, async (_req, res) => {
+  try {
+    const findPosts = await Post.findAll({
+      include: [{ model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] }],
     });
-}); */
+    return res.status(200).json(findPosts);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send(err.message);
+  }
+});
 
 /* router.get('/:id', autJWT, async (req, res) => {
   await User.findByPk(req.params.id)
