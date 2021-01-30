@@ -45,4 +45,22 @@ posts.get('/:id', validateJWT, async (req, res) => {
   }
 });
 
+posts.put('/:id', validateJWT, async (req, res) => {
+  try {
+    const userId = req.payload.id;
+    const { title, content } = req.body;
+    const postId = req.params.id;
+    const editedPost = await service.editPost(userId, postId, title, content);
+    if (editedPost.error) {
+      return res.status(editedPost.code).json({ message: editedPost.message });
+    }
+    if (editedPost[0] === 0) {
+      return res.status(401).json({ message: 'Usuário não autorizado' });
+    }
+    return res.status(200).json(editedPost);
+  } catch (err) {
+    return res.send(err.message);
+  }
+});
+
 module.exports = posts;

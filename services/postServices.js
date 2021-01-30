@@ -46,8 +46,31 @@ const getById = async (id) => {
   return postById[0].dataValues;
 };
 
+const editPost = async (userId, id, title, content) => {
+  if (!title) {
+    return {
+      error: true,
+      code: 400,
+      message: '"title" is required',
+    };
+  }
+  if (!content) {
+    return {
+      error: true,
+      code: 400,
+      message: '"content" is required',
+    };
+  }
+  const editedPost = await Posts.update({ title, content }, { where: { id, userId } });
+  if (editedPost[0] === 1) {
+    return Posts.findOne({ where: { id }, attributes: ['title', 'content', 'userId'] });
+  }
+  return editedPost;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  editPost,
 };
