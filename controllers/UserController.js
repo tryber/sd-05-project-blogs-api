@@ -1,31 +1,28 @@
-const express = require('express');
+const { Router } = require('express');
 
-const { User } = require('../models');
+const services = require('../services/usersService');
 
-const router = express.Router();
+const { createWebToken } = require('../auth/createToken');
 
-router.post('/', (req, res) => {
-  const { displayName, email, password, image } = req.body;
+const users = Router();
 
-  User.create({ displayName, email, password, image })
-    .then((newUser) => {
-      res.status(200).json(newUser);
-    })
-    .catch((e) => {
-      console.log(e.message);
-      res.status(500).send({ message: 'Algo deu errado' });
-    });
+users.post('/', async (req, res) => {
+  try {
+    const { displayName, email, password, image } = req.body;
+    const newUser = await services.create(displayName, email, password, image);
+    if (newUser.error) {
+      return res.status(newUser.code).json({ message: newUser.message });
+    }
+    const payload = {
+      id: newUser.dataValues.id,
+      email: newUser.dataValues.email,
+      displayName: newUser.dataValues.displayName,
+    };
+    const token = await createWebToken(payload);
+    return res.status(201).json({ token });
+  } catch (error) {
+    res.status(500).json({ message: 'Algo deu errado' });
+  }
 });
 
-// router.get('/', (req, res) => {
-//   User.findAll()
-//     .then((users) => {
-//       res.status(200).json(users);
-//     })
-//     .catch((e) => {
-//       console.log(e.message);
-//       res.status(500).json({ message: 'Algo deu errado' });
-//     });
-// });
-
-module.exports = router;
+module.exports = users;
