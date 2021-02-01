@@ -4,6 +4,8 @@ const services = require('../services/usersService');
 
 const { createWebToken } = require('../auth/createToken');
 
+const validateToken = require('../auth/validateToken');
+
 const users = Router();
 
 users.post('/', async (req, res) => {
@@ -23,6 +25,11 @@ users.post('/', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Algo deu errado' });
   }
+});
+
+users.get('/', validateToken, async (_req, res) => {
+  const getUsers = await services.getAll();
+  return res.status(200).json(getUsers);
 });
 
 module.exports = users;
