@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const hasToken = (req, res, next) => {
-  const token = req.headers.Authorization;
+  const token = req.headers.authorization;
 
   if (!token) {
     return res.status(401).json({
@@ -10,16 +10,17 @@ const hasToken = (req, res, next) => {
     });
   }
 
-  jwt.verify(token, process.env.Secret, (err, code) => {
+  jwt.verify(token, process.env.Secret || 'thisIsMySecret', (err, code) => {
     if (err) {
       return res.status(401).json({
-        message: 'Token expirado ou invalido',
+        message: 'Token expirado ou inválido',
       });
     }
 
     req.user = code;
-    next();
   });
+
+  next();
 };
 
 module.exports = hasToken;
