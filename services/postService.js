@@ -12,8 +12,6 @@ const create = async (title, content, userId) => {
 
 const update = async (title, content, id, userId) => {
   const findPost = await Post.findOne({ where: { id } });
-  console.log(userId);
-  console.log(id);
   if (userId !== findPost.userId) {
     return { error: true, message: 'Usuário não autorizado', statusCode: 401 };
   }
@@ -27,7 +25,19 @@ const update = async (title, content, id, userId) => {
   return { title, content, userId };
 };
 
+const destroy = async (id, userId) => {
+  const findPost = await Post.findOne({ where: { id } });
+  if (!findPost) {
+    return { error: true, message: 'Post não existe', statusCode: 404 };
+  }
+  if (userId !== findPost.userId) {
+    return { error: true, message: 'Usuário não autorizado', statusCode: 401 };
+  }
+  return Post.destroy({ where: { id } });
+};
+
 module.exports = {
   create,
   update,
+  destroy,
 };

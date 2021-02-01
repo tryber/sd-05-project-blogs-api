@@ -62,6 +62,23 @@ router.put('/:id', autJWT, async (req, res) => {
   }
 });
 
+router.delete('/:id', autJWT, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { id: userId } = req.payload.useData.dataValues;
+    console.log(id);
+    console.log(userId);
+    const deletePosts = await service.destroy(id, userId);
+    if (deletePosts.error) {
+      return res.status(deletePosts.statusCode).json({ message: deletePosts.message });
+    }
+    return res.status(204).send({ message: 'Usuario excluído com sucesso.' });
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send(err.message);
+  }
+});
+
 /* router.delete('/me', autJWT, (req, res) => {
   const { id } = req.payload.useData.dataValues;
   User.destroy({ where: { id } })
