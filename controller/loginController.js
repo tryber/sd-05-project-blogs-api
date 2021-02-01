@@ -13,10 +13,10 @@ loginRouter.post('/', middleWareUser, async (req, res, next) => {
   const { email, password } = req.body;
   const err = await checkEmailPassDB(password, email);
   if (err.isError) {
-    next(err);
+    return next(err);
   }
   delete err.isError;
-  res.status(200).json({ token: err.token });
+  return res.status(200).json({ token: err.token });
 });
 
 loginRouter.use(MiddleError);

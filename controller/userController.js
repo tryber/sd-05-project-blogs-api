@@ -4,7 +4,7 @@ const MiddleToken = require('../middlewares/tokenMiddleware');
 const MiddleDisplayName = require('../middlewares/validDisplayName');
 const MiddleEmail = require('../middlewares/validEmail');
 const MiddlePassword = require('../middlewares/validPassword');
-const { Users } = require('../models');
+const { User } = require('../models');
 const { existEmail } = require('../services/userService');
 
 const userRouter = express.Router();
@@ -18,7 +18,7 @@ userRouter.post('/', middleWareUser, async (req, res, next) => {
     if (isEmailUsed.isError) {
       return next({ ...isEmailUsed, isError: undefined });
     }
-    const result = await Users.create({ displayName, email, password });
+    const result = await User.create({ displayName, email, password });
     res.status(201).json(result);
   } catch (error) {
     console.log(error);
@@ -28,20 +28,19 @@ userRouter.post('/', middleWareUser, async (req, res, next) => {
 
 userRouter.get('/:id', MiddleToken, async (req, res, next) => {
   const { id } = req.params;
-  const result = await Users.findOne({ where: { id } });
+  const result = await User.findOne({ where: { id }, attributes: { exclude: ['password'] } });
   if (!result) next({ status: 404, message: 'Usuário não existe' });
   res.status(200).json(result);
 });
 
 userRouter.get('/', MiddleToken, async (req, res) => {
-  const result = await Users.findAll();
-  console.log(result);
+  const result = await User.findAll({ attributes: { exclude: ['password'] } });
   res.status(200).json(result);
 });
 
 userRouter.delete('/me', MiddleToken, async (req, res) => {
   const user = req.payload;
-  await Users.destroy({ where: { id: user.id } });
+  await User.destroy({ where: { id: user.id } });
   res.status(204).json();
 });
 

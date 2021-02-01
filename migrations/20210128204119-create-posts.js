@@ -19,26 +19,25 @@ module.exports = {
       },
       userId: {
         allowNull: false,
-        primaryKey: true,
         type: Sequelize.INTEGER,
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
-        references: { model: 'Users', key: 'id'}
+        references: { model: 'Users', key: 'id' },
+        defaultValue: -1,
       },
       published: {
         allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: Sequelize.NOW
+        type: Sequelize.DATE,
+        defaultValue: new Date(),
       },
       updated: {
         allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: Sequelize.NOW
+        type: Sequelize.DATE,
+        defaultValue: new Date(),
       },
-
     });
     return Posts;
   },
 
-  down: async (queryInterface, Sequelize) => queryInterface.dropTable('Posts')
+  down: async (queryInterface, Sequelize) => queryInterface.dropTable('Posts'),
 };

@@ -25,6 +25,7 @@ module.exports = {
       image: {
         allowNull: false,
         type: Sequelize.STRING,
+        default: ''
       },
     });
     return Users;
