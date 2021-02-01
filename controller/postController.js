@@ -31,8 +31,8 @@ postRouter.get('/', MiddleToken, async (req, res, next) => {
     attributes: { exclude: ['userId'] },
     include: { model: User, as: 'user', attributes: { exclude: ['password'] } },
   });
-  if (!result) next({ status: 404, message: 'Usuário não existe' });
-  res.status(200).json(result);
+  if (!result) return next({ status: 404, message: 'Usuário não existe' });
+  return res.status(200).json(result);
 });
 
 postRouter.get('/:id', MiddleToken, async (req, res, next) => {
@@ -42,7 +42,7 @@ postRouter.get('/:id', MiddleToken, async (req, res, next) => {
     include: { model: User, as: 'user', attributes: { exclude: ['password'] } },
   });
   if (!result) return next({ status: 404, message: 'Post não existe' });
-  res.status(200).json(result);
+  return res.status(200).json(result);
 });
 
 postRouter.put('/:id', MiddleToken, middleWarePost, async (req, res, next) => {
@@ -63,7 +63,7 @@ postRouter.put('/:id', MiddleToken, middleWarePost, async (req, res, next) => {
   if (!result) {
     return next({ status: 404, message: 'Post não existe/Ao atualizar' });
   }
-  res.status(200).json({ content, title, userId: checkPost.userId });
+  return res.status(200).json({ content, title, userId: checkPost.userId });
 });
 /*
 
