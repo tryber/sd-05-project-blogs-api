@@ -4,7 +4,7 @@ function MiddleContent(req, _res, next) {
     message: '"content" is required',
     status: 400,
   };
-  if (!content) { next(err); }
+  if (!content) { return next(err); }
   return next();
 }
 

@@ -17,9 +17,10 @@ function MiddleToken(req, _res, next) {
   try {
     const payload = verifyToken(authorization);
     req.payload = payload;
-    next();
+    return next();
   } catch (error) {
-    next(err);
+    err.token = 'error no token';
+    return next(err);
   }
 }
 
