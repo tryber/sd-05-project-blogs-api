@@ -12,11 +12,11 @@ const app = express();
 
 app.use(bodyParse.json());
 
+app.use('/login', userLogin);
+
 app.use('/user', userRouter);
 
 app.use('/post', postRouter);
-
-app.use('/login', userLogin);
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));
 
