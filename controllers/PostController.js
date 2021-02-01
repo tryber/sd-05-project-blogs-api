@@ -46,21 +46,21 @@ router.get('/:id', autJWT, async (req, res) => {
   }
 });
 
-/* router.get('/:id', autJWT, async (req, res) => {
-  await Post.findByPk(req.params.id)
-    .then((Posts) => {
-      if (Posts === null) {
-        return res.status(404).send({ message: 'Post não existe' });
-      }
-      return res.status(200).json(Posts.findOne({
-        include: [{ model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] }],
-      }));
-    })
-    .catch((e) => {
-      console.log(e.message);
-      return res.status(500).json({ message: 'Algo deu errado' });
-    });
-}); */
+router.put('/:id', autJWT, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { id: userId } = req.payload.useData.dataValues;
+    const { title, content } = req.body;
+    const updatePosts = await service.update(title, content, id, userId);
+    if (updatePosts.error) {
+      return res.status(updatePosts.statusCode).json({ message: updatePosts.message });
+    }
+    return res.status(200).json(updatePosts);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send(err.message);
+  }
+});
 
 /* router.delete('/me', autJWT, (req, res) => {
   const { id } = req.payload.useData.dataValues;
