@@ -1,11 +1,18 @@
 const { Router } = require('express');
 const rescue = require('express-rescue');
+const Joi = require('joi');
 const verifyToken = require('../middleware/verifyToken');
+const validatePost = require('../middleware/validateSchema');
 const { User, Post } = require('../models');
 
 const postRouter = Router();
 
-postRouter.post('/', verifyToken, rescue(async (req, res) => {
+const schema = Joi.object({
+  title: Joi.string().required(),
+  content: Joi.string().required(),
+})
+
+postRouter.post('/', verifyToken, validatePost(schema) rescue(async (req, res) => {
   const { title, content } = req.body;
   const { id: userId } = req.payload.userWithoutPassword;
 
