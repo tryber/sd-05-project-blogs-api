@@ -33,4 +33,18 @@ route.get('/', hasToken, async (_req, res) => {
   }
 });
 
+route.get('/:id', hasToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await userService.getUserById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuário não existe' });
+    }
+    return res.status(200).json(user);
+  } catch (err) {
+    console.error('Deu ruim', err);
+  }
+});
+
 module.exports = route;

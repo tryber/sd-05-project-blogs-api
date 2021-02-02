@@ -7,6 +7,13 @@ const getUsers = () => {
   return users;
 };
 
+const getUserById = (id) => {
+  const user = Users.findOne({ where: { id } });
+
+  return user;
+};
+
 module.exports = {
   getUsers,
+  getUserById,
 };
