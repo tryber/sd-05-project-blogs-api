@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 
 const userController = require('./controllers/userController');
 
+const mid = require('./middleware/index');
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -15,6 +17,8 @@ app.get('/', (request, response) => {
 app.post('/user', userController.create);
 
 app.post('/login', userController.login);
+
+app.get('/user', mid.validateToken, userController.getAllUsers);
 
 app.listen(3000, () => {
   console.log('ouvindo porta 3000!');
