@@ -39,4 +39,14 @@ users.get('/:id', validateToken, async (req, res) => {
   return res.status(200).json(userById);
 });
 
+users.delete('/me', validateToken, async (req, res) => {
+  try {
+    const { id } = req.payload;
+    const delUser = await services.deleteUser(id);
+    return res.status(204).json(delUser);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = users;
