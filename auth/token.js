@@ -19,6 +19,6 @@ const generateToken = async (user) => {
   return token;
 };
 
-const decodeToken = (token) => jwt.verify(token, secret); 
+const decodeToken = (token) => jwt.verify(token, secret);
 
 module.exports = { generateToken, decodeToken };

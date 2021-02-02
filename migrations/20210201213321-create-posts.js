@@ -5,6 +5,7 @@ module.exports = {
     const PostsTable = await queryInterface.createTable('Posts', {
       id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
@@ -26,16 +27,6 @@ module.exports = {
         defaultValue: new Date(),
         type: Sequelize.DATE
       },
-      // userId: {
-      //   allowNull: false,
-      //   onUpdate: 'CASCADE',
-      //   onDelete: 'CASCADE',
-      //   references: {
-      //     model: 'Users',
-      //     key: 'id'
-      //   },
-      //   type: Sequelize.INTEGER
-      // }
     });
 
     return PostsTable;

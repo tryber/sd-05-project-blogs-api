@@ -1,7 +1,6 @@
 const createUser = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     // id: {
-    //   allowNull: false,
     //   autoIncrement: true,
     //   primaryKey: true,
     //   type: DataTypes.INTEGER,
@@ -13,14 +12,13 @@ const createUser = (sequelize, DataTypes) => {
       defaultValue: '',
       type: DataTypes.STRING,
     },
-  }, { timestamps: false }
-  );
+  }, { timestamps: false });
 
   // User.associate =(models) => {
   //   User.hasMany(models.Post, { foreignKey: 'userId', as: 'posts' });
   // }
 
   return User;
-}
+};
 
 module.exports = createUser;

@@ -4,8 +4,8 @@ const verifyToken = async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (authorization === undefined || authorization === '') {
-    return res.status(401).json({ message: 'Token não encontrado' }); 
-  };
+    return res.status(401).json({ message: 'Token não encontrado' });
+  }
 
   try {
     const payload = decodeToken(authorization);
@@ -15,7 +15,7 @@ const verifyToken = async (req, res, next) => {
     return next();
   } catch (e) {
     return res.status(401).json({ message: 'Token expirado ou inválido' });
-  };
+  }
 };
 
 module.exports = verifyToken;
