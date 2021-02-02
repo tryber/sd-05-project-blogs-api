@@ -1,16 +1,32 @@
 const { Router } = require('express');
 const rescue = require('express-rescue');
+const Joi = require('joi');
+const { generateToken } = require('../auth/token');
 const verifyToken = require('../middleware/verifyToken');
+const validateUser = require('../middleware/validateSchema');
 const { User } = require('../models');
 
 const userRouter = Router();
 
-userRouter.post('/', rescue(async (req, res) => {
+const schema = Joi.object({
+  displayName: Joi.string().min(8).required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().length(6).required(),
+  image: Joi.string(),
+});
+
+userRouter.post('/', validateUser(schema), rescue(async (req, res) => {
   const { displayName, email, password, image } = req.body;
+
+  const checkExistantUser = await User.findOne({ where: { email } });
+
+  if (checkExistantUser) return res.status(409).json({ message: 'Usuário já existe' });
 
   const newUser = await User.create({ displayName, email, password, image });
 
-  return res.status(201).json(newUser);
+  const token = await generateToken(newUser);
+
+  return res.status(201).json({ token });
 }));
 
 userRouter.get('/', verifyToken, rescue(async (_req, res) => {
