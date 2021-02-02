@@ -1,3 +1,5 @@
+const { Op } = require('sequelize');
+
 const { User } = require('../models');
 const createToken = require('../auth/createToken');
 
@@ -46,9 +48,28 @@ const getById = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  try {
+    const { email } = req.validatedTokenInfo;
+
+    await User.destroy({
+      where: {
+        email: {
+          [Op.eq]: email,
+        },
+      },
+    });
+
+    res.status(204).send();
+  } catch (err) {
+    return res.status(err.code).json({ message: err.message });
+  }
+};
+
 module.exports = {
   create,
   login,
   getAllUsers,
   getById,
+  deleteUser,
 };

@@ -22,6 +22,8 @@ app.get('/user', mid.validateToken, userController.getAllUsers);
 
 app.get('/user/:id', mid.validateToken, userController.getById);
 
+app.delete('/user/me', mid.validateToken, userController.deleteUser);
+
 app.listen(3000, () => {
   console.log('ouvindo porta 3000!');
 });
