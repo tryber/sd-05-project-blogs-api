@@ -60,6 +60,10 @@ usersRouter.get(
       attributes: { exclude: ['password'] },
     });
 
+    if (!specificUser) {
+      return res.status(404).json({ message: 'Usuário não existe' });
+    }
+
     return res.status(200).json(specificUser);
   }),
 );
