@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const hasToken = require('../middleware/hasToken');
+const isAuthor = require("../middleware/isAuthor'sPost");
 const validatePost = require('../middleware/validatePost');
 const postService = require('../services/postService');
 
@@ -24,6 +25,18 @@ route.get('/:id', hasToken, async (req, res) => {
   if (!post) {
     return res.status(404).json({ message: 'Post não existe' });
   }
+  return res.status(200).json(post);
+});
+
+route.put('/:id', hasToken, validatePost, isAuthor, async (req, res) => {
+  const { title, content } = req.body;
+  const { id } = req.params;
+  const post = await postService.updatePost(title, content, id);
+
+  if (!post) {
+    return res.status(404).json({ message: 'Post não existe' });
+  }
+
   return res.status(200).json(post);
 });
 
