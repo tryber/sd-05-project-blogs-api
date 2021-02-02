@@ -15,6 +15,10 @@ const createSingleUser = (sequelize, DataTypes) => {
     { timestamps: false },
   );
 
+  User.associate = (models) => {
+    User.hasMany(models.Post, { foreignKey: 'userId', as: 'posts' });
+  };
+
   return User;
 };
 

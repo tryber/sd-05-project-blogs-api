@@ -2,7 +2,7 @@ const express = require('express');
 const rescue = require('express-rescue');
 const Joi = require('joi');
 const { generateToken } = require('../auth/token');
-const verifyUser = require('../middlewares/verifyUser');
+const verifyWithJoi = require('../middlewares/verifyWithJoi');
 const { User } = require('../models');
 
 const loginRouter = express.Router();
@@ -15,7 +15,7 @@ const schema = Joi.object({
 // 2 - Sua aplicação deve ter o endpoint POST /login
 loginRouter.post(
   '/',
-  verifyUser(schema),
+  verifyWithJoi(schema),
   rescue(async (req, res) => {
     const { email, password } = req.body;
 

@@ -34,4 +34,4 @@ db[modelName].associate(db);
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-module.exports = db; 
+module.exports = db;
