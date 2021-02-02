@@ -1,4 +1,4 @@
-const verifyUser = (schema) => (req, res, next) => {
+const verifyWithJoi = (schema) => (req, res, next) => {
   const resultado = schema.validate(req.body);
 
   // console.log(resultado.error.details);
@@ -10,4 +10,4 @@ const verifyUser = (schema) => (req, res, next) => {
   next();
 };
 
-module.exports = verifyUser;
+module.exports = verifyWithJoi;
