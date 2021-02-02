@@ -3,7 +3,6 @@ const createUser = require('../middleware/createUser');
 const hasEmail = require('../middleware/hasEmail');
 const isNewUser = require('../middleware/isNewUser');
 const isAuthenticate = require('../middleware/isAuthenticate');
-const { createToken } = require('../middleware/createToken');
 const hasToken = require('../middleware/hasToken');
 const userService = require('../services/userService');
 
@@ -17,8 +16,7 @@ route.post(
   isAuthenticate,
   async (req, res) => {
     try {
-      const { displayName } = req.body;
-      const token = await createToken({ displayName, iss: 'blog_api' });
+      const token = req.headers.authorization;
       return res.status(201).json({ token });
     } catch (err) {
       console.error('Deu ruim', err);
@@ -29,6 +27,7 @@ route.post(
 route.get('/', hasToken, async (_req, res) => {
   try {
     const getAllUsers = await userService.getUsers();
+    console.log(getAllUsers);
     return res.status(200).json(getAllUsers);
   } catch (error) {
     console.error('Deu Ruim', error);

@@ -1,14 +1,17 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const secret = process.env.SECRET || 'thisIsMySecret';
+const secret = 'thisIsMySecret';
 
 const jwtConfig = {
   expiresIn: '15m',
   algorithm: 'HS256',
 };
 
-const createToken = (payload) => jwt.sign(payload, secret, jwtConfig);
+const createToken = (payload) => {
+  console.log('PAYYYYYYLOOOOOOOAD', payload);
+  return jwt.sign(payload, secret, jwtConfig);
+};
 
 const verifyToken = (token) => {
   const payload = jwt.verify(token, secret);
