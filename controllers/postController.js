@@ -10,7 +10,7 @@ const postRouter = Router();
 const schema = Joi.object({
   title: Joi.string().required(),
   content: Joi.string().required(),
-})
+});
 
 postRouter.post('/', verifyToken, validatePost(schema), rescue(async (req, res) => {
   const { title, content } = req.body;
