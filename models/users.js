@@ -8,15 +8,9 @@ const createSingleUser = (sequelize, DataTypes) => {
         autoIncrement: true,
       },
       displayName: { type: DataTypes.STRING },
-      email: {
-        type: DataTypes.STRING,
-        unique: true,
-      },
+      email: { type: DataTypes.STRING, unique: true },
       password: { type: DataTypes.STRING },
-      image: {
-        type: DataTypes.STRING,
-        defaultValue: '',
-      },
+      image: { type: DataTypes.STRING, defaultValue: '' },
     },
     { timestamps: false },
   );
