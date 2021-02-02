@@ -38,6 +38,8 @@ userRouter.get('/', verifyToken, rescue(async (_req, res) => {
 userRouter.get('/:id', verifyToken, rescue(async (req, res) => {
   const user = await User.findByPk(req.params.id, { attributes: { exclude: ['password'] } });
 
+  if (!user) return res.status(404).json({ message: 'Usuário não existe' })
+
   return res.status(200).json(user);
 }));
 
