@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const { Users } = require('../models');
 
 const isAuthenticate = async (req, res, next) => {
@@ -14,10 +13,6 @@ const isAuthenticate = async (req, res, next) => {
     });
   }
 
-  req.token = jwt.sign({ id: userInfo.id }, process.env.SECRET || 'thisIsMySecret', {
-    expiresIn: '1d',
-    algorithm: 'HS256',
-  });
   next();
 };
 
