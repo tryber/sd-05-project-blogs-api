@@ -48,4 +48,21 @@ postsRouter.get(
   }),
 );
 
+postsRouter.get(
+  '/:id',
+  verifyToken,
+  rescue(async (req, res) => {
+    const post = await Post.findByPk(req.params.id, {
+      include: {
+        model: User,
+        as: 'user',
+      },
+    });
+
+    if (!post) return res.status(404).json({ message: 'Post não existe' });
+
+    return res.status(200).json(post);
+  }),
+);
+
 module.exports = postsRouter;
