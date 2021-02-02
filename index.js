@@ -20,6 +20,8 @@ app.post('/login', userController.login);
 
 app.get('/user', mid.validateToken, userController.getAllUsers);
 
+app.get('/user/:id', mid.validateToken, userController.getById);
+
 app.listen(3000, () => {
   console.log('ouvindo porta 3000!');
 });

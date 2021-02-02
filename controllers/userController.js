@@ -2,6 +2,7 @@ const { User } = require('../models');
 const createToken = require('../auth/createToken');
 
 const { userService, loginService } = require('../services/index');
+const CodeError = require('../errorClass/errorClass');
 
 const create = async (req, res) => {
   try {
@@ -34,8 +35,20 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const saida = await User.findByPk(id);
+    if (!saida) throw new CodeError(404, 'Usuário não existe');
+    return res.status(200).json(saida);
+  } catch (err) {
+    return res.status(err.code).json({ message: err.message });
+  }
+};
+
 module.exports = {
   create,
   login,
   getAllUsers,
+  getById,
 };
