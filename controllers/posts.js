@@ -37,14 +37,15 @@ postsRouter.get(
   '/',
   verifyToken,
   rescue(async (req, res) => {
-    const post = await Post.findAll({
+    const allPosts = await Post.findAll({
       where: { userId: req.payload.userData.id },
       include: { model: User, as: 'user' },
     });
 
-    if (!post) return res.status(404).json({ message: 'Usuário não existe' });
-
-    return res.status(200).json(post);
+    if (!allPosts) {
+      return res.status(404).json({ message: 'Usuário não existe' });
+    }
+    return res.status(200).json(allPosts);
   }),
 );
 
@@ -52,16 +53,62 @@ postsRouter.get(
   '/:id',
   verifyToken,
   rescue(async (req, res) => {
-    const post = await Post.findByPk(req.params.id, {
+    const specificPost = await Post.findByPk(req.params.id, {
       include: {
         model: User,
         as: 'user',
       },
     });
 
+    if (!specificPost) {
+      return res.status(404).json({ message: 'Post não existe' });
+    }
+
+    return res.status(200).json(specificPost);
+  }),
+);
+
+postsRouter.put(
+  '/:id',
+  verifyToken,
+  verifyWithJoi(schema),
+  rescue(async (req, res) => {
+    const { id: userId } = req.payload.userData.id;
+    const { title, content } = req.body;
+
+    const post = await Post.findByPk(req.params.id);
+
     if (!post) return res.status(404).json({ message: 'Post não existe' });
 
-    return res.status(200).json(post);
+    // console.log(post);
+
+    if (post.dataValues.userId !== userId) {
+      return res.status(401).json({ message: 'Usuário não autorizado' });
+    }
+
+    await Post.update({ title, content }, { where: { id: req.params.id } });
+
+    return res.status(200).json({ title, content, userId });
+  }),
+);
+
+postsRouter.delete(
+  '/:id',
+  verifyToken,
+  rescue(async (req, res) => {
+    const { id: userId } = req.payload.userData.id;
+
+    const post = await Post.findByPk(req.params.id);
+
+    if (!post) return res.status(404).json({ message: 'Post não existe' });
+
+    if (post.dataValues.userId !== userId) {
+      return res.status(401).json({ message: 'Usuário não autorizado' });
+    }
+
+    await Post.destroy({ where: { id: req.params.id } });
+
+    return res.status(204).json();
   }),
 );
 
