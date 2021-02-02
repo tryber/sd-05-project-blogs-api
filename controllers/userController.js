@@ -27,7 +27,6 @@ route.post(
 route.get('/', hasToken, async (_req, res) => {
   try {
     const getAllUsers = await userService.getUsers();
-    console.log(getAllUsers);
     return res.status(200).json(getAllUsers);
   } catch (error) {
     console.error('Deu Ruim', error);

@@ -5,9 +5,9 @@ const isLogged = require('../middleware/isLogged');
 const route = Router();
 
 route.post('/', isLogged, isAuthenticate, async (req, res) => {
-  const token = req.headers.authorization;
+  const { token } = req;
 
-  return res.status(200).json(token);
+  return res.status(200).json({ token });
 });
 
 module.exports = route;

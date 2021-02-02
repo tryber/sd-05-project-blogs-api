@@ -14,9 +14,7 @@ const isAuthenticate = async (req, res, next) => {
 
   const token = createToken(userInfo.dataValues);
 
-  req.headers.authorization = token;
-
-  console.log('REQ TOKEN', token);
+  req.token = token;
 
   next();
 };

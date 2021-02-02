@@ -10,7 +10,7 @@ describe('Sua aplicação deve ter o endpoint GET `/user`', () => {
     shell.exec('npx sequelize-cli db:seed:all $');
   });
 
-  it.only('Será validado que é possível listar todos os usuários', async () => {
+  it('Será validado que é possível listar todos os usuários', async () => {
     let token;
     await frisby
       .post(`${url}/login`,

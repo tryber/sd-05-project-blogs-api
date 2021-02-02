@@ -8,10 +8,7 @@ const jwtConfig = {
   algorithm: 'HS256',
 };
 
-const createToken = (payload) => {
-  console.log('PAYYYYYYLOOOOOOOAD', payload);
-  return jwt.sign(payload, secret, jwtConfig);
-};
+const createToken = (payload) => jwt.sign(payload, secret, jwtConfig);
 
 const verifyToken = (token) => {
   const payload = jwt.verify(token, secret);
