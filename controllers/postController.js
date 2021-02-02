@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const hasToken = require('../middleware/hasToken');
-const isAuthor = require("../middleware/isAuthor'sPost");
+const isAuthor = require('../middleware/isAuthorsPost');
 const validatePost = require('../middleware/validatePost');
 const postService = require('../services/postService');
 
