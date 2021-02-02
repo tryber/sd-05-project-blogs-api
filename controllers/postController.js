@@ -12,7 +12,7 @@ const schema = Joi.object({
   content: Joi.string().required(),
 })
 
-postRouter.post('/', verifyToken, validatePost(schema) rescue(async (req, res) => {
+postRouter.post('/', verifyToken, validatePost(schema), rescue(async (req, res) => {
   const { title, content } = req.body;
   const { id: userId } = req.payload.userWithoutPassword;
 
