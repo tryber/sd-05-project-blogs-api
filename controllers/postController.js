@@ -20,7 +20,7 @@ postRouter.get('/', verifyToken, rescue(async (req, res) => {
     include: {
       model: User,
       as: 'user',
-      attributes: { exclude: ['password'] }
+      attributes: { exclude: ['password'] },
     },
     attributes: { exclude: ['userId'] },
   });
@@ -35,7 +35,7 @@ postRouter.get('/:id', verifyToken, rescue(async (req, res) => {
     include: {
       model: User,
       as: 'user',
-      attributes: { exclude: ['password'] }
+      attributes: { exclude: ['password'] },
     },
     attributes: { exclude: ['userId'] },
   });
@@ -59,12 +59,12 @@ postRouter.put('/:id', verifyToken, rescue(async (req, res) => {
 
   if (!post) return res.status(400).json({ message: 'Post não encontrado' });
 
-  if (post.dataValues.userId != userId) return res.status(401).json({ message: 'Usuário não autorizado' });
+  if (post.dataValues.userId !== userId) return res.status(401).json({ message: 'Usuário não autorizado' });
 
   await Post.update({ title, content }, { where: { id: req.params.id } });
 
   return res.status(200).json({ title, content, userId });
-}))
+}));
 
 postRouter.delete('/:id', verifyToken, async (req, res) => {
   const { id: userId } = req.payload.userWithoutPassword;
@@ -75,7 +75,7 @@ postRouter.delete('/:id', verifyToken, async (req, res) => {
 
   if (!post) return res.status(404).json({ message: 'Post não existe' });
 
-  if (post.dataValues.userId != userId) return res.status(401).json({ message: 'Usuário não autorizado' });
+  if (post.dataValues.userId !== userId) return res.status(401).json({ message: 'Usuário não autorizado' });
 
   await Post.destroy({ where: { id: req.params.id } });
 
