@@ -32,4 +32,11 @@ users.get('/', validateToken, async (_req, res) => {
   return res.status(200).json(getUsers);
 });
 
+users.get('/:id', validateToken, async (req, res) => {
+  const { id } = req.params;
+  const userById = await services.getById(id);
+  if (userById.error) return res.status(userById.code).json({ message: userById.message });
+  return res.status(200).json(userById);
+});
+
 module.exports = users;
