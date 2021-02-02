@@ -32,6 +32,23 @@ router.get('/', autJWT, async (_req, res) => {
   }
 });
 
+router.get('/search', autJWT, async (req, res) => {
+  try {
+    const { q } = req.query;
+    console.log(q);
+    const findPost = await Post.findAll({ include: [{
+      model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'],
+    }] });
+    const searchPost = findPost.filter(
+      (post) => post.title.includes(q) || post.content.includes(q),
+    );
+    return res.status(200).json(searchPost);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send(err.message);
+  }
+});
+
 router.get('/:id', autJWT, async (req, res) => {
   try {
     const { id } = req.params;
@@ -78,17 +95,5 @@ router.delete('/:id', autJWT, async (req, res) => {
     return res.status(500).send(err.message);
   }
 });
-
-/* router.delete('/me', autJWT, (req, res) => {
-  const { id } = req.payload.useData.dataValues;
-  User.destroy({ where: { id } })
-    .then(() => {
-      return res.status(204).send({ message: 'Usuario excluído com sucesso.' });
-    })
-    .catch((e) => {
-      console.log(e.message);
-      return res.status(500).send({ message: 'Algo deu errado' });
-    });
-}); */
 
 module.exports = router;
