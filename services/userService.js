@@ -7,13 +7,12 @@ const getUsers = () => {
   return users;
 };
 
-const getUserById = (id) => {
-  const user = Users.findOne({ where: { id } });
+const getUserById = (id) => Users.findOne({ where: { id } });
 
-  return user;
-};
+const deleteUser = (id) => Users.destroy({ where: { id } });
 
 module.exports = {
   getUsers,
+  deleteUser,
   getUserById,
 };

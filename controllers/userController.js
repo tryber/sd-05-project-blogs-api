@@ -47,4 +47,11 @@ route.get('/:id', hasToken, async (req, res) => {
   }
 });
 
+route.delete('/me', hasToken, async (req, res) => {
+  const { user } = req;
+  await userService.deleteUser(parseInt(user.id, 10));
+
+  return res.status(204).json();
+});
+
 module.exports = route;

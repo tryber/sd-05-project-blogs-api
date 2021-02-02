@@ -7,7 +7,7 @@ const hasToken = async (req, res, next) => {
   }
   try {
     const payload = await verifyToken(token);
-    req.payload = payload;
+    req.user = payload;
   } catch (error) {
     return res.status(401).json({ message: 'Token expirado ou inválido' });
   }
