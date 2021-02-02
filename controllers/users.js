@@ -1,20 +1,39 @@
 const express = require('express');
 const rescue = require('express-rescue');
+const Joi = require('joi');
+const { generateToken } = require('../auth/token');
 const verifyToken = require('../middlewares/verifyToken');
-/* const { verifyNewUser, verifyNewAdmin } = require('../services/users'); */
+const verifyUser = require('../middlewares/verifyUser');
+/* const { verifyUser, verifyNewAdmin } = require('../services/users'); */
 const { User } = require('../models');
 
 const usersRouter = express.Router();
 
+const schema = Joi.object({
+  displayName: Joi.string().min(8).required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().length(6).required(),
+  image: Joi.string(),
+});
+
 // 1 - Sua aplicação deve ter o endpoint POST /user
 usersRouter.post(
   '/',
+  verifyUser(schema),
   rescue(async (req, res) => {
     const { displayName, email, password, image } = req.body;
 
+    const existentUser = await User.findOne({ where: { email } });
+
+    if (existentUser) {
+      return res.status(409).json({ message: 'Usuário já existe' });
+    }
+
     const newUser = await User.create({ displayName, email, password, image });
 
-    return res.status(201).json({ user: newUser });
+    const token = generateToken(newUser);
+
+    return res.status(201).json({ token });
   }),
 );
 
