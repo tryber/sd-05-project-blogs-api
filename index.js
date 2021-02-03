@@ -6,6 +6,8 @@ const userController = require('./controllers/UserController');
 
 const loginController = require('./controllers/loginController');
 
+const postController = require('./controllers/PostController');
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -13,6 +15,8 @@ app.use(bodyParser.json());
 app.use('/user/', userController);
 
 app.use('/login/', loginController);
+
+app.use('/post/', postController);
 
 const PORT = 3000;
 
