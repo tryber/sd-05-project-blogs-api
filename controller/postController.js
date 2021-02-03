@@ -65,14 +65,20 @@ postRouter.put('/:id', MiddleToken, middleWarePost, async (req, res, next) => {
   }
   return res.status(200).json({ content, title, userId: checkPost.userId });
 });
-/*
 
-postRouter.delete('/me', MiddleToken, async (req, res) => {
+postRouter.delete('/:id', MiddleToken, async (req, res, next) => {
   const user = req.payload;
-  await Posts.destroy({ where: { id: user.id } });
+  const lookPost = await Post.findOne({ where: { id: req.params.id } });
+  if (!lookPost) {
+    return next({ status: 404, message: 'Post não existe' });
+  }
+  const { dataValues } = lookPost;
+  if (dataValues.userId !== user.id) {
+    return next({ status: 401, message: 'Usuário não autorizado' });
+  }
+  await Post.destroy({ where: { id: req.params.id } });
   res.status(204).json();
 });
-*/
 
 postRouter.use(MiddleErrorUser);
 
