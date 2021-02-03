@@ -13,7 +13,6 @@ const middleWarePost = [MiddleTitle, MiddleContent];
 postRouter.post('/', middleWarePost, MiddleToken, async (req, res) => {
   const { content, title } = req.body;
   const user = req.payload;
-  console.log(user);
   try {
     const result = await Post.create(
       { content, title, userId: user.id },
@@ -37,7 +36,6 @@ postRouter.get('/', MiddleToken, async (req, res, next) => {
 });
 
 postRouter.get('/search', MiddleToken, async (req, res) => {
-  console.log('Search \n\n');
   const { q = '' } = req.query;
   const result = await Post.findAll({
     where: {
@@ -49,7 +47,6 @@ postRouter.get('/search', MiddleToken, async (req, res) => {
     attributes: { exclude: ['userId'] },
     include: { model: User, as: 'user', attributes: { exclude: ['password'] } },
   });
-  console.log('Search \n\n', result, '\n\n');
   if (!result) return res.status(200).json([]);
   return res.status(200).json(result);
 });
