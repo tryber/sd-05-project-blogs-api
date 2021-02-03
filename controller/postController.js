@@ -1,4 +1,5 @@
 const express = require('express');
+const { Op } = require('sequelize');
 const MiddleErrorUser = require('../middlewares/middlewareErrorUser');
 const MiddleToken = require('../middlewares/tokenMiddleware');
 const MiddleContent = require('../middlewares/validContent');
@@ -34,6 +35,31 @@ postRouter.get('/', MiddleToken, async (req, res, next) => {
   if (!result) return next({ status: 404, message: 'Usuário não existe' });
   return res.status(200).json(result);
 });
+
+postRouter.get('/search', MiddleToken, async (req, res) => {
+  console.log('Search \n\n');
+  const { q = '' } = req.query;
+  const result = await Post.findAll({
+    where: {
+      [Op.and]: [
+        { userId: req.payload.id },
+        { [Op.or]: [{ title: { [Op.substring]: q } }, { content: { [Op.substring]: q } }] },
+      ],
+    },
+    attributes: { exclude: ['userId'] },
+    include: { model: User, as: 'user', attributes: { exclude: ['password'] } },
+  });
+  console.log('Search \n\n', result, '\n\n');
+  if (!result) return res.status(200).json([]);
+  return res.status(200).json(result);
+});
+
+/* {
+      [Op.and]: [
+        { userId: req.payload.id },
+        { [Op.or]: [{ title: { [Op.like]: q } }, { content: { [Op.like]: q } }] },
+      ],
+    } */
 
 postRouter.get('/:id', MiddleToken, async (req, res, next) => {
   const result = await Post.findOne({
