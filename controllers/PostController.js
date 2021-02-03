@@ -52,6 +52,6 @@ posts.put('/:id', validateToken, async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Algo deu errado' });
   }
-});
+}); // teste
 
 module.exports = posts;
