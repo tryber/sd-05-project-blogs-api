@@ -52,6 +52,20 @@ posts.put('/:id', validateToken, async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Algo deu errado' });
   }
-}); // teste
+});
+
+posts.delete('/:id', validateToken, async (req, res) => {
+  try {
+    const { id: userId } = req.payload;
+    const { id } = req.params;
+    const delPost = await services.deletePost(id, userId);
+    if (delPost.error) {
+      return res.status(delPost.code).json({ message: delPost.message });
+    }
+    res.status(204).json(delPost);
+  } catch (error) {
+    res.status(500).json({ message: 'Algo deu errado' });
+  }
+});
 
 module.exports = posts;

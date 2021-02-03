@@ -33,9 +33,19 @@ const update = async (title, content, id, userId) => {
   return { title, content, userId };
 };
 
+const deletePost = async (id, userId) => {
+  const checkPost = await Post.findOne({ where: { id } });
+  if (!checkPost) return { error: true, message: 'Post não existe', code: 404 };
+  if (checkPost.userId === userId) {
+    return Post.destroy({ where: { id, userId } });
+  }
+  return { error: true, message: 'Usuário não autorizado', code: 401 };
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  deletePost,
 };
