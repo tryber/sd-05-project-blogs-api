@@ -73,14 +73,12 @@ postsRouter.put(
   verifyToken,
   verifyWithJoi(schema),
   rescue(async (req, res) => {
-    const { id: userId } = req.payload.userData.id;
+    const { id: userId } = req.payload.userData;
     const { title, content } = req.body;
 
     const post = await Post.findByPk(req.params.id);
 
     if (!post) return res.status(404).json({ message: 'Post não existe' });
-
-    // console.log(post);
 
     if (post.dataValues.userId !== userId) {
       return res.status(401).json({ message: 'Usuário não autorizado' });
@@ -96,7 +94,7 @@ postsRouter.delete(
   '/:id',
   verifyToken,
   rescue(async (req, res) => {
-    const { id: userId } = req.payload.userData.id;
+    const { id: userId } = req.payload.userData;
 
     const post = await Post.findByPk(req.params.id);
 
