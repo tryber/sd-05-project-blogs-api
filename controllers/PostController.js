@@ -33,16 +33,10 @@ posts.get('/', validateToken, async (_req, res) => {
 });
 
 posts.get('/:id', validateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const getPostById = await services.getById(id);
-    if (getPostById.error) {
-      return res.status(getPostById.code).json({ message: getPostById.message });
-    }
-    return res.status(200).json(getPostById);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+  const { id } = req.params;
+  const getPostById = await services.getById(id);
+  if (getPostById.error) return res.status(getPostById.code).json({ message: getPostById.message });
+  return res.status(200).json(getPostById);
 });
 
 posts.put('/:id', validateToken, async (req, res) => {

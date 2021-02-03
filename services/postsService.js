@@ -15,12 +15,10 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  const getPostById = await Post.findAll({
+  const getPostById = await Post.findOne({
     where: { id },
     include: { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] } });
-  if (!getPostById) {
-    return { error: true, message: 'Post não existe', code: 404 };
-  }
+  if (!getPostById) return { error: true, message: 'Post não existe', code: 404 };
   return getPostById;
 };
 
