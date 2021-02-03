@@ -20,8 +20,8 @@ const create = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    await loginService.validateLogin(email, password);
-    const token = createToken({ email, password });
+    const idFromLogged = await loginService.validateLogin(email, password);
+    const token = createToken({ id: idFromLogged, email, password });
     return res.status(200).json({ token });
   } catch (err) {
     return res.status(err.code).json({ message: err.message });

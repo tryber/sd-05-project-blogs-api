@@ -24,7 +24,9 @@ const validateLogin = async (email, password) => {
       },
     },
   });
+
   if (!userInDatabase || userInDatabase.password !== password) throw new CodeError(400, 'Campos inválidos');
+  return userInDatabase.id;
 };
 
 module.exports = {
