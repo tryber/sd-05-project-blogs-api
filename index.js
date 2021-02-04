@@ -15,6 +15,8 @@ app.get('/', (request, response) => {
   response.send();
 });
 
+app.get('/post/search', mid.validateToken, postController.getBySearchTerm);
+
 app.post('/user', userController.create);
 
 app.post('/login', userController.login);

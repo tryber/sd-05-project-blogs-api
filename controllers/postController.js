@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { Post, User } = require('../models');
 
 const { postService } = require('../services/index');
@@ -65,11 +66,39 @@ const update = async (req, res) => {
   }
 };
 
+const getBySearchTerm = async (req, res) => {
+  //  ref2 e 3
+  const { q } = req.query;
+  try {
+    await Post.findAll({
+      include: [{ model: User, as: 'user' }],
+      attributes: { exclude: ['userId'] },
+      where: {
+        [Op.or]: [
+          { title: { [Op.like]: `%${q}%` } },
+          // { content: { [Op.like]: '%' + q + '%' } }, ref4
+          { content: { [Op.like]: `%${q}%` } },
+        ],
+      },
+    }).then((post) => {
+      if (post === null) return res.status(200).send([]);
+      return res.status(200).json(post);
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(err.code).send({ message: err.message });
+  }
+};
+
 module.exports = {
   create,
   getAllPosts,
   getById,
   update,
+  getBySearchTerm,
 };
 
 //  ref1: https://sequelize.org/master/manual/model-instances.html
+//  ref2: https://sequelize.org/master/manual/model-querying-basics.html
+//  ref3: https://stackoverflow.com/questions/31258158/how-to-implement-search-feature-using-sequelizejs
+//  ref4: https://eslint.org/docs/rules/prefer-template
