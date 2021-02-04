@@ -35,6 +35,8 @@ app.get('/post/:id', mid.validateToken, postController.getById);
 
 app.put('/post/:id', mid.validateToken, postController.update);
 
+app.delete('/post/:id', mid.validateToken, postController.deletePost);
+
 app.listen(3000, () => {
   console.log('ouvindo porta 3000!');
 });

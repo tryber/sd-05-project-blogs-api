@@ -85,7 +85,25 @@ const getBySearchTerm = async (req, res) => {
       return res.status(200).json(post);
     });
   } catch (err) {
-    console.log(err);
+    return res.status(err.code).send({ message: err.message });
+  }
+};
+
+const deletePost = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await Post.findByPk(id);
+    if (post === null) throw new CodeError(404, 'Post não existe');
+    if (post.userId !== req.validatedTokenInfo.id) throw new CodeError(401, 'Usuário não autorizado');
+    await Post.destroy({
+      where: {
+        id: {
+          [Op.eq]: id,
+        },
+      },
+    });
+    return res.status(204).send();
+  } catch (err) {
     return res.status(err.code).send({ message: err.message });
   }
 };
@@ -96,6 +114,7 @@ module.exports = {
   getById,
   update,
   getBySearchTerm,
+  deletePost,
 };
 
 //  ref1: https://sequelize.org/master/manual/model-instances.html
