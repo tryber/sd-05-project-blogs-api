@@ -16,18 +16,36 @@ const create = async (req, res) => {
 
 const getAllPosts = async (req, res) => {
   try {
-    const saida = await Post.findAll({
+    await Post.findAll({
       include: [{ model: User, as: 'user' }], // o as tem que ser igual ao model do post.
       attributes: { exclude: ['userId'] },
+    }).then((post) => {
+      res.status(200).json(post);
     });
-
-    res.status(200).json(saida);
   } catch (err) {
-    return res.status(400).json({ message: 'Deu ruim no bd' });
+    return res.status(400).send({ message: 'Deu ruim no bd' });
+  }
+};
+
+const getById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Post.findByPk(id, {
+      include: [{ model: User, as: 'user' }], // o as tem que ser igual ao model do post.
+      attributes: { exclude: ['userId'] },
+    }).then((post) => {
+      if (post === null) {
+        return res.status(404).send({ message: 'Post não existe' });
+      }
+      return res.status(200).json(post);
+    });
+  } catch (err) {
+    return res.status(400).send({ message: 'Deu ruim no bd' });
   }
 };
 
 module.exports = {
   create,
   getAllPosts,
+  getById,
 };
