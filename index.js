@@ -27,6 +27,8 @@ app.delete('/user/me', mid.validateToken, userController.deleteUser);
 
 app.post('/post', mid.validateToken, postController.create);
 
+app.get('/post', mid.validateToken, postController.getAllPosts);
+
 app.listen(3000, () => {
   console.log('ouvindo porta 3000!');
 });

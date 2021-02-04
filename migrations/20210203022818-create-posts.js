@@ -20,6 +20,19 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+
+      published: {
+        type: Sequelize.DATE,
+        defaultValue: new Date(),
+        allowNull: false
+      },
+
+      updated: {
+        type: Sequelize.DATE,
+        defaultValue: new Date(),
+        allowNull: false
+      },
+
     });
   },
 

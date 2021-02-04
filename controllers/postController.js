@@ -1,4 +1,4 @@
-const { Post } = require('../models');
+const { Post, User } = require('../models');
 
 const { postService } = require('../services/index');
 
@@ -14,6 +14,20 @@ const create = async (req, res) => {
   }
 };
 
+const getAllPosts = async (req, res) => {
+  try {
+    const saida = await Post.findAll({
+      include: [{ model: User, as: 'user' }], // o as tem que ser igual ao model do post.
+      attributes: { exclude: ['userId'] },
+    });
+
+    res.status(200).json(saida);
+  } catch (err) {
+    return res.status(400).json({ message: 'Deu ruim no bd' });
+  }
+};
+
 module.exports = {
   create,
+  getAllPosts,
 };
