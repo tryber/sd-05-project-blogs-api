@@ -1,4 +1,3 @@
-const secret = 'ffb412081bbc6efba1ed075bc2461f81';
-// echo meusegredosecretonaTrybe | md5sum
+const secret = process.env.JWT_SECRET;
 
 module.exports = secret;

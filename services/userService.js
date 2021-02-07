@@ -34,7 +34,7 @@ const checkEmail = async (email) => {
 
 const checkPassword = (password) => {
   if (!password) throw new CodeError(400, '"password" is required');
-  if (password.length !== 6) throw new CodeError(400, '"password" length must be 6 characters long');
+  if (password.length < 6) throw new CodeError(400, '"password" length must be 6 characters long');
 
   return true;
 };
