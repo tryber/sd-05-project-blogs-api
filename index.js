@@ -1,4 +1,5 @@
 const express = require('express');
+// require('dotenv').config();
 
 require('./config/config');
 
@@ -6,6 +7,7 @@ const app = express();
 
 const userRoutes = require('./routes/User.routes');
 
+app.use(express.json());
 app.use('/user', userRoutes);
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));
