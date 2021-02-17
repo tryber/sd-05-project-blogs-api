@@ -3,7 +3,8 @@ const {
   verifyDisplayName,
   verifyEmail,
   verifyPassword,
-} = require('../middlewares/UserMiddlwares');
+  verifyUserExists,
+} = require('../middlewares/UserMiddlewares');
 const UserController = require('../controllers/User.controller');
 
 const router = express.Router();
@@ -13,6 +14,7 @@ router.post(
   verifyDisplayName,
   verifyEmail,
   verifyPassword,
+  verifyUserExists,
   UserController.createUser,
 );
 
