@@ -1,7 +1,5 @@
-const { cp } = require('shelljs');
 const { Users } = require('../models');
 const ErrorEnums = require('../enumerators/ErrorsEnums');
-const UserServices = require('../services/User.services');
 
 const pattern = new RegExp(/[A-Z0-9]{1,}@[A-Z0-9]{2,}\.[A-Z0-9]{2,}/, 'i');
 
