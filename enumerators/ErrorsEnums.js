@@ -8,4 +8,6 @@ module.exports = {
   missingPassword: { message: '"password" is required' },
   emptyPassword: { message: '"password" is not allowed to be empty' },
   invalidFields: { message: 'Campos inválidos' },
+  missingToken: { message: 'Token não encontrado' },
+  invalidToken: { message: 'Token expirado ou inválido' },
 };
