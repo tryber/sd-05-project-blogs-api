@@ -7,11 +7,12 @@ module.exports = {
       email,
       password,
       image,
-    }), // return newUser;
+    }).then((userData) => userData), // return newUser;
 
-  getUsers: async () => {
-    const users = await Users.findAll();
-    console.log(users);
-    return users;
-  },
+  getUsers: async () => Users.findAll().then((userData) => userData),
+  getUserById: async (id) => Users.findOne({ where: { id } })
+    .then((userData) => {
+      console.log(userData);
+      return userData;
+    }),
 };

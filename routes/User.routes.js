@@ -4,6 +4,7 @@ const {
   verifyEmail,
   verifyPassword,
   verifyUserExists,
+  verifyIdNotExists,
 } = require('../middlewares/UserMiddlewares');
 const AuthMid = require('../middlewares/AuthMiddlewares');
 const UserController = require('../controllers/User.controller');
@@ -19,6 +20,13 @@ router.post(
   UserController.createUser,
 );
 
-router.get('/', AuthMid.tokenIsValid, UserController.getUser);
+router.get('/', AuthMid.tokenNotExists, AuthMid.tokenIsValid, UserController.getUser);
+router.get(
+  '/:id',
+  AuthMid.tokenNotExists,
+  AuthMid.tokenIsValid,
+  verifyIdNotExists,
+  UserController.getUserById,
+);
 
 module.exports = router;

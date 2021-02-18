@@ -1,5 +1,6 @@
 module.exports = {
   userExists: { message: 'Usuário já existe' },
+  userNotExists: { message: 'Usuário não existe' },
   invalidDisplayName: { message: '"displayName" length must be at least 8 characters long' },
   invalidEmail: { message: '"email" must be a valid email' },
   missingEmail: { message: '"email" is required' },

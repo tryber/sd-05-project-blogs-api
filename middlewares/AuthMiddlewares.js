@@ -13,9 +13,6 @@ const validateToken = async (token) => {
 
 const tokenIsValid = async (req, res, next) => {
   const token = req.headers.authorization;
-  if (!token) {
-    return res.status(401).send(ErrorsEnum.missingToken);
-  }
   try {
     await validateToken(token);
     next();
@@ -24,4 +21,12 @@ const tokenIsValid = async (req, res, next) => {
   }
 };
 
-module.exports = { tokenIsValid };
+const tokenNotExists = async (req, res, next) => {
+  const token = req.headers.authorization;
+  if (token === '') {
+    return res.status(401).send(ErrorsEnum.missingToken);
+  }
+  next();
+};
+
+module.exports = { tokenIsValid, tokenNotExists };

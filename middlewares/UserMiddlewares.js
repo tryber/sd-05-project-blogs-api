@@ -41,25 +41,34 @@ const verifyPassword = async (req, res, next) => {
 
 const verifyUserExists = async (req, res, next) => {
   const { email } = req.body;
-  await Users.findAll({
+  const uData = await Users.findAll({
     where: { email },
-  }).then((userData) => {
-    if (userData.length) {
-      return res.status(409).send(ErrorEnums.userExists);
-    }
   });
+  if (uData.length) {
+    return res.status(409).send(ErrorEnums.userExists);
+  }
   next();
 };
 
 const verifyUserNotExists = async (req, res, next) => {
   const { email } = req.body;
-  await Users.findAll({
+  const uData = await Users.findAll({
     where: { email },
-  }).then((userData) => {
-    if (userData.length === 0) {
-      return res.status(400).send(ErrorEnums.invalidFields);
-    }
   });
+  if (uData.length === 0) {
+    return res.status(404).send(ErrorEnums.invalidFields);
+  }
+  next();
+};
+
+const verifyIdNotExists = async (req, res, next) => {
+  const { id } = req.params;
+  const uData = await Users.findOne({
+    where: { id },
+  });
+  if (!uData) {
+    return res.status(404).send(ErrorEnums.userNotExists);
+  }
   next();
 };
 
@@ -69,4 +78,5 @@ module.exports = {
   verifyPassword,
   verifyUserExists,
   verifyUserNotExists,
+  verifyIdNotExists,
 };

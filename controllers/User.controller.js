@@ -1,4 +1,4 @@
-const { createUser, getUsers } = require('../services/User.services');
+const { createUser, getUsers, getUserById } = require('../services/User.services');
 
 module.exports = {
   createUser: async (req, res, _next) => {
@@ -16,7 +16,16 @@ module.exports = {
     //   });
   },
   getUser: async (_req, res, _next) => {
-    const users = await getUsers();
-    return res.status(200).json(users);
+    try {
+      const users = await getUsers();
+      return res.status(200).json(users);
+    } catch (error) {
+      return res.status(400).json({ message: 'deu ruim' });
+    }
+  },
+  getUserById: async (req, res, _next) => {
+    const { id } = req.params;
+    return getUserById(id)
+      .then((user) => res.status(200).json(user));
   },
 };
