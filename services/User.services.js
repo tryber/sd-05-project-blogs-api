@@ -10,4 +10,9 @@ module.exports = {
     });
     return newUser;
   },
+  getUsers: async () => {
+    const users = await Users.findAll();
+    console.log(users);
+    return users;
+  },
 };
