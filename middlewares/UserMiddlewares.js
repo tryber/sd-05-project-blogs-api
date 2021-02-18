@@ -56,7 +56,7 @@ const verifyUserNotExists = async (req, res, next) => {
     where: { email },
   });
   if (uData.length === 0) {
-    return res.status(404).send(ErrorEnums.invalidFields);
+    return res.status(400).send(ErrorEnums.invalidFields);
   }
   next();
 };

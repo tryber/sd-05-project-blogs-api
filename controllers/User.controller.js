@@ -9,11 +9,6 @@ module.exports = {
     } catch (error) {
       return res.status(400).json({ message: 'Deu ruim', error });
     }
-    // createUser(displayName, email, password, image)
-    //   .then((newUser) => {
-    //     console.log('meleca');
-    //     res.status(201).json({ newUser });
-    //   });
   },
   getUser: async (_req, res, _next) => {
     try {
