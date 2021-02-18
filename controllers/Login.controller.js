@@ -1,15 +1,10 @@
 const jwt = require('jsonwebtoken');
 
+const jwtConfigs = require('../config/JWTConfigs');
+
 const ErrorsEnums = require('../enumerators/ErrorsEnums');
 
 const { Users } = require('../models');
-
-const jwtConfig = {
-  expiresIn: '1d',
-  algorithm: 'HS256',
-};
-
-const SECRET = 'GROGU';
 
 const loginUser = async (req, res, _next) => {
   try {
@@ -18,13 +13,12 @@ const loginUser = async (req, res, _next) => {
     if (password !== user.password) {
       return res.status(401).json(ErrorsEnums.invalidFields);
     }
-    const { password: pswd, ...noPasswd } = user;
+    const { password: _pswd, ...noPasswd } = user;
     const payload = {
-      iss: 'blogs-api',
-      aud: 'identity',
+      ...jwtConfigs.Payload,
       userData: noPasswd,
     };
-    const token = jwt.sign(payload, SECRET, jwtConfig);
+    const token = jwt.sign(payload, jwtConfigs.SECRET, jwtConfigs.jwtConf);
     return res.status(200).json({ token });
   } catch (err) {
     return res.status(500).json({ message: 'Deu ruim', err });
