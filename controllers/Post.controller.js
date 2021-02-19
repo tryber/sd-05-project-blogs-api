@@ -4,7 +4,7 @@ const { validateToken } = require('../middlewares/AuthMiddlewares');
 const createPost = async (req, res, _next) => {
   const { title, content } = req.body;
   const token = req.headers.authorization;
-  const { dataValues: { id } } = await PostService.validateToken(token);
+  const { dataValues: { id } } = await validateToken(token);
   const newPost = await PostService.createPost(title, content, id);
   return res.status(201).json(newPost);
 };
@@ -22,13 +22,11 @@ const getPostById = async (req, res, _next) => {
 
 const updatePost = async (req, res, _next) => {
   const { id } = req.params;
-  console.log(id);
   const { title, content } = req.body;
   const token = req.headers.authorization;
   const { dataValues: { id: userId } } = await validateToken(token);
   const modPost = await PostService.updatePost(id, title, content, userId)
     .then(() => PostService.getPostById(id));
-  console.log(modPost);
   return res.status(200).json(modPost);
 };
 

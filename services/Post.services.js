@@ -1,16 +1,45 @@
+const { Op } = require('sequelize');
 const { Posts, Users } = require('../models');
 
-module.exports = {
-  createPost: async (title, content, userId) =>
-    Posts.create({ title, content, userId }).then((postData) => postData),
-  getPosts: async () => Posts.findAll({
+const createPost = async (title, content, userId) =>
+  Posts.create({ title, content, userId }).then((postData) => postData);
+
+const getPosts = async () =>
+  Posts.findAll({
     include: [{ model: Users, as: 'user' }],
-    attributes: { exclude: ['password'] } }),
-  getPostById: async (id) => Posts.findOne({
+    attributes: { exclude: ['password'] },
+  });
+
+const getPostById = async (id) =>
+  Posts.findOne({
     where: { id },
     include: [{ model: Users, as: 'user' }],
     attributes: { exclude: ['password'] },
-  }),
-  updatePost: async (id, title, content, userId) =>
-    Posts.update({ title, content, userId }, { where: { id } }),
+  });
+
+const updatePost = async (id, title, content, userId) =>
+  Posts.update({ title, content, userId }, { where: { id } });
+
+const searchPost = async (query) =>
+  Posts.findAll({
+    where: {
+      [Op.or]: [
+        {
+          title: { [Op.like]: `%${query}%` },
+        },
+        {
+          content: { [Op.like]: `%${query}%` },
+        },
+      ],
+    },
+    include: [{ model: Users, as: 'user' }],
+    attributes: { exclude: ['password'] },
+  });
+
+module.exports = {
+  createPost,
+  getPosts,
+  getPostById,
+  updatePost,
+  searchPost,
 };
