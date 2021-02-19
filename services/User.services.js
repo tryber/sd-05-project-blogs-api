@@ -7,12 +7,11 @@ module.exports = {
       email,
       password,
       image,
-    }).then((userData) => userData), // return newUser;
+    }).then((userData) => userData),
 
   getUsers: async () => Users.findAll().then((userData) => userData),
   getUserById: async (id) => Users.findOne({ where: { id } })
-    .then((userData) => {
-      console.log(userData);
-      return userData;
-    }),
+    .then((userData) => userData),
+  removeMe: async (email) => Users.destroy({ where: { email } }),
+
 };
