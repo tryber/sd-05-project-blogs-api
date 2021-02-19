@@ -25,5 +25,13 @@ router.post(
   PostMid.verifyPost,
   PostController.createPost,
 );
+router.put(
+  '/:id',
+  AuthMid.tokenNotExists,
+  AuthMid.tokenIsValid,
+  PostMid.verifyPost,
+  PostMid.verifyPostOwner,
+  PostController.updatePost,
+);
 
 module.exports = router;

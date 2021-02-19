@@ -14,4 +14,5 @@ module.exports = {
   missingTitle: { message: '"title" is required' },
   missingContent: { message: '"content" is required' },
   missingPost: { message: 'Post não existe' },
+  noPermission: { message: 'Usuário não autorizado' },
 };

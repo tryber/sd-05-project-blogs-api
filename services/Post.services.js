@@ -11,4 +11,6 @@ module.exports = {
     include: [{ model: Users, as: 'user' }],
     attributes: { exclude: ['password'] },
   }),
+  updatePost: async (id, title, content, userId) =>
+    Posts.update({ title, content, userId }, { where: { id } }),
 };

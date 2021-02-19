@@ -1,5 +1,6 @@
 const ErrorsEnum = require('../enumerators/ErrorsEnums');
 const { Posts } = require('../models');
+const { validateToken } = require('./AuthMiddlewares');
 
 const verifyPost = async (req, res, next) => {
   const { content, title } = req.body;
@@ -21,4 +22,17 @@ const verifyPostId = async (req, res, next) => {
   next();
 };
 
-module.exports = { verifyPost, verifyPostId };
+const verifyPostOwner = async (req, res, next) => {
+  const { id } = req.params;
+  const token = req.headers.authorization;
+  const {
+    dataValues: { id: userId },
+  } = await validateToken(token);
+  const post = await Posts.findOne({ where: { id } });
+  if (userId !== post.userId) {
+    return res.status(401).json(ErrorsEnum.noPermission);
+  }
+  next();
+};
+
+module.exports = { verifyPost, verifyPostId, verifyPostOwner };
