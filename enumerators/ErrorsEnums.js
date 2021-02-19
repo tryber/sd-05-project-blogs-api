@@ -11,4 +11,6 @@ module.exports = {
   invalidFields: { message: 'Campos inválidos' },
   missingToken: { message: 'Token não encontrado' },
   invalidToken: { message: 'Token expirado ou inválido' },
+  missingTitle: { message: '"title" is required' },
+  missingContent: { message: '"content" is required' },
 };
