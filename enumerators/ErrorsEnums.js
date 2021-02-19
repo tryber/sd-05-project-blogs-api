@@ -13,4 +13,5 @@ module.exports = {
   invalidToken: { message: 'Token expirado ou inválido' },
   missingTitle: { message: '"title" is required' },
   missingContent: { message: '"content" is required' },
+  missingPost: { message: 'Post não existe' },
 };

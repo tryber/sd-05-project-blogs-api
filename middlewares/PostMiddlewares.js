@@ -1,4 +1,5 @@
 const ErrorsEnum = require('../enumerators/ErrorsEnums');
+const { Posts } = require('../models');
 
 const verifyPost = async (req, res, next) => {
   const { content, title } = req.body;
@@ -11,4 +12,13 @@ const verifyPost = async (req, res, next) => {
   next();
 };
 
-module.exports = { verifyPost };
+const verifyPostId = async (req, res, next) => {
+  const { id } = req.params;
+  const pData = await Posts.findAll({ where: { id } });
+  if (pData.length === 0) {
+    return res.status(404).json(ErrorsEnum.missingPost);
+  }
+  next();
+};
+
+module.exports = { verifyPost, verifyPostId };

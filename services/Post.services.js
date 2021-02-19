@@ -6,4 +6,9 @@ module.exports = {
   getPosts: async () => Posts.findAll({
     include: [{ model: Users, as: 'user' }],
     attributes: { exclude: ['password'] } }),
+  getPostById: async (id) => Posts.findOne({
+    where: { id },
+    include: [{ model: Users, as: 'user' }],
+    attributes: { exclude: ['password'] },
+  }),
 };

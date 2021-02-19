@@ -5,7 +5,25 @@ const AuthMid = require('../middlewares/AuthMiddlewares');
 
 const router = express.Router();
 
-router.get('/', AuthMid.tokenNotExists, AuthMid.tokenIsValid, PostController.getPosts);
-router.post('/', AuthMid.tokenNotExists, AuthMid.tokenIsValid, PostMid.verifyPost, PostController.createPost);
+router.get(
+  '/',
+  AuthMid.tokenNotExists,
+  AuthMid.tokenIsValid,
+  PostController.getPosts,
+);
+router.get(
+  '/:id',
+  AuthMid.tokenNotExists,
+  AuthMid.tokenIsValid,
+  PostMid.verifyPostId,
+  PostController.getPostById,
+);
+router.post(
+  '/',
+  AuthMid.tokenNotExists,
+  AuthMid.tokenIsValid,
+  PostMid.verifyPost,
+  PostController.createPost,
+);
 
 module.exports = router;

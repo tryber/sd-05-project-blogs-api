@@ -1,4 +1,4 @@
-const { createPost, getPosts } = require('../services/Post.services');
+const { createPost, getPosts, getPostById } = require('../services/Post.services');
 const { validateToken } = require('../middlewares/AuthMiddlewares');
 
 module.exports = {
@@ -9,8 +9,14 @@ module.exports = {
     const newPost = await createPost(title, content, id);
     return res.status(201).json(newPost);
   },
-  getPosts: async (req, res, _next) => {
+  getPosts: async (_req, res, _next) => {
     const posts = await getPosts();
     return res.status(200).json(posts);
   },
+  getPostById: async (req, res, _next) => {
+    const { id } = req.params;
+    const post = await getPostById(id);
+    return res.status(200).json(post);
+  },
+
 };
