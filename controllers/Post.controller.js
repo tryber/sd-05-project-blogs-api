@@ -30,6 +30,12 @@ const updatePost = async (req, res, _next) => {
   return res.status(200).json(modPost);
 };
 
+const searchPost = async (req, res, _next) => {
+  const { q } = req.query;
+  const result = await PostService.searchPost(q);
+  return res.status(200).json(result);
+};
+
 module.exports = {
-  createPost, getPosts, getPostById, updatePost,
+  createPost, getPosts, getPostById, updatePost, searchPost,
 };

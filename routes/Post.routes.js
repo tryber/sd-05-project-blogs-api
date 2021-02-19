@@ -12,6 +12,12 @@ router.get(
   PostController.getPosts,
 );
 router.get(
+  '/search',
+  AuthMid.tokenNotExists,
+  AuthMid.tokenIsValid,
+  PostController.searchPost,
+);
+router.get(
   '/:id',
   AuthMid.tokenNotExists,
   AuthMid.tokenIsValid,
