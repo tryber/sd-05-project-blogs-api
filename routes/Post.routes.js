@@ -39,5 +39,13 @@ router.put(
   PostMid.verifyPostOwner,
   PostController.updatePost,
 );
+router.delete(
+  '/:id',
+  AuthMid.tokenNotExists,
+  AuthMid.tokenIsValid,
+  PostMid.verifyPostId,
+  PostMid.verifyPostOwner,
+  PostController.deletePost,
+);
 
 module.exports = router;

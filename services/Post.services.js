@@ -36,10 +36,16 @@ const searchPost = async (query) =>
     attributes: { exclude: ['password'] },
   });
 
+const deletePost = async (id) =>
+  Posts.destroy({
+    where: { id },
+  });
+
 module.exports = {
   createPost,
   getPosts,
   getPostById,
   updatePost,
   searchPost,
+  deletePost,
 };
