@@ -29,4 +29,4 @@ const tokenNotExists = async (req, res, next) => {
   next();
 };
 
-module.exports = { tokenIsValid, tokenNotExists };
+module.exports = { tokenIsValid, tokenNotExists, validateToken };

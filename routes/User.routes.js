@@ -29,4 +29,10 @@ router.get(
   UserController.getUserById,
 );
 
+router.delete(
+  '/me',
+  AuthMid.tokenNotExists,
+  AuthMid.tokenIsValid,
+  UserController.removeMe,
+);
 module.exports = router;

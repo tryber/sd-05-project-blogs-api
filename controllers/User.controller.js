@@ -1,4 +1,5 @@
-const { createUser, getUsers, getUserById } = require('../services/User.services');
+const { createUser, getUsers, getUserById, removeMe } = require('../services/User.services');
+const { validateToken } = require('../middlewares/AuthMiddlewares');
 
 module.exports = {
   createUser: async (req, res, _next) => {
@@ -22,5 +23,11 @@ module.exports = {
     const { id } = req.params;
     return getUserById(id)
       .then((user) => res.status(200).json(user));
+  },
+  removeMe: async (req, res, _next) => {
+    const token = req.headers.authorization;
+    const { dataValues: { email } } = await validateToken(token);
+    await removeMe(email);
+    return res.status(204).send();
   },
 };
