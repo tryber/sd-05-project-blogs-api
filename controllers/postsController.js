@@ -29,4 +29,23 @@ postsController.post('/', async (req, res) => {
   }
 });
 
+postsController.get('/', async (req, res) => {
+  try {
+    const { authorization } = req.headers;
+    const allPosts = await postsServices.getAll(authorization);
+    return res.status(200).json(allPosts);
+  } catch (error) {
+    if (error.message) {
+      if (error.message === 'jwt malformed') {
+        return res.status(401).json({ message: 'Token expirado ou inválido' });
+      }
+      if (error.message === 'jwt must be provided') {
+        return res.status(401).json({ message: 'Token não encontrado' });
+      }
+      return res.status(401).json({ message: error.message });
+    }
+    return res.status(500).json({ message: 'algo deu ruim' });
+  }
+});
+
 module.exports = postsController;
