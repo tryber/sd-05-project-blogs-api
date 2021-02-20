@@ -10,8 +10,9 @@ const SECRET = process.env.SECRET || 'bla';
 
 const createToken = (payload) => jwt.sign({ payload }, SECRET, config);
 const checkToken = (token) => jwt.verify(token, SECRET);
-
+const decodePayload = (token) => jwt.decode(token);
 module.exports = {
   createToken,
   checkToken,
+  decodePayload,
 };
