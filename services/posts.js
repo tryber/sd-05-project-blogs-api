@@ -5,7 +5,13 @@ const create = async (title, content, authorization) => {
   checkToken(authorization);
   const { payload } = decodePayload(authorization);
   console.log(payload.id);
-  const post = await Post.create({ title, content, userId: payload.id, updated: Date.now(), published: Date.now() });
+  const post = await Post.create({
+    title,
+    content,
+    userId: payload.id,
+    updated: Date.now(),
+    published: Date.now(),
+  });
   if (!post) {
     throw new Error('Campos inválidos');
   }
@@ -19,7 +25,17 @@ const getAll = async (authorization) => {
   return allPosts;
 };
 
+const getById = async (id, authorization) => {
+  checkToken(authorization);
+  const post = await Post.findOne({
+    where: { id },
+    include: { model: User, as: 'user' },
+  });
+  return post;
+};
+
 module.exports = {
   create,
   getAll,
+  getById,
 };
