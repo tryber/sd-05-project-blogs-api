@@ -4,7 +4,6 @@ const { decodePayload, checkToken } = require('../auth/jwt.auth');
 const create = async (title, content, authorization) => {
   checkToken(authorization);
   const { payload } = decodePayload(authorization);
-  console.log(payload.id);
   const post = await Post.create({
     title,
     content,
@@ -34,8 +33,33 @@ const getById = async (id, authorization) => {
   return post;
 };
 
+const updateById = async (id, title, content, authorization) => {
+  checkToken(authorization);
+  const { payload } = decodePayload(authorization);
+  const userId = payload.id;
+  const update = await Post.update(
+    {
+      title,
+      content,
+    },
+    { where: { id: parseInt(id, 10), userId } },
+  );
+  return update;
+};
+
+const findAfterUpdate = async (id, authorization) => {
+  checkToken(authorization);
+  const post = await Post.findOne({
+    where: { id },
+    attributes: ['title', 'content', 'userId'],
+  });
+  return post;
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  updateById,
+  findAfterUpdate,
 };

@@ -22,7 +22,6 @@ const login = async (email, passwordParam) => {
   }
   const { dataValues } = user;
   const { password, ...dataValuesTreated } = dataValues;
-  console.log(dataValuesTreated);
   return createToken(dataValuesTreated);
 };
 

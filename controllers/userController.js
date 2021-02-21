@@ -59,7 +59,6 @@ userController.get('/:id', async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'Usuário não existe' });
     }
-    console.log(user);
     return res.status(200).json(user);
   } catch (error) {
     console.error(error);
@@ -80,13 +79,10 @@ userController.delete('/me', async (req, res) => {
     if (!token) {
       return res.status(401).json({ message: 'Token não encontrado' });
     }
-    console.log(token.split('.')[1]);
     const payload = JSON.parse(
       Buffer.from(token.split('.')[1], 'base64').toString('utf-8'),
     );
-    console.log(payload.payload.id);
     const { id } = payload.payload;
-    console.log(id);
     await services.deleteUser(token, id);
     return res.status(204).json();
   } catch (error) {
