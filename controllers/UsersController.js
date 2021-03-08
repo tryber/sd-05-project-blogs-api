@@ -26,7 +26,6 @@ router.post('/', middlewareValid, async (req, res) => {
       displayName,
       iss: 'post_api',
     });
-    console.log('token', token);
     res.status(201).json(token);
   } catch (error) {
     console.log(error);
