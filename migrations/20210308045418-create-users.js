@@ -1,8 +1,8 @@
 'use strict';
-// MIGRATIONS CRIA TABELAS E AS COLUNAS NO MYSQL
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const usersTable = queryInterface.createTable('Users', {
+    const Users = await queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -20,15 +20,16 @@ module.exports = {
       },
       password: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       image: {
         allowNull: false,
         type: Sequelize.STRING,
+        default: ''
       },
     });
-    return usersTable;
+    return Users;
   },
 
-  down: async (queryInterface, _Sequelize) => queryInterface.dropTable('Users'),
+  down: async (queryInterface, Sequelize) => queryInterface.dropTable('Users'),
 };

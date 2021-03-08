@@ -1,21 +1,16 @@
-const create = (sequelize, DataTypes) => {
-  const Users = sequelize.define('Users', {
-    id: { autoIncrement: true, type: DataTypes.INTEGER, primaryKey: true },
-    displayName: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.INTEGER,
-    image: DataTypes.STRING,
-  },
-  {
-    timestamps: false,
-  });
+function createUser(sequelize, DataTypes) {
+  const User = sequelize.define(
+    'User',
+    {
+      id: { primaryKey: true, type: DataTypes.INTEGER, autoIncrement: true },
+      displayName: { type: DataTypes.STRING },
+      email: { type: DataTypes.STRING },
+      password: { type: DataTypes.STRING },
+      image: { type: DataTypes.STRING, defaultValue: '' },
+    },
+    { timestamps: false },
+  );
+  return User;
+}
 
-  Users.associate = (models) => {
-    Users.hasMany(models.Posts,
-      { foreignKey: 'userId', as: 'user' });
-  };
-
-  return Users;
-};
-
-module.exports = create;
+module.exports = createUser;

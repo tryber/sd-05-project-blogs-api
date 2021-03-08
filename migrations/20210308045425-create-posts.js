@@ -1,8 +1,8 @@
 'use strict';
-// MIGRATIONS CRIA TABELAS E AS COLUNAS NO MYSQL
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const postsTable = queryInterface.createTable('Posts', {
+    const Posts = await queryInterface.createTable('Posts', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -17,6 +17,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      userId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        references: { model: 'Users', key: 'id' },
+        defaultValue: -1,
+      },
       published: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -27,16 +35,9 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: new Date(),
       },
-      userId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
-        references: { model: 'Users', key: 'id' },
-      }
     });
-    return postsTable;
+    return Posts;
   },
 
-  down: async (queryInterface, _Sequelize) => queryInterface.dropTable('Posts'),
+  down: async (queryInterface, Sequelize) => queryInterface.dropTable('Posts'),
 };
