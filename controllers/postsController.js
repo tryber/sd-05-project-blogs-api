@@ -1,5 +1,4 @@
 const express = require('express');
-const { decodePayload } = require('../auth/jwt.auth');
 const { getById } = require('../services/posts');
 const postsServices = require('../services/posts');
 
