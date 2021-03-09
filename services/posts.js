@@ -56,10 +56,17 @@ const findAfterUpdate = async (id, authorization) => {
   return post;
 };
 
+const deletePost = async (id, authorization) => {
+  checkToken(authorization);
+  const userId = decodePayload(authorization).payload.id;
+  await Post.destroy({ where: { id, userId } });
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   updateById,
   findAfterUpdate,
+  deletePost,
 };

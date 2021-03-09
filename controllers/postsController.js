@@ -1,4 +1,6 @@
 const express = require('express');
+const { decodePayload } = require('../auth/jwt.auth');
+const { getById } = require('../services/posts');
 const postsServices = require('../services/posts');
 
 const postsController = express.Router();
@@ -93,6 +95,32 @@ postsController.put('/:id', async (req, res) => {
       return res.status(401).json({ message: error.message });
     }
     return res.status(500).json({ message: 'algo deu ruim' });
+  }
+});
+
+postsController.delete('/:id', async (req, res) => {
+  try {
+    const { authorization } = req.headers;
+    const { id } = req.params;
+    const post = await getById(id, authorization);
+    if (!post) {
+      return res.status(404).json({ message: 'Post não existe' });
+    }
+    await postsServices.deletePost(id, authorization);
+    const deletedPost = await getById(id, authorization);
+    if (deletedPost) return res.status(401).json({ message: 'Usuário não autorizado' });
+    return res.status(204).json();
+  } catch (error) {
+    if (error.message) {
+      if (error.message === 'jwt malformed') {
+        return res.status(401).json({ message: 'Token expirado ou inválido' });
+      }
+      if (error.message === 'jwt must be provided') {
+        return res.status(401).json({ message: 'Token não encontrado' });
+      }
+      return res.status(401).json({ message: error.message });
+    }
+    return res.status(500).json({ message: 'algo deu ruim na hora de excluir' });
   }
 });
 
