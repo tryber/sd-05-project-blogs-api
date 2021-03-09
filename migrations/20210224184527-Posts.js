@@ -2,10 +2,10 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const PostTable = queryInterface.createTable('Posts', {
+    const Posts = queryInterface.createTable('Posts', {
       id: {
         allowNull: false,
-        // autoIncrement: true,
+        autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
@@ -30,7 +30,8 @@ module.exports = {
       },
       updated: Sequelize.DATE,
     })
+    return Posts;
   },
 
-  down: async (queryInterface, Sequelize) => queryInterface.dropTable('Post'),
+  down: async (queryInterface, _Sequelize) => queryInterface.dropTable('Post'),
 };

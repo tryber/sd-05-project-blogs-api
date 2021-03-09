@@ -1,10 +1,14 @@
 const { Router } = require('express');
-const { Users } = require('./models');
+const services = require('../services/usersServices');
+const userRouter = Router();
 
-const router = Router();
+userRouter.post('/', async (req, res) => {
+  const { displayName, email, password, image } = req.body;
+  const newUser = await services.createUser(displayName, email, password, image);
 
-router.get('/', async (req, res) => {
-  res.status(200).json({ok: true});
-});
+  if (displayName.length < 8) res.status(404).json({ message:  })
 
-module.exports = router;
+  }),
+);
+
+module.exports = userRouter;
