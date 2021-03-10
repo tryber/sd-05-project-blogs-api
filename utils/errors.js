@@ -11,11 +11,11 @@ class GeneralError extends Error {
   }
 }
 
-class InvalidData extends GeneralError { }
 class Conflict extends GeneralError { }
+class InvalidData extends GeneralError { }
 
 module.exports = {
   GeneralError,
+  Conflict,
   InvalidData,
-  Conflict
 };

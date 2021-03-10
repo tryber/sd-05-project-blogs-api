@@ -21,13 +21,11 @@ const validation = [
 ];
 
 userRouter.post('/', validation, rescue(async (req, res) => {
-    const { displayName, email, password, image } = req.body;
-    console.log("Requisição", displayName, email, password, image )
-    const user = await User.create({ displayName, email, password, image });
-    const token = await createToken(user);
-    return res.status(201).json({ token });
-  }),
-);
+  const { displayName, email, password, image } = req.body;
+  const user = await User.create({ displayName, email, password, image });
+  const token = await createToken(user);
+  return res.status(201).json({ token });
+}));
 
 userRouter.get(
   '/',

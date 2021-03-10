@@ -1,4 +1,4 @@
-const { User } = require('../../models/');
+const { User } = require('../../models');
 const { Conflict } = require('../../utils/errors');
 
 const validaEmailExiste = async (req, _res, next) => {
