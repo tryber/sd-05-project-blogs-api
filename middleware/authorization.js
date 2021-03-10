@@ -1,21 +1,8 @@
 const jwt = require("jsonwebtoken");
-const userModel = require("../model/userModel");
+
+const { SECRET } = require("../helper/token");
 
 const errorMessage = (message) => ({ message });
-
-// payload, secret, header
-const SECRET = "weeee";
-
-const header = { expiresIn: "8h", algorithm: "HS256" };
-
-const createToken = async (userEmail) => {
-  const currentUser = await userModel(userEmail);
-  if (currentUser.err) throw errorMessage;
-  const {} = currentUser;
-  const payload = { _id, email, role };
-  const token = jwt.sign(payload, SECRET, header);
-  return token;
-};
 
 const verifyJWT = (req, res, next) => {
   const { authorization: token } = req.headers;
@@ -29,4 +16,4 @@ const verifyJWT = (req, res, next) => {
   next();
 };
 
-module.exports = { validateToken: createToken, verifyJWT };
+module.exports = { verifyJWT };
