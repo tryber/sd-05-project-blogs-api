@@ -6,25 +6,23 @@ const { User } = require('../models');
 
 const createToken = require('../services/createToken');
 
-const validaEmail = require('../middleware/validation/Email');
-const validaDisplay = require('../middleware/validation/DisplayName');
-const validaPassword = require('../middleware/validation/Password');
-const validaEmailExiste = require('../middleware/validation/isExistEmail');
+const {
+  CREATE_USER_SCHEMA,
+  validate,
+} = require('../utils/validationUser');
 
 const userRouter = express.Router();
 
-const validation = [
-  validaEmail,
-  validaDisplay,
-  validaPassword,
-  validaEmailExiste,
-];
-
-userRouter.post('/', validation, rescue(async (req, res) => {
-  const { displayName, email, password, image } = req.body;
-  const user = await User.create({ displayName, email, password, image });
-  const token = await createToken(user);
-  return res.status(201).json({ token });
+userRouter.post('/', rescue(async (req, res) => {
+  validate(CREATE_USER_SCHEMA)(req.body);
+  try {
+    const { displayName, email, password, image } = req.body;
+    const user = await User.create({ displayName, email, password, image });
+    const token = await createToken(user);
+    return res.status(201).json({ token });
+  } catch {
+    throw new Error('Usuário já existe;409');
+  }
 }));
 
 userRouter.get(

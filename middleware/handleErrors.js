@@ -1,10 +1,6 @@
-const erroMiddleware = (err, _req, res, _next) => {
-  if (err.code === 'invalid_data') {
-    return res.status(400).json({ message: err.message });
-  }
-  if (err.code === 'conflict') {
-    return res.status(409).json({ message: err.message });
-  }
+const errorMiddleware = async (err, _req, res, _next) => {
+  const [message, status] = err.message.split(';');
+  res.status(status || 500).json({ message });
 };
 
-module.exports = erroMiddleware;
+module.exports = errorMiddleware;
