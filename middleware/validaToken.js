@@ -1,19 +1,28 @@
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
 
-const validateToken = async (req, res, next) => {
-  try {
-    const token = req.headers.authorization;
+const secret = 'shhhh...é segredo';
 
-    if (!token) return res.status(401).json({ message: 'Token não encontrado' });
-
-    const SECRET = process.env.SECRET || 'seicho-no-ie';
-    const payload = jwt.verify(token, SECRET);
-    req.userPayload = payload.userData;
-    return next();
-  } catch (err) {
-    return res.status(401).json({ message: 'Token expirado ou inválido' });
+function MiddleToken(req, _res, next) {
+  const { authorization } = req.headers;
+  const err = {
+    message: 'Token não encontrado|401',
+  };
+  if (authorization === undefined) {
+    return next(err);
   }
-};
+  if (authorization === '') {
+    return next(err);
+  }
+  err.message = 'Token expirado ou inválido|401';
+  try {
+    const verifyToken = (token) => jwt.verify(token, secret);
+    const payload = verifyToken(authorization);
+    req.payload = payload;
+    return next();
+  } catch (error) {
+    err.token = 'error no token|401';
+    return next(err);
+  }
+}
 
-module.exports = validateToken;
+module.exports = MiddleToken;

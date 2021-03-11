@@ -3,7 +3,7 @@ const express = require('express');
 const rescue = require('express-rescue');
 
 const { User } = require('../models');
-const validaToken = require('../middleware/validaToken');
+const validateToken = require('../middleware/validaToken');
 const createToken = require('../services/createToken');
 
 const {
@@ -26,23 +26,27 @@ userRouter.post('/', rescue(async (req, res) => {
 }));
 
 // GET /user/-> Comportamento de getALL
-userRouter.get('/', validaToken, rescue(async (_req, res) => {
+userRouter.get('/', validateToken, rescue(async (_req, res) => {
   const allUsers = await User.findAll();
   res.status(200).json(allUsers);
 }));
 
 // GET /user/:id -> Comportamento de getById
-userRouter.get('/:id', validaToken, rescue(async (req, res) => {
-  const { id } = req.params;
-  const user = await User.findByPk(id);
-  if (!user) res.status(404).json({ message: 'Usuário não existe' });
-  res.status(200).json(user);
+userRouter.get('/:id', validateToken, rescue(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findByPk(id);
+    if (!user) throw new Error('Usuário não existe|404');
+    res.status(200).json(user);
+  } catch {
+    throw new Error('Usuário não existe|404');
+  }
 }));
 
-userRouter.delete('/me', validaToken, rescue(async (req, res) => {
-  const { email } = req.userPayload;
-  await User.destroy({ where: { email } });
+userRouter.delete('/me', validateToken, async (req, res) => {
+  const user = req.payload.userData;
+  await User.destroy({ where: { id: user.id } });
   return res.status(204).send();
-}));
+});
 
 module.exports = userRouter;
