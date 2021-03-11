@@ -9,12 +9,20 @@ const CREATE_USER_SCHEMA = Joi.object({
   image: Joi.string(),
 });
 
+const LOGIN_SCHEMA = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).messages(
+    { 'string.min': `"password" length must be ${6} characters long` },
+  ).required(),
+});
+
 const validate = (schema) => (data) => {
   const { error } = schema.validate(data || {});
-  if (error) throw new Error(`${error};400`.replace('ValidationError: ', ''));
+  if (error) throw new Error(`${error}|400`.replace('ValidationError: ', ''));
 };
 
 module.exports = {
+  LOGIN_SCHEMA,
   CREATE_USER_SCHEMA,
   validate,
 };

@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 const handleErrors = require('./middleware/handleErrors');
 const usersController = require('./controllers/usersController');
+const loginController = require('./controllers/loginController');
 
 require('dotenv').config();
 
@@ -16,6 +17,7 @@ app.get('/', (request, response) => {
 });
 
 app.use('/user', usersController);
+app.use('/login', loginController);
 
 app.use(handleErrors);
 

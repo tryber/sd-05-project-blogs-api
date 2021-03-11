@@ -9,19 +9,19 @@ const createToken = require('../services/createToken');
 const {
   CREATE_USER_SCHEMA,
   validate,
-} = require('../utils/validationUser');
+} = require('../utils/validation');
 
 const userRouter = express.Router();
 
 userRouter.post('/', rescue(async (req, res) => {
-  validate(CREATE_USER_SCHEMA)(req.body);
+  const { displayName, email, password, image } = req.body;
+  validate(CREATE_USER_SCHEMA)({ displayName, email, password, image });
   try {
-    const { displayName, email, password, image } = req.body;
     const user = await User.create({ displayName, email, password, image });
     const token = await createToken(user);
     return res.status(201).json({ token });
   } catch {
-    throw new Error('Usuário já existe;409');
+    throw new Error('Usuário já existe|409');
   }
 }));
 
