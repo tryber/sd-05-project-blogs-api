@@ -3,7 +3,7 @@ const express = require('express');
 const rescue = require('express-rescue');
 
 const { User } = require('../models');
-
+const validateToken = require('../middleware/validaToken');
 const createToken = require('../services/createToken');
 
 const {
@@ -25,12 +25,9 @@ userRouter.post('/', rescue(async (req, res) => {
   }
 }));
 
-userRouter.get(
-  '/',
-  rescue(async (_req, res) => {
-    const allUsers = await User.findAll();
-    res.status(200).json(allUsers);
-  }),
-);
+userRouter.get('/', validateToken, rescue(async (_req, res) => {
+  const allUsers = await User.findAll();
+  res.status(200).json(allUsers);
+}));
 
 module.exports = userRouter;

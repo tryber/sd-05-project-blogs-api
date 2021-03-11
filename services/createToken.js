@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const createToken = async (user) => {
-  const secret = 'magic-is-real';
+  const SECRET = process.env.SECRET || 'seicho-no-ie';
   const jwtConfig = {
     expiresIn: '15m',
     algorithm: 'HS256',
@@ -10,7 +11,7 @@ const createToken = async (user) => {
   const payload = {
     userData: userWithoutPassword,
   };
-  const token = jwt.sign(payload, secret, jwtConfig);
+  const token = jwt.sign(payload, SECRET, jwtConfig);
   return token;
 };
 
