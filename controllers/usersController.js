@@ -39,12 +39,12 @@ userRouter.get('/:id', validateToken, rescue(async (req, res) => {
     if (!user) throw new Error('Usuário não existe|404');
     res.status(200).json(user);
   } catch {
-    throw new Error('Erro interno|500');
+    throw new Error('Usuário não existe|404');
   }
 }));
 
 userRouter.delete('/me', validateToken, async (req, res) => {
-  const user = req.payload.userData;
+  const user = req.payload;
   await User.destroy({ where: { id: user.id } });
   return res.status(204).send();
 });

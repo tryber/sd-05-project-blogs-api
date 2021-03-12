@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
-const secret = 'shhhh...é segredo';
+const secret = process.env.SECRET || 'shhhh...é segredo';
 
 function MiddleToken(req, _res, next) {
   const { authorization } = req.headers;

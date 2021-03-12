@@ -9,6 +9,11 @@ const CREATE_USER_SCHEMA = Joi.object({
   image: Joi.string(),
 });
 
+const CREATE_POST_SCHEMA = Joi.object({
+  title: Joi.string().required(),
+  content: Joi.string().required(),
+});
+
 const LOGIN_SCHEMA = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(6).messages(
@@ -23,6 +28,7 @@ const validate = (schema) => (data) => {
 
 module.exports = {
   LOGIN_SCHEMA,
+  CREATE_POST_SCHEMA,
   CREATE_USER_SCHEMA,
   validate,
 };
