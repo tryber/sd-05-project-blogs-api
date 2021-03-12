@@ -18,7 +18,7 @@ userRouter.post('/', rescue(async (req, res) => {
   validate(CREATE_USER_SCHEMA)({ displayName, email, password, image });
   try {
     const user = await User.create({ displayName, email, password, image });
-    const token = await createToken(user);
+    const token = await createToken(user.dataValues);
     return res.status(201).json({ token });
   } catch {
     throw new Error('Usuário já existe|409');
@@ -39,7 +39,7 @@ userRouter.get('/:id', validateToken, rescue(async (req, res) => {
     if (!user) throw new Error('Usuário não existe|404');
     res.status(200).json(user);
   } catch {
-    throw new Error('Usuário não existe|404');
+    throw new Error('Erro interno|500');
   }
 }));
 

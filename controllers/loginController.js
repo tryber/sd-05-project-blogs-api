@@ -19,6 +19,7 @@ userRouter.post('/', rescue(async (req, res, next) => {
   try {
     const existingUser = await User.findOne({ where: { email } });
     const login = { ...existingUser.dataValues };
+    console.log('LOGINNNNN', login);
     const token = await createToken(login);
     res.status(200).json({ token });
     next();

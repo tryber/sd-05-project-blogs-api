@@ -8,11 +8,12 @@ const createToken = async (user) => {
     expiresIn: '15m',
     algorithm: 'HS256',
   };
+  const userWithoutPassword = user;
+  delete userWithoutPassword.password;
+  delete userWithoutPassword.displayName;
+  delete userWithoutPassword.image;
+  const payload = userWithoutPassword;
 
-  const { password: _, ...userWithoutPassword } = user;
-  const payload = {
-    userData: userWithoutPassword,
-  };
   const token = jwt.sign(payload, secret, jwtConfig);
   return token;
 };
