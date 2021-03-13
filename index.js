@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3000;
 routes(app);
 
 // não remova esse endpoint, e para o avaliador funcionar
-app.get('/', (request, response) => { response.send(); });
+app.get('/', (_request, response) => { response.send("Chegou!")});
 
 app.listen(PORT, () => console.log(`Servidor ouvindo na porta ${PORT}!`));
 // module.exports = app;
