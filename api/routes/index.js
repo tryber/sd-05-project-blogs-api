@@ -1,8 +1,5 @@
 const bodyParser = require('express');
 
-
-module.exports = app => {
+module.exports = (app) => {
   app.use(bodyParser.json());
-
-  
-}
+};
