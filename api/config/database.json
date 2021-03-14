@@ -1,10 +1,10 @@
 {
   "development": {
-    "username": "process.env.MYSQL_USER",
-    "password": "process.env.MYSQL_PASSWORD", 
-    "database": "process.env.DB_ NAME", 
-    "host": "process.env.HOSTNAME",
-    "dialect": "process.env.DIALECT"
+    "username": "root",
+    "password": "mysql-root",
+    "database": "blogs_api",
+    "host": "localhost",
+    "dialect": "mysql"
   },
   "test": {
     "username": "root",
