@@ -1,10 +1,11 @@
 const rescue = require('express-rescue');
 const { Router } = require('express');
-const { login } = require('../middlewares');
+const { cadastro, login } = require('../middlewares');
 const UserController = require('../controllers/UserController');
 
 const route = Router();
 
-route.post('/user', login, rescue(UserController.cadastraUsuario));
+route.post('/user', cadastro, rescue(UserController.cadastraUsuario));
+route.post('/login', login, rescue(UserController.efetuaLogin));
 
 module.exports = route;
