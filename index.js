@@ -1,9 +1,12 @@
+const { NODE_ENV } = require('dotenv').config().parsed;
+
 const express = require('express');
 const routes = require('./api/routes');
-require('dotenv').config();
+
+console.log(`testando index: ${NODE_ENV}`);
 
 const app = express();
-const PORT = process.env.PORT ? process.env.PORT : 3000;
+const PORT = process.env.PORT || 3000;
 
 routes(app);
 
