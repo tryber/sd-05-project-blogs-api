@@ -17,7 +17,7 @@
     "username": "MYSQL_USER",
     "password": "MYSQL_PASSWORD",
     "database": "API_NAME",
-    "host": "localhost",
+    "host": "HOSTNAME",
     "dialect": "mysql"
   }
 }
