@@ -18,6 +18,7 @@ module.exports = async (req, res, next) => {
     }
     const decoded = jwt.verify(token, secret);
     const user = await buscaPorEmail(decoded.data.email);
+    req.me = user;
     if (!user) {
       return res.status(401).json({
         message: 'Token expirado ou inválido',
