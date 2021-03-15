@@ -1,20 +1,30 @@
-const rescue = require('express-rescue');
+// const rescue = require('express-rescue');
 
-module.exports = rescue(async (req, res, next) => {
-  const token = await req.headers.authorization;
+const jwt = require('jsonwebtoken');
+const secretKey = require('../models/secretKey');
+const { buscaPorEmail } = require('../controllers/UserController');
 
-  // console.log("token:", token);
-
-  if (!token) {
-    return res.status(401).json({
-      message: 'Token não encontrado',
-    });
+const secret = secretKey();
+//
+module.exports = async (req, res, next) => {
+  const { authorization: token } = req.headers;
+  console.log('token: ', token);
+  try {
+    if (!token) {
+      console.log('tokenJWT:', token);
+      return res.status(401).json({
+        message: 'Token não encontrado',
+      });
+    }
+    const decoded = jwt.verify(token, secret);
+    const user = await buscaPorEmail(decoded.data.email);
+    if (!user) {
+      return res.status(401).json({
+        message: 'Token expirado ou inválido',
+      });
+    }
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: 'Token expirado ou inválido' });
   }
-
-  if (token.length !== 16) {
-    return res.status(401).json({
-      message: 'Token inválido',
-    });
-  }
-  next();
-});
+};
