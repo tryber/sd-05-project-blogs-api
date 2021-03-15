@@ -1,5 +1,5 @@
 const database = require('../models');
-const generateToken = require('../services');
+const { tokenGenerator } = require('../services');
 
 class UserController {
   static async cadastraUsuario(req, res) {
@@ -17,17 +17,14 @@ class UserController {
 
   static async efetuaLogin(req, res) {
     const { email, password } = req.body;
-    console.log('email procurado: ', email);
     try {
       const usuarioLogado = await database.Users.findOne({
         where: {
           email,
         },
       });
-      console.log('usuario encontrado: ', usuarioLogado);
       if (usuarioLogado && password === usuarioLogado.password) {
-        console.log('senha: ', password, 'senhaencontrada: ', usuarioLogado.password);
-        const token = await generateToken(usuarioLogado);
+        const token = await tokenGenerator(usuarioLogado);
         return res.status(200).json({ token });
       }
       return res.status(400).json({ message: 'Campos inválidos' });
@@ -64,7 +61,9 @@ class UserController {
 
   static async deletaProprioUsuario(req, res) {
     try {
-      const { me: { email } } = req;
+      const {
+        me: { email },
+      } = req;
       const pessoaDeletada = await database.Users.destroy({
         where: {
           email,
@@ -86,6 +85,21 @@ class UserController {
         },
       });
       return usuarioLogado;
+    } catch (error) {
+      return { message: error.message };
+    }
+  }
+
+  static async buscaUsuarioPorId(id) {
+    try {
+      const usuario = await database.Users.findOne({
+        where: {
+          id: Number(id),
+        },
+      });
+      if (usuario) {
+        return usuario;
+      }
     } catch (error) {
       return { message: error.message };
     }
