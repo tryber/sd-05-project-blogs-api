@@ -9,6 +9,10 @@ module.exports = async (user) => {
     algorithm: 'HS256',
   };
 
-  const token = jwt.sign({ data: user }, secret, jwtConfig);
+  const { password, ...withoutPassword } = user;
+  const usuario = withoutPassword;
+  console.log('sem password:', usuario);
+
+  const token = jwt.sign({ data: usuario }, secret, jwtConfig);
   return token;
 };
