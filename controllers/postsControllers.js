@@ -56,4 +56,16 @@ postRouter.put('/:id', validateToken, rescue(async (req, res) => {
   return res.status(200).json({ title, content, userId: postById.userId });
 }));
 
+postRouter.delete('/:id', validateToken, rescue(async (req, res) => {
+  const { id } = req.params;
+  const postById = await Post.findByPk(id);
+  const { id: userId } = req.payload;
+
+  if (!postById) throw new Error('Post não existe|404');
+  if (postById.userId !== userId) throw new Error('Usuário não autorizado|401');
+
+  await Post.destroy({ where: { id } });
+  return res.status(204).send();
+}));
+
 module.exports = postRouter;
