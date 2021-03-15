@@ -1,6 +1,7 @@
-const rescue = require('express-rescue');
 const { Router } = require('express');
-const { cadastro, login, tokenValidation } = require('../middlewares');
+const rescue = require('express-rescue');
+const { cadastro, login } = require('../middlewares');
+const { tokenValidation } = require('../validations');
 const UserController = require('../controllers/UserController');
 
 const route = Router();
