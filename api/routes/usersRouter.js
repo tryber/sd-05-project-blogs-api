@@ -8,5 +8,7 @@ const route = Router();
 route.post('/user', cadastro, rescue(UserController.cadastraUsuario));
 route.post('/login', login, rescue(UserController.efetuaLogin));
 route.get('/user', tokenValidation, rescue(UserController.buscaTodosUsuarios));
+route.get('/user/:id', tokenValidation, rescue(UserController.buscaUm));
+route.delete('/user/me', tokenValidation, rescue(UserController.deletaProprioUsuario));
 
 module.exports = route;
