@@ -35,6 +35,28 @@ class UserController {
       return res.status(500).json({ message: error.message });
     }
   }
+
+  static async buscaTodosUsuarios(_req, res) {
+    try {
+      const usuarios = await database.Users.findAll();
+      res.status(200).json(usuarios);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async buscaPorEmail(email) {
+    try {
+      const usuarioLogado = await database.Users.findOne({
+        where: {
+          email,
+        },
+      });
+      return usuarioLogado;
+    } catch (error) {
+      return ({ message: error.message });
+    }
+  }
 }
 
 module.exports = UserController;
