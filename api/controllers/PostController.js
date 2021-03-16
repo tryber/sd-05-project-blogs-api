@@ -1,3 +1,4 @@
+const { Sequelize } = require('../models/index');
 const database = require('../models/index');
 const { attributesExtrator } = require('../services');
 
@@ -73,9 +74,7 @@ class PostController {
         include: { model: database.Users },
       });
       updateSupport(founded, me, res);
-      await database.Posts.update(
-        { ...body }, { where: { id: Number(id) } },
-      );
+      await database.Posts.update({ ...body }, { where: { id: Number(id) } });
       const { title, content, userId } = await database.Posts.findOne({
         where: Number(id),
       });
@@ -84,29 +83,24 @@ class PostController {
       res.status(500).json({ erro: error.message });
     }
   }
+
+  static async buscaPostPorTermo(req, res) {
+    const searchTerm = req.query.q;
+    console.log('termo: ', searchTerm);
+    try {
+      const posts = await database.Posts.findAll({
+        where: {
+          [Sequelize.Op.or]: [
+            { title: { [Sequelize.Op.like]: `%${searchTerm}` } },
+            { content: { [Sequelize.Op.like]: `%${searchTerm}` } },
+          ],
+        },
+      });
+      return res.status(200).json(posts);
+    } catch (error) {
+      res.status(500).json({ erro: error.message });
+    }
+  }
 }
 
 module.exports = PostController;
-
-// static async buscaTodosPosts(_req, res) {
-//   try {
-//     const array = await database.Posts.findAll();
-//     const posts = [];
-//     await array.map(async (element) => {
-//       const { userId } = element.dataValues;
-//       const { ...post } = element.dataValues;
-//       console.log('post: ', post);
-//       const user = await buscaUsuarioPorId(userId);
-//       const { password: _, ...postAuthor } = user.dataValues;
-//       console.log('for author: ', postAuthor);
-//       const newPost = { ...post, user: { ...postAuthor } };
-//       console.log('post do usuario: ', newPost);
-//       const newArray = await { ...newPost };
-//       posts.push(newArray);
-//     });
-//     console.log('todos os posts', posts);
-//     res.status(200).json(posts);
-//   } catch (error) {
-//     res.status(500).json({ error });
-//   }
-// }

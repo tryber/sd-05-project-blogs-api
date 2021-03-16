@@ -10,5 +10,5 @@ routes.get('/post', tokenValidation, rescue(posts.buscaTodosPosts));
 routes.post('/post', tokenValidation, postValidation, rescue(posts.cadastraUmPost));
 route.get('/post/:id', tokenValidation, rescue(posts.buscaUmPost));
 routes.put('/post/:id', tokenValidation, postValidation, rescue(posts.atualizaUmPost));
-
+routes.delete('/post/:id', tokenValidation, rescue(posts.deletaUmPost));
 module.exports = routes;
