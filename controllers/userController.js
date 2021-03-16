@@ -25,7 +25,7 @@ router.post(
     if (user.message) return res.status(400).json('Algo deu errado!');
     const { id, email } = user.dataValues;
     const token = createToken({ id, email });
-    console.log(token);
+    console.log('userController L28', token);
     res.status(201).json({ token });
   },
 );
@@ -34,7 +34,7 @@ router.get('/',
   verifyJWT,
   async (_req, res) => {
     const allUsers = await Users.findAll();
-    if (!allUsers) return res.status(404).json({ message: 'No user on database.' });
+    if (!allUsers) return res.status(401).json({ message: 'No user on database.' });
     return res.status(200).json(allUsers);
   });
 
@@ -42,7 +42,7 @@ router.get('/:id',
   verifyJWT,
   async (req, res) => {
     const user = await Users.findOne({ where: { id: req.params.id } });
-    if (!user) return res.status(404).json({ message: 'Usuário não existe' });
+    if (!user) return res.status(401).json({ message: 'Usuário não existe' });
     return res.status(200).json(user);
   });
 
@@ -50,7 +50,7 @@ router.delete('/me',
   verifyJWT,
   async (req, res) => {
     const { email } = req.payload;
-    console.log(req.payload);
+    console.log('userController L53', req.payload);
     const selectUser = await Users.findOne({ where: { email } });
     await selectUser.destroy();
     return res.status(204);

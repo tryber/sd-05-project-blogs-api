@@ -4,11 +4,13 @@ const PostModel = (sequelize, DataTypes) => {
     {
       title: DataTypes.STRING,
       content: DataTypes.STRING,
+      userId: { foreignKey: true, type: DataTypes.INTEGER },
       published: DataTypes.DATE,
       updated: DataTypes.DATE,
     },
     {
-      timestamps: false,
+      createdAt: 'published',
+      updatedAt: 'updated',
     },
   );
 
