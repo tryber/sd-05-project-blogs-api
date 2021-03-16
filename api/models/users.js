@@ -4,8 +4,8 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     static associate(models) {
-      Users.hasMany(models.Posts,
-        { foreignKey: 'userId' });
+      Users.hasMany(models.Posts, {
+        onDelete: 'CASCADE', onUpdate: 'CASCADE' }, { foreignKey: 'userId' });
     }
   }
   Users.init(
@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.TEXT,
         unique: true,
-
       },
       password: DataTypes.STRING,
       image: DataTypes.STRING,
