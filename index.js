@@ -9,13 +9,14 @@ require('dotenv').config();
 console.log(`testando ambiente: ${process.env.NODE_ENV}`);
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 
 app.get('/post/search', tokenValidation, rescue(buscaPostPorTermo));
-app.get('/', (_request, response) => { response.send(); });
-// não remova esse endpoint, e para o avaliador funcionar
-
 routes(app);
+
+// não remova esse endpoint, e para o avaliador funcionar
+app.get('/', (_request, response) => { response.send(); });
+
 app.use((err, _req, res, _next) => {
   if (err.status) {
     console.log('deu ruim!!!');
