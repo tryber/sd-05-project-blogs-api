@@ -1,6 +1,15 @@
 const database = require('../models/index');
 const { attributesExtrator } = require('../services');
 
+const updateSupport = (founded, me, res) => {
+  if (!founded) {
+    return res.status(404).json({ message: 'Post não existe' });
+  }
+  if (founded && founded.User.id !== me.id) {
+    return res.status(401).json({ message: 'Usuário não autorizado' });
+  }
+};
+
 class PostController {
   static async buscaTodosPosts(_req, res) {
     try {
@@ -49,6 +58,28 @@ class PostController {
         return res.status(200).json(...post);
       }
       return res.status(404).json({ message: 'Post não existe' });
+    } catch (error) {
+      res.status(500).json({ erro: error.message });
+    }
+  }
+
+  static async atualizaUmPost(req, res) {
+    try {
+      const { id } = req.params;
+      const { me, body } = req;
+      console.log(me);
+      const founded = await database.Posts.findOne({
+        where: { id: Number(id) },
+        include: { model: database.Users },
+      });
+      updateSupport(founded, me, res);
+      await database.Posts.update(
+        { ...body }, { where: { id: Number(id) } },
+      );
+      const { title, content, userId } = await database.Posts.findOne({
+        where: Number(id),
+      });
+      return res.status(200).json({ title, content, userId });
     } catch (error) {
       res.status(500).json({ erro: error.message });
     }
