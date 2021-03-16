@@ -95,8 +95,30 @@ class PostController {
             { content: { [Sequelize.Op.like]: `%${searchTerm}` } },
           ],
         },
+        include: {
+          model: database.Users,
+        },
       });
-      return res.status(200).json(posts);
+      const post = await attributesExtrator(posts);
+      return res.status(200).json(post);
+    } catch (error) {
+      res.status(500).json({ erro: error.message });
+    }
+  }
+
+  static async deletaUmPost(req, res) {
+    try {
+      const { id } = req.params;
+      const { me } = req;
+      console.log('estpou aqui: ', me);
+      const founded = await database.Posts.findOne({
+        where: { id: Number(id) }, include: { model: database.Users },
+      });
+      updateSupport(founded, me, res);
+      const deleted = await database.Posts.destroy({ where: { id: Number(id) } });
+      if (deleted) {
+        return res.status(204).send('Post deletado com sucesso');
+      }
     } catch (error) {
       res.status(500).json({ erro: error.message });
     }

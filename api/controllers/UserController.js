@@ -53,7 +53,7 @@ class UserController {
       if (pessoa !== null) {
         return res.status(200).json(pessoa);
       }
-      return res.status(404).send('Usuário não existe');
+      return res.status(404).json({ message: 'Usuário não existe' });
     } catch (error) {
       res.status(500).json({ erro: error.message });
     }
