@@ -9,5 +9,6 @@ const routes = Router();
 routes.get('/post', tokenValidation, rescue(posts.buscaTodosPosts));
 routes.post('/post', tokenValidation, postValidation, rescue(posts.cadastraUmPost));
 route.get('/post/:id', tokenValidation, rescue(posts.buscaUmPost));
+routes.put('/post/:id', tokenValidation, postValidation, rescue(posts.atualizaUmPost));
 
 module.exports = routes;
