@@ -10,11 +10,11 @@ app.use(express.json());
 
 const PORT = 3000;
 
-app.use('/users', userController);
+app.use('/user', userController);
 
 app.use('/login', loginController);
 
-app.use('/posts', postsController);
+app.use('/post', postsController);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {

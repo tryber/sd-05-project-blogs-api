@@ -19,13 +19,14 @@ const validateName = (req, res, next) => {
 
 const validateEmail = (req, res, next) => {
   const { email } = req.body;
-  if (!emailRegex.test(email)) return res.status(400).json(errorMessage('"email" must be a valid email'));
   if (!email) return res.status(400).json(errorMessage('"email" is required'));
+  if (!emailRegex.test(email)) return res.status(400).json(errorMessage('"email" must be a valid email'));
   return next();
 };
 
 const validatePassword = (req, res, next) => {
   const { password } = req.body;
+  if (!password) return res.status(400).json(errorMessage('"password" is required'));
   if (password.length < 6 && password.length > 0) {
     return res
       .status(400)
@@ -36,8 +37,6 @@ const validatePassword = (req, res, next) => {
       .status(400)
       .json(errorMessage('"password" is not allowed to be empty'));
   }
-  if (!password) return res.status(400).json(errorMessage('"password" is required'));
-  console.log(errorMessage);
   return next();
 };
 
