@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-console.log(`testando config.js: ${process.env}`);
+console.log(`testando config.js: ${process.env.NODE_ENV}`);
 
 module.exports = {
   development: {
