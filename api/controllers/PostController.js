@@ -32,6 +32,27 @@ class PostController {
       res.status(500).json(error.message);
     }
   }
+
+  static async buscaUmPost(req, res) {
+    try {
+      const { id } = req.params;
+      const postFounded = await database.Posts.findOne({
+        where: {
+          id: Number(id),
+        },
+        include: {
+          model: database.Users,
+        },
+      });
+      if (postFounded !== null) {
+        const post = await attributesExtrator([postFounded]);
+        return res.status(200).json(...post);
+      }
+      return res.status(404).json({ message: 'Post não existe' });
+    } catch (error) {
+      res.status(500).json({ erro: error.message });
+    }
+  }
 }
 
 module.exports = PostController;
