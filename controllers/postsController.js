@@ -5,7 +5,7 @@ const router = express.Router();
 const { Posts, Users } = require('../models');
 const { verifyJWT } = require('../middleware/authorization');
 const { validateTitle, validateContent } = require('../middleware/postValidation');
-const { Op } = require('sequelize');
+// const { Op } = require('sequelize');
 
 router.post('/',
   verifyJWT,
@@ -73,8 +73,8 @@ router.put('/:id',
 //     const post = await Posts.findAll(
 //       { where: },
 //       {
-//         include: [{ 
-//           model: Users, 
+//         include: [{
+//           model: Users,
 //           as: 'user',
 //           attributes: { exclude: ['userId'] }
 //         }]

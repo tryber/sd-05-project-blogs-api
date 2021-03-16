@@ -41,9 +41,13 @@ router.get('/',
 router.get('/:id',
   verifyJWT,
   async (req, res) => {
-    const user = await Users.findOne({ where: { id: req.params.id } });
-    if (!user) return res.status(401).json({ message: 'Usuário não existe' });
-    return res.status(200).json(user);
+    try {
+      const user = await Users.findOne({ where: { id: req.params.id } });
+      if (!user) return res.status(401).json({ message: 'No user here!' });
+      return res.status(200).json(user);
+    } catch (err) {
+      return res.status(401).json({ message: 'Erro no catch' });
+    }
   });
 
 router.delete('/me',
