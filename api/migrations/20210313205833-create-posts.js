@@ -1,9 +1,11 @@
+// [HONESTIDADE ACADEMICA] na linha 16 e 17 foi feito uma consulta com o amigo
+// Felipe Vieira via PR Project para entender onde estes dois atributos
+// deveria estar para tornar efetiva a funcionalidade de deletar e atualizar.
 // 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Posts', {
-      id: {
-        allowNull: false,
+      id: { allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
@@ -12,11 +14,12 @@ module.exports = {
       content: { type: Sequelize.STRING, allowNull: false },
       userId: { type: Sequelize.INTEGER,
         allowNull: false,
-        // [HONESTIDADE ACADEMICA] na linha 16 e 17 foi feito uma consulta com o amigo Felipe Vieira via PR Project para entender onde estes dois atributos deveria estar para tornar efetiva a funcionalidade de deletar e atualizar.
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         references: {
-          model: 'Users', key: 'id' },
+          model: 'Users',
+          key: 'id',
+        },
       },
       published: { type: Sequelize.DATE, allowNull: false },
       updated: { type: Sequelize.DATE, allowNull: false },
