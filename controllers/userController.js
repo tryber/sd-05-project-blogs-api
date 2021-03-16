@@ -19,23 +19,31 @@ router.post(
   validatePassword,
   checkUserEmail,
   async (req, res) => {
-    const formData = req.body;
-    const user = await Users.create(formData);
-    console.log('controller:', user.dataValues);
-    if (user.message) return res.status(400).json('Algo deu errado!');
-    const { id, email } = user.dataValues;
-    const token = createToken({ id, email });
-    console.log('userController L28', token);
-    res.status(201).json({ token });
+    try {
+      const formData = req.body;
+      const user = await Users.create(formData);
+      console.log('controller:', user.dataValues);
+      if (user.message) return res.status(400).json('Algo deu errado!');
+      const { id, email } = user.dataValues;
+      const token = createToken({ id, email });
+      console.log('userController L28', token);
+      res.status(201).json({ token });
+    } catch (err) {
+      res.status(400).json('Algo deu errado NO CATCH');
+    }
   },
 );
 
 router.get('/',
   verifyJWT,
   async (_req, res) => {
-    const allUsers = await Users.findAll();
-    if (!allUsers) return res.status(401).json({ message: 'No user on database.' });
-    return res.status(200).json(allUsers);
+    try {
+      const allUsers = await Users.findAll();
+      if (!allUsers) return res.status(401).json({ message: 'No users on database.' });
+      return res.status(200).json(allUsers);
+    } catch (err) {
+      return res.status(401).json({ message: 'Erro no catch.' });
+    }
   });
 
 router.get('/:id',
@@ -43,7 +51,7 @@ router.get('/:id',
   async (req, res) => {
     try {
       const user = await Users.findOne({ where: { id: req.params.id } });
-      if (!user) return res.status(401).json({ message: 'No user here!' });
+      if (!user) return res.status(401).json({ message: 'Usuário não existe' });
       return res.status(200).json(user);
     } catch (err) {
       return res.status(401).json({ message: 'Erro no catch' });
@@ -53,11 +61,15 @@ router.get('/:id',
 router.delete('/me',
   verifyJWT,
   async (req, res) => {
-    const { email } = req.payload;
-    console.log('userController L53', req.payload);
-    const selectUser = await Users.findOne({ where: { email } });
-    await selectUser.destroy();
-    return res.status(204);
+    try {
+      const { email } = req.payload;
+      console.log('userController L53', req.payload);
+      const selectUser = await Users.findOne({ where: { email } });
+      await selectUser.destroy();
+      return res.status(204);
+    } catch (err) {
+      return res.status(204).json({ message: 'Erro no catch' });
+    }
   });
 
 module.exports = router;

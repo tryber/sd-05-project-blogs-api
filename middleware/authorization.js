@@ -10,10 +10,10 @@ const verifyJWT = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, SECRET);
     req.payload = decoded;
+    return next();
   } catch (error) {
     return res.status(401).json(errorMessage('Token expirado ou inválido'));
   }
-  next();
 };
 
 module.exports = { verifyJWT };
