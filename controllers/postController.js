@@ -90,4 +90,23 @@ router.get('/search',
     }
   });
 
+router.delete('/:id',
+  verifyJWT,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const userId = req.payload.id;
+      const post = await Posts.findOne({ where: { id } });
+      // console.log('log L 100', post);
+      if (!post) return res.status(401).json({ message: 'Post não existe' });
+      // console.log('PASSOU AQUI NA L 102');
+      const deletedPost = await Posts.destroy({ where: { id: userId } });
+      // console.log('DELETED POST:', deletedPost);
+      if (deletedPost === 0) res.status(401).json({ message: 'Usuário não autorizado' });
+      return res.status(204);
+    } catch (err) {
+      return res.status(500).json({ message: 'Erro no catch' });
+    }
+  });
+
 module.exports = router;

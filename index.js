@@ -2,7 +2,7 @@ const express = require('express');
 
 const userController = require('./controllers/userController');
 const loginController = require('./controllers/loginController');
-const postsController = require('./controllers/postsController');
+const postsController = require('./controllers/postController');
 
 const app = express();
 

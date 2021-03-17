@@ -29,7 +29,7 @@ router.post(
       console.log('userController L28', token);
       res.status(201).json({ token });
     } catch (err) {
-      res.status(400).json('Algo deu errado NO CATCH');
+      res.status(500).json('Algo deu errado NO CATCH');
     }
   },
 );
@@ -38,7 +38,7 @@ router.get('/',
   verifyJWT,
   async (_req, res) => {
     try {
-      const allUsers = await Users.findAll();
+      const allUsers = await Users.findAll({ attributes: { exclude: ['password'] } });
       if (!allUsers) return res.status(401).json({ message: 'No users on database.' });
       return res.status(200).json(allUsers);
     } catch (err) {
@@ -50,11 +50,12 @@ router.get('/:id',
   verifyJWT,
   async (req, res) => {
     try {
-      const user = await Users.findOne({ where: { id: req.params.id } });
-      if (!user) return res.status(401).json({ message: 'Usuário não existe' });
+      const { id } = req.params;
+      const user = await Users.findByPk(id, { attributes: { exclude: ['password'] } });
+      if (!user) return res.status(404).json({ message: 'Usuário não existe' });
       return res.status(200).json(user);
     } catch (err) {
-      return res.status(401).json({ message: 'Erro no catch' });
+      return res.status(400).json({ message: 'Erro no catch' });
     }
   });
 
