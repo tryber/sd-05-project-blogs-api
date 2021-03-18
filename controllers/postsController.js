@@ -1,10 +1,10 @@
 const express = require('express');
 const encrypt = require('jsonwebtoken');
+const secret = require('../middlewares/generateToken');
 // require('dotenv/config');
 // const { Op } = require('sequelize');
 const { Post, User } = require('../models');
 const jwt = require('../middlewares/generateToken');
-const secret = require('../middlewares/generateToken');
 
 const postRouter = express.Router();
 

@@ -1,9 +1,9 @@
 const express = require('express');
 const encrypt = require('jsonwebtoken');
+const secret = require('../middlewares/generateToken');
 // require('dotenv/config');
 const { User } = require('../models');
-const jwt = require('../middlewares/generateToken');
-const secret = require('../middlewares/generateToken');
+const jwt  = require('../middlewares/generateToken');
 
 const userRouter = express.Router();
 
@@ -31,8 +31,8 @@ userRouter.post('/user', async (req, res) => {
     return res.status(400).json({ message: '"password" length must be 6 characters long' });
   }
   const user = { displayName, email, password, image };
-  const token = jwt.createToken(user);
   await User.create(user);
+  const token = jwt.createToken(user);
   res.status(201).json({ token });
 });
 
