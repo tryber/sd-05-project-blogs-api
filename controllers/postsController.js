@@ -1,6 +1,6 @@
 const express = require('express');
 const encrypt = require('jsonwebtoken');
-const secret = require('../middlewares/generateToken');
+const { secret } = require('../middlewares/generateToken');
 // require('dotenv/config');
 // const { Op } = require('sequelize');
 const { Post, User } = require('../models');
@@ -69,11 +69,11 @@ postRouter.put('/post/:id', jwt.authorizationToken, async (req, res) => {
 //   const postBySearch = await Post.findAll({
 //     where: {
 //       [Op.or]: [
-//         { title: { [Op.like]: `%${q}%` } },
-//         { content: { [Op.like]: `%${q}%` } },
+//         { title: { [Op.substring]: `q` } },
+//         { content: { [Op.substring]: `q } },
 //       ],
 //     },
-//     include: { model: User, as: 'user' },
+//     include: { model: User, as: 'user' [password]},
 //   });
 //   return res.status(200).json(postBySearch);
 // });
