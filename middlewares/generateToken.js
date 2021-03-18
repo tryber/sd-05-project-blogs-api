@@ -17,18 +17,18 @@ const createToken = (payload) => {
 
 const authorizationToken = async (req, res, next) => {
   const token = req.headers.authorization;
-  if (!token) return res.status(401).json({ message: 'Token not found' });
+  if (!token) return res.status(401).json({ message: 'Token não encontrado' });
   try {
     const decoded = jwt.verify(token, process.env.SECRET);
     const user = await User.findOne({ where: { email: decoded.data.email } });
     if (!user) {
-      return res.status(401).json({ message: 'Expired token or invalid token' });
+      return res.status(401).json({ message: 'Token expirado ou inválido' });
     }
     const { password, ...userDate } = user;
     req.user = userDate;
     return next();
   } catch (_err) {
-    return res.status(401).json({ message: 'Expired token or invalid token' });
+    return res.status(401).json({ message: 'Token expirado ou inválido' });
   }
 };
 
