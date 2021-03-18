@@ -3,7 +3,7 @@ const encrypt = require('jsonwebtoken');
 const secret = require('../middlewares/generateToken');
 // require('dotenv/config');
 const { User } = require('../models');
-const jwt  = require('../middlewares/generateToken');
+const jwt = require('../middlewares/generateToken');
 
 const userRouter = express.Router();
 
