@@ -1,9 +1,10 @@
 const express = require('express');
 const encrypt = require('jsonwebtoken');
-require('dotenv/config');
+// require('dotenv/config');
 // const { Op } = require('sequelize');
 const { Post, User } = require('../models');
 const jwt = require('../middlewares/generateToken');
+const secret = require('../middlewares/generateToken');
 
 const postRouter = express.Router();
 
@@ -11,7 +12,7 @@ const postRouter = express.Router();
 postRouter.post('/post', jwt.authorizationToken, async (req, res) => {
   const { title, content } = req.body;
   const token = req.headers.authorization;
-  const decoded = encrypt.verify(token, process.env.SECRET);
+  const decoded = encrypt.verify(token, secret);
   const newPost = { title, content, userId: decoded.data.id };
   //  check title
   if (!title) return res.status(400).json({ message: '"title" is required' });
@@ -45,7 +46,7 @@ postRouter.get('/post/:id', jwt.authorizationToken, async (req, res) => {
 postRouter.put('/post/:id', jwt.authorizationToken, async (req, res) => {
   const { title, content } = req.body;
   const token = req.headers.authorization;
-  const decoded = encrypt.verify(token, process.env.SECRET);
+  const decoded = encrypt.verify(token, secret);
   const editedPost = { title, content, userId: decoded.data.id };
   //  check title
   if (!title) return res.status(400).json({ message: '"title" is required' });
@@ -80,7 +81,7 @@ postRouter.put('/post/:id', jwt.authorizationToken, async (req, res) => {
 // Requisito 11 -  endpoint DELETE post/:id
 postRouter.delete('/post/:id', jwt.authorizationToken, async (req, res) => {
   const token = req.headers.authorization;
-  const decoded = encrypt.verify(token, process.env.SECRET);
+  const decoded = encrypt.verify(token, secret);
   const post = await Post.findOne({
     where: { id: req.params.id },
   });

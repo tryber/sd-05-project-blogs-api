@@ -1,8 +1,9 @@
 const express = require('express');
 const encrypt = require('jsonwebtoken');
-require('dotenv/config');
+// require('dotenv/config');
 const { User } = require('../models');
 const jwt = require('../middlewares/generateToken');
+const secret = require('../middlewares/generateToken');
 
 const userRouter = express.Router();
 
@@ -70,7 +71,7 @@ userRouter.get('/user/:id', jwt.authorizationToken, async (req, res) => {
 // Requisito 5 - endpoint DELETE /user/me
 userRouter.delete('/user/me', jwt.authorizationToken, async (req, res) => {
   const token = req.headers.authorization;
-  const decoded = encrypt.verify(token, process.env.SECRET);
+  const decoded = encrypt.verify(token, secret);
   await User.destroy({ where: { email: decoded.data.email } });
   res.status(204).end();
 });
