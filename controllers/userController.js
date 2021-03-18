@@ -63,8 +63,8 @@ router.delete('/me',
   verifyJWT,
   async (req, res) => {
     try {
-      const { email } = req.payload;
-      console.log('userController L66', req.payload);
+      const { email } = req.user;
+      console.log('userController L66', req.user);
       const selectUser = await Users.findOne({ where: { email } });
       console.log('log L 68', selectUser);
       if (!selectUser) return res.status(404).json({ message: 'You cant do that dude!' });

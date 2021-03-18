@@ -19,6 +19,7 @@ const validateUser = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await Users.findOne({ where: { email, password } });
     if (!user) return res.status(400).json({ message: 'Campos inválidos' });
+    req.user = user.dataValues;
   } catch (err) {
     res.status(500).json({ message: 'Erro no catch' });
   }
