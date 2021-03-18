@@ -1,7 +1,7 @@
 const express = require('express');
 const encrypt = require('jsonwebtoken');
 require('dotenv/config');
-const { Op } = require('sequelize');
+// const { Op } = require('sequelize');
 const { Post, User } = require('../models');
 const jwt = require('../middlewares/generateToken');
 
