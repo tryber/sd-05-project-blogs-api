@@ -16,28 +16,31 @@ module.exports = {
       content: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       published: {
         type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: new Date()
       },
       updated: {
         type: Sequelize.DATE,
         allowNull: false,
-      },
-      createdAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      updatedAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
+        defaultValue: new Date()
       }
-    });
+    })
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Posts');
+    return queryInterface.dropTable('Posts')
   }
 };
