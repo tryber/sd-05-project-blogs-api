@@ -63,19 +63,19 @@ postRouter.put('/post/:id', jwt.authorizationToken, async (req, res) => {
 });
 
 // Requisito 10 - endpoint GET post/search?q=:searchTerm
-postRouter.get('/post/search', jwt.authorizationToken, async (req, res) => {
-  const { q } = req.query;
-  const postBySearch = await Post.findAll({
-    where: {
-      [Op.or]: [
-        { title: { [Op.like]: `%${q}%` } },
-        { content: { [Op.like]: `%${q}%` } },
-      ],
-    },
-    include: { model: User, as: 'user' },
-  });
-  return res.status(200).json(postBySearch);
-});
+// postRouter.get('/post/search', jwt.authorizationToken, async (req, res) => {
+//   const { q } = req.query;
+//   const postBySearch = await Post.findAll({
+//     where: {
+//       [Op.or]: [
+//         { title: { [Op.like]: `%${q}%` } },
+//         { content: { [Op.like]: `%${q}%` } },
+//       ],
+//     },
+//     include: { model: User, as: 'user' },
+//   });
+//   return res.status(200).json(postBySearch);
+// });
 
 // Requisito 11 -  endpoint DELETE post/:id
 postRouter.delete('/post/:id', jwt.authorizationToken, async (req, res) => {
