@@ -22,11 +22,9 @@ router.post(
     try {
       const formData = req.body;
       const user = await Users.create(formData);
-      console.log('controller L25:', user.dataValues);
       if (user.message) return res.status(400).json('Algo deu errado!');
       const { id, email } = user.dataValues;
       const token = createToken({ id, email });
-      console.log('userController L28', token);
       res.status(201).json({ token });
     } catch (err) {
       res.status(500).json('Algo deu errado NO CATCH');
@@ -64,9 +62,7 @@ router.delete('/me',
   async (req, res) => {
     try {
       const { email } = req.user;
-      console.log('userController L66', req.user);
       const selectUser = await Users.findOne({ where: { email } });
-      console.log('log L 68', selectUser);
       if (!selectUser) return res.status(404).json({ message: 'You cant do that dude!' });
       await selectUser.destroy();
       return res.status(204).json({ message: 'Usuário deletado.' });

@@ -5,7 +5,6 @@ const emailRegex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^
 const validateName = (req, res, next) => {
   const { displayName } = req.body;
   if (displayName.length < 8) {
-    console.log('Passou no verifyName');
     return res.status(400).json({ message: '"displayName" length must be at least 8 characters long' });
   }
   return next();

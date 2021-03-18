@@ -9,7 +9,6 @@ const verifyJWT = (req, res, next) => {
     const decoded = jwt.verify(token, SECRET);
     const { email, id } = decoded;
     req.user = { email, id };
-    console.log('AQUI NO AUTH, L12', req.user);
     return next();
   } catch (error) {
     return res.status(401).json({ message: 'Token expirado ou inválido' });

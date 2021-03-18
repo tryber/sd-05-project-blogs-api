@@ -12,7 +12,6 @@ router.post('/',
   async (req, res) => {
     const { id, email } = req.user;
     const token = createToken({ id, email });
-    console.log('login controller L15t', token);
     return res.status(200).json({ token });
   });
 

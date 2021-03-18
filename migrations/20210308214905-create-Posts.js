@@ -14,7 +14,7 @@ module.exports = {
         allowNull: false,
       },
       content: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       userId: {
@@ -25,12 +25,14 @@ module.exports = {
         references: { model: "Users", key: "id" },
       },
       published: {
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: new Date(),
       },
       updated: {
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: new Date(),
       },
     });
     return postsTable;

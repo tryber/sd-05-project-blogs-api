@@ -9,7 +9,7 @@
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
     "mysql2": "^2.1.0",
-    "sequelize": "^6.3.4",
+    "sequelize": "^6.5.1",
     "shelljs": "^0.8.4"
   },
   "scripts": {
