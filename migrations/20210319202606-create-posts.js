@@ -34,7 +34,7 @@ module.exports = {
       updated: {
         isDate: true,
         type: Sequelize.DATE,
-      }
+      },
     }
   ),
 
