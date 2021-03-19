@@ -1,6 +1,6 @@
 // requisição do frontend
 const express = require('express');
-const { modelUser } = require('../models');
+const { modelUser } = require('../models/userModel');
 const routeUser = express.Router();
 
 routeUser.post('/', (req, res) => {
