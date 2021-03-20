@@ -1,4 +1,4 @@
-const { User } = require('../models/Users');
+const { User } = require('../models');
 
 const emailValid = async (req) => {
   const { email } = req.body;
