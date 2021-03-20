@@ -1,14 +1,16 @@
 // requisição do frontend
 const express = require('express');
-const { modelUser } = require('../models/userModel');
+const { User } = require('../models/Users');
+const { authenticate } = require('../middlewares/authentication');
+
 const routeUser = express.Router();
 
 routeUser.post('/', (req, res) => {
   const { displayName, email, password, image } = req.body;
-  modelUser
-    .create({ displayName, email, password, image })
+  User.create({ displayName, email, password, image })
     .then((newUser) => {
-      res.status(201).json(newUser);
+      const token = authenticate({ newUser });
+      res.status(201).json({ token });
     })
     .catch((err) => {
       console.log(err.message);

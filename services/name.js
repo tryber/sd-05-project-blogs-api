@@ -6,6 +6,12 @@ const nameValid = (req) => {
       err: { message: '"displayName" length must be at least 8 characters login', status: 400 },
     };
   }
+
+  if (!displayName) {
+    return {
+      err: { message: '"displayName" is required', status: 400 },
+    };
+  }
   return null;
 };
 
