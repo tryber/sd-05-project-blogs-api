@@ -5,13 +5,12 @@ const { User } = require('../models');
 
 const usersRouter = Router();
 
-usersRouter.post('/', async (req, res, next) => {
+usersRouter.post('/', async (req, res, _next) => {
   const { displayName, email, password, image } = req.body;
 
-  const createUser = await User.create({ displayName, email, password, image })
-  
-  return res.status(201).json(createUser)
+  const createUser = await User.create({ displayName, email, password, image });
 
+  return res.status(201).json(createUser);
 });
 
 module.exports = usersRouter;

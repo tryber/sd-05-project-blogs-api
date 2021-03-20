@@ -7,6 +7,6 @@ const createUser = (sequelize, DataTypes) => {
   }, { timestamps: false });
 
   return User;
-}
+};
 
 module.exports = createUser;
