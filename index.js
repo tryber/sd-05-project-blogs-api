@@ -1,7 +1,7 @@
 const express = require('express');
 
 const usersRouter = require('./controllers/userController');
-// const loginRouter = require('./controllers/loginController');
+const loginRouter = require('./controllers/loginController');
 const checkEmail = require('./middlewares/emailMiddleware');
 const checkPwd = require('./middlewares/pwdMiddleware');
 const checkDisplayName = require('./middlewares/displayNameMiddleware');
@@ -18,7 +18,7 @@ app.use(express.json()); // express.json é o novo bodyparser
 
 app.use('/user', checkEmail, checkPwd, checkDisplayName, usersRouter);
 
-// app.use('/login', loginRouter);
+app.use('/login', loginRouter);
 
 app.use((err, _req, res, _next) => {
   console.error(err);

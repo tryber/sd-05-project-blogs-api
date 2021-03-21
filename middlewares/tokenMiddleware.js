@@ -16,7 +16,7 @@ const tokenMiddleware = async (req, res, next) => {
 
     next();
   } catch (error) {
-    res.status(401).json({ message: 'jwt malformed' });
+    return res.status(401).json({ message: 'jwt malformed' });
   }
 };
 
