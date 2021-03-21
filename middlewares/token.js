@@ -1,6 +1,6 @@
-const { validToken } = require('../middlewares/authentication');
+const { validToken } = require('./authentication');
 
-const auth = async (req) => {
+const auth = async (req, res, next) => {
   try {
     const { authorization } = req.headers;
 
@@ -9,9 +9,11 @@ const auth = async (req) => {
     }
 
     const verification = validToken(authorization);
-    return verification;
+    req.user = verification.newUser;
+
+    next();
   } catch {
-    return { err: { message: 'Token expirado ou inválido', status: 401 } };
+    return res.status(401).send({ message: 'Token expirado ou inválido' });
   }
 };
 
