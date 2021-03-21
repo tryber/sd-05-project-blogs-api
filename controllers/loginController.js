@@ -19,7 +19,6 @@ const jwtConfig = {
 loginRouter.post('/', middlewares, async (req, res) => {
   try {
     const { email, password } = req.body;
-
     const user = await User.findOne({ where: { email } });
 
     if (!user) { return res.status(400).json({ message: 'Campos inválidos' }); }
@@ -28,14 +27,15 @@ loginRouter.post('/', middlewares, async (req, res) => {
       return res.status(400).json({ message: 'Campos inválidos' });
     }
 
+    delete user.dataValues.password;
+
     const payload = {
       iss: 'post_api', // Issuer => Quem emitiu o token
       aud: 'identify', // Audience => Quem deve aceitar este token
-      user, // sub: user._id
+      user: user.dataValues, // sub: user._id
     };
 
     const token = jwt.sign(payload, secret, jwtConfig);
-
     return res.status(200).json({ token });
   } catch (error) {
     return res.status(500).json({ message: `Intern Error: ${error}` });

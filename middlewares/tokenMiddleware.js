@@ -7,7 +7,7 @@ const tokenMiddleware = async (req, res, next) => {
 
     if (!token) {
       return res.status(401).json({
-        message: 'missing auth token',
+        message: 'Token não encontrado',
       });
     }
 
@@ -16,7 +16,7 @@ const tokenMiddleware = async (req, res, next) => {
 
     next();
   } catch (error) {
-    return res.status(401).json({ message: 'jwt malformed' });
+    return res.status(401).json({ message: 'Token expirado ou inválido' });
   }
 };
 
