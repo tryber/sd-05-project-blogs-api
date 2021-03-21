@@ -1,5 +1,6 @@
 const express = require('express');
 const userController = require('./controller/UsersController');
+const loginController = require('./controller/LoginController');
 const errMiddleware = require('./middlewares/err');
 
 const app = express();
@@ -7,8 +8,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/user', userController);
-
-app.use(errMiddleware);
+app.use('/login', loginController);
 
 const PORT = 3000;
 

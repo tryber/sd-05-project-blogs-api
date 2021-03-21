@@ -1,6 +1,6 @@
 const { User } = require('../models');
 
-function UserValidator(message, validatorKey) {
+const UserValidator = (message, validatorKey) => {
   return {
     message,
     validatorKey
@@ -35,13 +35,10 @@ const create = async (user) => {
     )
   }
   const userDB = await User.findOne({ where: { email } });
-  console.log("L37", userDB)
   if (userDB) {
     throw (UserValidator('Usuário já existe', 'emailAlreadyExists'));
   }
   return User.create(user);
 };
 
-module.exports = {
-  create,
-};
+module.exports = { create };

@@ -1,4 +1,4 @@
-module.exports = (err, _req, res, _next) => {
+const createUserValidator = (err, _req, res, _next) => {
 
   const { message, validatorKey } = err;
 
@@ -8,10 +8,10 @@ module.exports = (err, _req, res, _next) => {
   if (validatorKey === 'isEmail') {
     return res.status(400).json({ message });
   }
-  if (validatorKey === 'emailAlreadyExists') { 
+  if (validatorKey === 'emailAlreadyExists') {
     return res.status(409).json({ message });
   }
-  if (validatorKey === 'failedRegex') { 
+  if (validatorKey === 'failedRegex') {
     return res.status(400).json({ message });
   }
   if (validatorKey === 'not_unique') {
@@ -22,3 +22,19 @@ module.exports = (err, _req, res, _next) => {
   }
   return res.status(500).json({ message: 'Algo deu errado' });
 };
+
+const loginValidator = (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email && email.length === 0) {
+    return res.status(400).json({ message: '"email" is not allowed to be empty' });
+  }
+
+  if (!password && password.length < 1) {
+    return res.status(400).json({ message: '"password" is not allowed to be empty' });
+  }
+
+  return next();
+}
+
+module.exports = { createUserValidator, loginValidator };
