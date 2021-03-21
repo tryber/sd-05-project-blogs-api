@@ -4,29 +4,10 @@ const jwt = require('jsonwebtoken');
 
 const loginRouter = Router();
 
-const checkEmail = require('../middlewares/emailMiddleware');
-const checkPwd = require('../middlewares/pwdMiddleware');
-const checkToken = require('../middlewares/tokenMiddleware');
+const { User } = require('../models');
+const { emailLogin, pwdLogin } = require('../middlewares/loginMiddleware');
 
-const emptyField = async (req, res, next) => {
-  const { email, password } = req.body;
-  
-  if (email === "") {
-    return res.status(400).json({
-      message: '"email" is not allowed to be empty',
-    });
-  }
-  
-  if (password === "") {
-    return res.status(400).json({
-      message: '"password" is not allowed to be empty',
-    });
-  }
-
-  next();
-}
-
-const middlewares = [checkEmail, checkPwd];
+const middlewares = [emailLogin, pwdLogin];
 
 const secret = 'secretPassword';
 
@@ -35,21 +16,23 @@ const jwtConfig = {
   algorithm: 'HS256',
 };
 
-loginRouter.post('/', emptyField, middlewares, async (req, res) => {
+loginRouter.post('/', middlewares, async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await checkToken(email, password);
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) { return res.status(400).json({ message: 'Campos inválidos' }); }
+
+    if (password !== user.dataValues.password) {
+      return res.status(400).json({ message: 'Campos inválidos' });
+    }
 
     const payload = {
-      // Issuer => Quem emitiu o token
-      iss: 'post_api',
-      // Audience => Quem deve aceitar este token
-      aud: 'identify',
-      // Subject => A quem pertence esse token
-      // sub: user._id,
-      user,
-    }
+      iss: 'post_api', // Issuer => Quem emitiu o token
+      aud: 'identify', // Audience => Quem deve aceitar este token
+      user, // sub: user._id
+    };
 
     const token = jwt.sign(payload, secret, jwtConfig);
 
