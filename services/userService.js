@@ -21,9 +21,17 @@ const create = async (user) => {
 };
 
 const getAll = async () => {
-  const users = await User.findAll();
+  const users = await User.findAll({ attributes: { exclude: ['password'] } });
 
   return users;
 };
 
-module.exports = { create, getAll };
+const getById = async (id) => {
+  const user = await User.findOne({
+    where: { id },
+    attributes: { exclude: ['password'] },
+  });
+  return user;
+};
+
+module.exports = { create, getAll, getById };
