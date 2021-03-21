@@ -1,22 +1,31 @@
 const emailService = require('../services/email');
 const nameService = require('../services/name');
 const passwordService = require('../services/password');
+const { User } = require('../models');
+const { getToken } = require('./authentication');
 
-const userMiddleware = async (req, res, next) => {
+const userMiddleware = async (req) => {
   const validatedEmail = await emailService(req);
   if (validatedEmail) {
-    return res.status(validatedEmail.err.status).json(validatedEmail.err);
+    return validatedEmail;
   }
   const validatedName = await nameService(req);
   if (validatedName) {
-    return res.status(validatedName.err.status).json(validatedName.err);
+    return validatedName;
   }
   const validatedPassword = await passwordService(req);
   if (validatedPassword) {
-    return res.status(validatedPassword.err.status).json(validatedPassword.err);
+    return validatedPassword;
   }
 
-  next();
+  try {
+    const { displayName, email, password, image } = req.body;
+    const newUser = await User.create({ displayName, email, password, image });
+    const token = getToken(newUser);
+    return { token };
+  } catch {
+    return { err: { message: 'Algo deu errado', status: 500 } };
+  }
 };
 
 module.exports = userMiddleware;
