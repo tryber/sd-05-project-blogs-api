@@ -32,4 +32,11 @@ usersRouter.get('/:id', tokenMiddleware, async (req, res) => {
   return res.status(200).json(userById);
 });
 
+usersRouter.delete('/me', tokenMiddleware, async (req, res) => {
+  const userId = req.payload.user.id;
+  const deleteUser = await User.destroy({ where: { id: userId } });
+
+  return res.status(204).json(deleteUser);
+});
+
 module.exports = usersRouter;
