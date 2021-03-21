@@ -20,11 +20,11 @@ const create = async (user) => {
   return User.create(user);
 };
 
-const getAll = async () => {
+const getAll = async (req) => {
   const { id, displayName, email, image } = req.body;
-  const users = await User.findAll({id, displayName, email, image})
+  const users = await User.findAll({ id, displayName, email, image });
 
   return users;
-}
+};
 
 module.exports = { create, getAll };
