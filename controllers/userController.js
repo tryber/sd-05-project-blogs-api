@@ -22,4 +22,14 @@ usersRouter.get('/', tokenMiddleware, async (_req, res) => {
   return res.status(200).json(listUsers);
 });
 
+usersRouter.get('/:id', tokenMiddleware, async (req, res) => {
+  const { id } = req.params;
+  const userById = await User.findOne({ where: { id }, attributes: { exclude: ['password'] } });
+  if (!userById) {
+    return res.status(404).json({ message: 'Usuário não existe' });
+  }
+
+  return res.status(200).json(userById);
+});
+
 module.exports = usersRouter;
