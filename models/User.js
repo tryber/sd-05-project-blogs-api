@@ -1,25 +1,41 @@
-const userCreate = (sequelize, DataTypes) => {
-  const Users = sequelize.define('User', {
-    id: {
-      autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.INTEGER,
+const displayNameObject = (DataTypes) => ({
+  type: DataTypes.STRING,
+  validate: {
+    len: {
+      args: [8, 20],
+      msg: '"displayName" length must be at least 8 characters long',
     },
-    displayName: {
-      type: DataTypes.STRING,
-    },
-    email: {
-      type: DataTypes.STRING,
-      unique: true
-    },
-    password: {
-      type: DataTypes.STRING,
-    },
-    image: {
-      type: DataTypes.STRING,
-    },
-  }, { timestamps: false });
-  return Users;
-}
+  },
+});
 
-module.exports = userCreate;
+const emailObject = (DataTypes) => ({
+  type: DataTypes.STRING,
+  validate: {
+    isEmail: {
+      msg: '"email" must be a valid email',
+    },
+  },
+});
+
+const passwordObject = (DataTypes) => ({
+  type: DataTypes.STRING,
+  validate: {
+    len: {
+      args: [6, 20],
+      msg: '"password" length must be 6 characters long',
+    },
+  },
+});
+
+const User = (sequelize, DataTypes) => {
+  const newUser = sequelize.define('User', {
+    displayName: displayNameObject(DataTypes),
+    email: emailObject(DataTypes),
+    password: passwordObject(DataTypes),
+    image: DataTypes.STRING,
+  }, {timestamps: false});
+
+  return newUser;
+};
+
+module.exports = User;
