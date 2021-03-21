@@ -29,6 +29,13 @@ userRouter.get('/:id', middlewareToken, rescue(async (req, res) => {
   return res.status(200).json(users);
 }));
 
+userRouter.delete('/me', middlewareToken, rescue(async (req, res) => {
+  const { id } = req.payload;
+  console.log(id);
+  await service.deleteById(id);
+  return res.status(204).json();
+}));
+
 userRouter.use(errMiddleware.createUserValidator);
 
 module.exports = userRouter;
