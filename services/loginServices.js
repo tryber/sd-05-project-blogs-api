@@ -1,6 +1,6 @@
 const { User } = require('../models');
 
-const userLogin = async (email, password) => {
+const userLogin = (email, password) => {
   if (email === undefined) {
     return { error: true, code: 400, message: '"email" is required' };
   }
@@ -14,9 +14,9 @@ const userLogin = async (email, password) => {
     return { error: true, code: 400, message: '"password" is not allowed to be empty' };
   }
 
-  return await User.findOne({
+  return User.findOne({
     where: { email, password }, attributes: ['id', 'email', 'displayName'],
   });
-}
+};
 
 module.exports = { userLogin };

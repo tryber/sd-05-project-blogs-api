@@ -33,7 +33,7 @@ const User = (sequelize, DataTypes) => {
     email: emailObject(DataTypes),
     password: passwordObject(DataTypes),
     image: DataTypes.STRING,
-  }, {timestamps: false});
+  }, { timestamps: false });
 
   return newUser;
 };

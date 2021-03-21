@@ -1,7 +1,5 @@
 const createUserValidator = (err, _req, res, _next) => {
-
   const { message, validatorKey } = err;
-
   if (validatorKey === 'length') {
     return res.status(400).json({ message });
   }
@@ -35,6 +33,6 @@ const loginValidator = (req, res, next) => {
   }
 
   return next();
-}
+};
 
 module.exports = { createUserValidator, loginValidator };
