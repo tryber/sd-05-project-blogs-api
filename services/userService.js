@@ -20,9 +20,8 @@ const create = async (user) => {
   return User.create(user);
 };
 
-const getAll = async (req) => {
-  const { id, displayName, email, image } = req.body;
-  const users = await User.findAll({ id, displayName, email, image });
+const getAll = async () => {
+  const users = await User.findAll();
 
   return users;
 };
