@@ -21,7 +21,7 @@ userRouter.post('/', async (req, res) => {
     const user = await User.create({ displayName, email, password, image });
     console.log(user.dataValues);
     const token = createToken(user.dataValues);
-    res.status(201).json({token});
+    res.status(201).json({ token });
   } catch (err) {
     res.status(err.status).json({ message: err.message });
   }
@@ -39,7 +39,7 @@ userRouter.get('/', verifyToken, async (_req, res) => {
 userRouter.get('/:id', verifyToken, async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findOne({ where: { id: parseInt(id) } });
+    const user = await User.findOne({ where: { id } });
     if (!user) {
       return res.status(404).json({ message: 'Usuário não existe' });
     }
