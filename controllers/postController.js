@@ -3,6 +3,7 @@ const { Post, User } = require('../models');
 const auth = require('../middlewares/token');
 const createPost = require('../middlewares/createPost');
 const getPost = require('../middlewares/getPost');
+const deletar = require('../middlewares/deletar');
 
 const routePost = express.Router();
 
@@ -39,20 +40,14 @@ routePost.get('/:id', auth, getPost, async (req, res) => {
   }
 });
 
-routePost.delete('/me', auth, async (req, res) => {
+routePost.delete('/:id', auth, deletar, async (req, res) => {
   try {
     const { id } = req.params;
-
-    const deletePost = await Post.findOne({ where: { id } });
-
-    if (!deletePost) {
-      return res.status(404).send({ message: 'Post não existe' });
-    }
     await Post.destroy({ where: { id } });
-    return res.status(204).send();
+    res.status(204).send();
   } catch (err) {
     console.log(err);
-    return res.status(500).send({ message: 'Algo deu errado' });
+    res.status(500).send({ message: 'Algo deu errado' });
   }
 });
 
