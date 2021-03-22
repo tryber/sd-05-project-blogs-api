@@ -12,54 +12,65 @@ const { verifyToken } = require('../middlewares/verifyToken');
 
 // 6 - Sua aplicação deve ter o endpoint POST /post
 
-// postRouter.post(
-//   '/',
-//   verifyToken,
-//   rescue(async (req, res) => {
-//     const { title, content } = req.body;
-//     const { id: idUser } = req.payload.userData;
+postRouter.post(
+  '/',
+  verifyToken,
+  rescue(async (req, res) => {
+    const { title, content } = req.body;
+    const { id: idUser } = req.payload.userData;
 
-//     await Post.create({ title, content, idUser, published: Date.now(), updated: Date.now(), });
+    await Post.create({ title, content, idUser, published: Date.now(), updated: Date.now() });
 
-//     return res.status(201).json({ title, content, idUser });
-//   }),
-// );
+    return res.status(201).json({ title, content, idUser });
+  }),
+);
 
-// // 3 - Sua aplicação deve ter o endpoint GET /user
+// 7 - Sua aplicação deve ter o endpoint GET /post
+// Ref include https://sequelize.org/master/manual/eager-loading.html
 
-// userRouter.get(
-//   '/',
-//   verifyToken,
-//   rescue(async (req, res) => {
-//     const listUsers = await User.findAll();
-//     res.status(200).json(listUsers);
-//   }),
-// );
+postRouter.get(
+  '/',
+  verifyToken,
+  rescue(async (req, res) => {
+    const listPosts = await User.findAll({ include: { model: User, as: 'user' } });
+    res.status(200).json(listPosts);
+  }),
+);
 
-// // 4 - Sua aplicação deve ter o endpoint GET /user/:id
-// userRouter.get(
-//   '/:id',
-//   verifyToken,
-//   rescue(async (req, res) => {
-//     const { id } = req.params;
+// 8 - Sua aplicação deve ter o endpoint GET /post/:id
+postRouter.get(
+  '/:id',
+  verifyToken,
+  rescue(async (req, res) => {
+    const uniquePost = await User.findByPk(req.params.id, {
+      include: {
+        model: User,
+        as: 'user',
+      },
+    });
 
-//     const idUser = await User.findOne({ where: { id } });
+    if (!uniquePost) return res.status(404).json({ message: 'Post não existe' });
 
-//     if (!idUser) return res.status(404).json({ message: 'Usuário não existe' });
+    return res.status(200).json(uniquePost);
+  }),
+);
 
-//     return res.status(200).json(idUser);
-//   }),
-// );
+// 9 - Sua aplicação deve ter o endpoint PUT /post/:id
+postRouter.get(
+  '/:id',
+  verifyToken,
+  // rescue(async (req, res) => {
+  //   const uniquePost = await User.findByPk(req.params.id, {
+  //     include: {
+  //       model: User,
+  //       as: 'user',
+  //     },
+  //   });
 
-// // 5 - Sua aplicação deve ter o endpoint DELETE /user/me
-// userRouter.get(
-//   '/me',
-//   verifyToken,
-//   rescue(async (req, res) => {
-//     const { id } = req.payload.userData;
-//     await User.destroy({ where: { id } });
-//     return res.status(204).send();
-//   }),
-// );
+  //   if (!uniquePost) return res.status(404).json({ message: 'Post não existe' });
+
+  //   return res.status(200).json(uniquePost);
+  }),
+);
 
 module.exports = postRouter;

@@ -7,6 +7,7 @@ app.use(express.json());
 
 const userRouter = require('./controllers/users');
 const loginRouter = require('./controllers/login');
+const postRouter = require('./controllers/post');
 
 // Rotas
 app.use('/user', userRouter);
