@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const Posts = await queryInterface.createTable('Posts', {
+    const postsTable = await queryInterface.createTable('Posts', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -18,20 +18,24 @@ module.exports = {
         type: Sequelize.STRING,
       },
       userId: {
-        allowNull: false,
-        foreingKey: true,
         type: Sequelize.INTEGER,
+        allowNull: false,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        references: { model: 'Users', key: 'id' },
       },
       published: {
-        type: Sequelize.Date,
+        type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: new Date(), 
       },
       updated: {
-        type: Sequelize.Date,
+        type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: new Date(), 
       },
     })
-    return Posts;
+    return postsTable;
     /**
      * Add altering commands here.
      *
@@ -40,7 +44,7 @@ module.exports = {
      */
   },
 
-  down: async (queryInterface, Sequelize) => queryInterface.dropTable('Posts')
+  down: async (queryInterface, _Sequelize) => queryInterface.dropTable('Posts')
     /**
      * Add reverting commands here.
      *

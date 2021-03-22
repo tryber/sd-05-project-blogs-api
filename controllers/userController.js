@@ -33,7 +33,7 @@ usersRouter.get('/:id', tokenMiddleware, async (req, res) => {
 });
 
 usersRouter.delete('/me', tokenMiddleware, async (req, res) => {
-  const userId = req.payload.user.id;
+  const userId = req.payload.id;
   const deleteUser = await User.destroy({ where: { id: userId } });
 
   return res.status(204).json(deleteUser);

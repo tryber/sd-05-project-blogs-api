@@ -1,6 +1,7 @@
 const { Router } = require('express');
 
 const jwt = require('jsonwebtoken');
+const { Op } = require('sequelize');
 
 const loginRouter = Router();
 
@@ -19,22 +20,22 @@ const jwtConfig = {
 loginRouter.post('/', middlewares, async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ where: { email } });
 
-    if (!user) { return res.status(400).json({ message: 'Campos inválidos' }); }
+    const user = await User.findOne({ where: { [Op.and]: [{ email }, { password }] } });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Campos inválidos' });
+    }
 
     if (password !== user.dataValues.password) {
       return res.status(400).json({ message: 'Campos inválidos' });
     }
-
     delete user.dataValues.password;
-
     const payload = {
       iss: 'post_api', // Issuer => Quem emitiu o token
       aud: 'identify', // Audience => Quem deve aceitar este token
-      user: user.dataValues, // sub: user._id
+      id: user.id,
     };
-
     const token = jwt.sign(payload, secret, jwtConfig);
     return res.status(200).json({ token });
   } catch (error) {
