@@ -2,6 +2,8 @@ const express = require('express');
 
 const rescue = require('express-rescue');
 
+const Joi = require('joi');
+
 const postRouter = express.Router();
 
 const { User, Post } = require('../models');
@@ -10,11 +12,19 @@ const { verifyToken } = require('../middlewares/verifyToken');
 
 // const { createToken } = require('../services/createToken');
 
+const verifyJoi = require('../middlewares/verifyJoi');
+
+const schema = Joi.object({
+  title: Joi.string().required().not().empty(),
+  content: Joi.string().required().not().empty(),
+});
+
 // 6 - Sua aplicação deve ter o endpoint POST /post
 
 postRouter.post(
   '/',
   verifyToken,
+  verifyJoi(schema),
   rescue(async (req, res) => {
     const { title, content } = req.body;
     const { id: idUser } = req.payload.userData;
@@ -59,17 +69,22 @@ postRouter.get(
 postRouter.get(
   '/:id',
   verifyToken,
-  // rescue(async (req, res) => {
-  //   const uniquePost = await User.findByPk(req.params.id, {
-  //     include: {
-  //       model: User,
-  //       as: 'user',
-  //     },
-  //   });
+  rescue(async (req, res) => {
+    const { id } = req.params;
+    const uniquePostById = await User.findByPk(id);
 
-  //   if (!uniquePost) return res.status(404).json({ message: 'Post não existe' });
+    // Verifica se o usuário é o mesmo que quer editar o post
+    const userAuthenticated = req.userPayload.id;
+    console.log(userAuthenticated);
 
-  //   return res.status(200).json(uniquePost);
+    if (uniquePostById.userId !== userAuthenticated) {
+      return res.status(401).json({ message: 'Usuário não autorizado' });
+    }
+
+    // Atualização do Post
+    const { title, content } = req.body;
+    await Post.update({ title, content }, { where: { id } });
+    return res.status(200).json({ title, content, userId: uniquePostById.userId });
   }),
 );
 
