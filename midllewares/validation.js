@@ -64,8 +64,9 @@ function verifyPassword(password) {
 
 async function verifyEmailExist(email) {
   const user = await User.findOne({ where: { email } });
+  console.log(user)
   const err = {};
-  if (user !== undefined) {
+  if (user !== null) {
     err.message = 'Usuário já existe';
     err.status = 409;
     err.code = 'invalid_data';
