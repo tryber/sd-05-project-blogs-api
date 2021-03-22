@@ -18,9 +18,9 @@ userRouter.post('/', async (req, res) => {
     await verifyEmail(email);
     await verifyPassword(password);
     await verifyEmailExist(email);
-    user = await User.create({ displayName, email, password, image });
+    const user = await User.create({ displayName, email, password, image });
     console.log(user.dataValues);
-    token = createToken(user.dataValues);
+    const token = createToken(user.dataValues);
     res.status(201).json(token);
   } catch (err) {
     res.status(err.status).json({ message: err.message });
