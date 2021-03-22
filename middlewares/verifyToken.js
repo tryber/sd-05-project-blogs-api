@@ -20,8 +20,11 @@ const verifyToken = async (req, res, next) => {
 
     next();
   } catch (err) {
-    return res.status(401).json({ message: 'Token inválido' });
+    return res.status(401).json({ message: 'Token expirado ou inválido' });
   }
 };
 
-module.exports = verifyToken;
+module.exports = {
+  verifyToken,
+  decodeToken,
+};
