@@ -5,7 +5,7 @@ const auth = async (req, res, next) => {
     const { authorization } = req.headers;
 
     if (!authorization) {
-      return { err: { message: 'Token não encontrado', status: 401 } };
+      return res.status(401).json({ message: 'Token não encontrado' });
     }
 
     const verification = validToken(authorization);
@@ -13,7 +13,7 @@ const auth = async (req, res, next) => {
 
     next();
   } catch {
-    return res.status(401).send({ message: 'Token expirado ou inválido' });
+    return res.status(401).json({ message: 'Token expirado ou inválido' });
   }
 };
 

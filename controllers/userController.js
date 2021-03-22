@@ -20,27 +20,24 @@ routeUser.post('/', async (req, res) => {
 routeUser.get('/:id', auth, async (req, res) => {
   try {
     const { id } = req.params;
-    const { userData } = req;
+    // const { user } = req;
     const data = await User.findOne({ where: { id } });
     if (!data) {
       return res.status(404).json({ message: 'Usuário não existe' });
     }
-    req.userData = data;
-    res.status(200).json(userData);
+    // req.user = data;
+    res.status(200).json(data);
   } catch {
     res.status(500).send({ message: 'Algo deu errado' });
   }
 });
 
-routeUser.get('/', async (req, res) => {
+routeUser.get('/', auth, async (req, res) => {
   try {
-    const response = await auth(req);
-    if (response.err) {
-      return res.status(response.err.status).json(response.err);
-    }
     const data = await User.findAll();
     res.status(200).json(data);
-  } catch {
+  } catch (err) {
+    console.log(err);
     res.status(500).send({ message: 'Algo deu errado' });
   }
 });
