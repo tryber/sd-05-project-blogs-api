@@ -1,14 +1,14 @@
 const jwt = require('jsonwebtoken');
 
-const createToken = async (user) => {
-  const secret = 'senhadificil';
+const secret = 'senhadificil';
 
+const createToken = async (user) => {
   const jwtConfig = {
     expiresIn: '1d',
     algorithm: 'HS256',
   };
 
-  const { password: _, ...userWithoutPassword } = user;
+  const { password: _, ...userWithoutPassword } = user.dataValues;
 
   const payload = {
     userData: userWithoutPassword,
@@ -18,5 +18,6 @@ const createToken = async (user) => {
   // Retorna token ao usuário
   return token;
 };
+const decodeToken = (token) => jwt.verify(token, secret);
 
-module.exports = createToken;
+module.exports = { createToken, decodeToken };
