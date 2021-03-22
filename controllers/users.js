@@ -1,5 +1,6 @@
 const { Router } = require('express');
-// const { createToken } = require('../midllewares/jwt');
+const { verifyToken } = require('../midllewares/jwt');
+const { createToken } = require('../midllewares/jwt');
 const { verifyName, verifyEmail, verifyPassword, verifyEmailExist } = require('../midllewares/validation');
 const { User } = require('../models');
 
@@ -13,24 +14,32 @@ userRouter.post('/',async (req, res) => {
   await verifyPassword(password);
   await verifyEmailExist(email);
   user = await User.create({ displayName, email, password, image });
-  res.status(201).json(user);
+  token = createToken(req.body);
+  res.status(201).json(token);
 } catch (err) {
-  // console.log(error);
   res.status(err.status).json({message: err.message});
 }
 });
 
-userRouter.post('/', async (req, res) => {
+userRouter.get('/', verifyToken, async (_req, res) => {
   try {
-    const {displayName, password} = req.body;
-    user = await User.findOne({where: {displayName, password}});
+    const users = await User.findAll();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(err.status).json({message: err.message});
+  }
+})
+
+userRouter.get('/:id',verifyToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findOne({ where: {id} })
     if (!user) {
-      res.status(400).json({message: "Usuário não existe"})
+      res.status(404).json({message: "Usuário não existe"});
     }
-    token = createToken(req.body);
-    res.status(201).json(token);
-  } catch (error) {
-    res.status(400).json({message: "Deu ruim"});
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(err.status).json({message: err.message});
   }
 })
 

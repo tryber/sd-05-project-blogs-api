@@ -17,15 +17,16 @@ function createToken(user) {
 
 function verifyToken(req, res, next) {
   const { authorization: token } = req.headers;
+  console.log(token)
   if (!token) {
-    return res.status(401).json({ message: 'missing auth token' });
+    return res.status(401).json({ message: 'Token não encontrado' });
   }
   try {
     const payload = jwt.verify(token, secret);
     req.payload = payload;
     return next();
   } catch (error) {
-    return res.status(401).json({ message: 'jwt malformed' });
+    return res.status(401).json({ message: 'Token expirado ou inválido' });
   }
 }
 
