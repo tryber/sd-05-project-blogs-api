@@ -1,7 +1,6 @@
 const { Post } = require('../models');
 
-const deletar 
-= async (req, res, next) => {
+const deletar = async (req, res, next) => {
   const { id } = req.params;
   const somePost = await Post.findOne({ where: { id } });
   if (!somePost) {
