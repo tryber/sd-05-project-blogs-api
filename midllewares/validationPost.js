@@ -1,4 +1,3 @@
-
 function verifyTitle(title) {
   const err = {};
   console.log(title);

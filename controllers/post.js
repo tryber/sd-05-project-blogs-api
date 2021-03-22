@@ -56,17 +56,14 @@ postRouter.put('/:id', verifyToken, async (req, res) => {
   try {
     verifyTitle(title);
     verifyContent(content);
-    if (id != req.payload.id) {
-      return res.status(401).json({message: "Usuário não autorizado"})
+    if (parseInt(id) !== req.payload.id) {
+      return res.status(401).json({ message: 'Usuário não autorizado' });
     }
-    const postUpdate = await Post.update(
-      {title, content},
-      { where: { id } },
-    );
+    const postUpdate = await Post.update({ title, content }, { where: { id } });
     console.log(postUpdate, 'postUpdate');
-    return res.status(200).json({content, title, userId: req.payload.id});
+    return res.status(200).json({ content, title, userId: req.payload.id });
   } catch (err) {
-    return res.status(err.status).json({message: err.message});
+    return res.status(err.status).json({ message: err.message });
   }
 });
 
