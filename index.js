@@ -1,11 +1,10 @@
 const express = require('express');
-const bodyparse = require('body-parser');
 const userRouter = require('./controllers/users');
 const loginRouter = require('./controllers/login');
 
 const app = express();
 
-app.use(bodyparse.json());
+app.use(express.json());
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (request, response) => {

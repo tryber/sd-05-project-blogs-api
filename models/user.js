@@ -9,8 +9,8 @@ const createUser = (sequelize, DataTypes) => {
       image: { type: DataTypes.STRING, defaultValue: '' },
     },
     { timestamps: false },
-    );
-    return User
+  );
+  return User;
 };
 
 module.exports = createUser;

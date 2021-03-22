@@ -6,8 +6,8 @@ const emailValido = (email) => {
 };
 
 function verifyEmail(email) {
-  const err = {}
-  if (email === "") {
+  const err = {};
+  if (email === '') {
     err.message = '"email" is not allowed to be empty';
     err.status = 400;
     err.code = 'invalid_data';
@@ -29,7 +29,7 @@ function verifyEmail(email) {
 }
 
 function verifyName(displayName) {
-  const err = {}
+  const err = {};
   if (displayName.length < 8) {
     err.message = '"displayName" length must be at least 8 characters long';
     err.status = 400;
@@ -40,8 +40,8 @@ function verifyName(displayName) {
 }
 
 function verifyPassword(password) {
-  const err = {}
-  if (password === "") {
+  const err = {};
+  if (password === '') {
     err.message = '"password" is not allowed to be empty';
     err.status = 400;
     err.code = 'invalid_data';
@@ -63,8 +63,8 @@ function verifyPassword(password) {
 }
 
 async function verifyEmailExist(email) {
-  const user = await User.findOne({ where: {email} });
-  const err = {}
+  const user = await User.findOne({ where: { email } });
+  const err = {};
   if (user != undefined) {
     err.message = 'Usuário já existe';
     err.status = 409;

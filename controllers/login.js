@@ -6,20 +6,20 @@ const { User } = require('../models');
 const loginRouter = Router();
 
 loginRouter.post('/', async (req, res) => {
-  const {email, password} = req.body;
+  const { email, password } = req.body;
   try {
     verifyEmail(email);
     verifyPassword(password);
-    const user = await User.findOne({ where: {email, password} })
+    const user = await User.findOne({ where: { email, password } });
     if (!user) {
-      res.status(400).json({message: "Campos inválidos"});
+      res.status(400).json({ message: 'Campos inválidos' });
     }
-    console.log(user.dataValues)
+    console.log(user.dataValues);
     token = createToken(user.dataValues);
     res.status(200).json(token);
   } catch (err) {
-    res.status(err.status).json({message: err.message});
+    res.status(err.status).json({ message: err.message });
   }
-})
+});
 
 module.exports = loginRouter;
