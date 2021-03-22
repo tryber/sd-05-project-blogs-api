@@ -2,7 +2,6 @@ function createPost(sequelize, DataTypes) {
   const Post = sequelize.define(
     'Post',
     {
-      id: { primaryKey: true, type: DataTypes.INTEGER, autoIncrement: true },
       title: { type: DataTypes.STRING },
       content: { type: DataTypes.STRING },
       userId: { foreignKey: true, type: DataTypes.INTEGER },

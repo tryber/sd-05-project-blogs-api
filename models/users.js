@@ -2,9 +2,9 @@ function createUser(sequelize, DataTypes) {
   const User = sequelize.define(
     'User',
     {
-      // id: { primaryKey: true, type: DataTypes.INTEGER, autoIncrement: true },
+      id: { primaryKey: true, type: DataTypes.INTEGER, autoIncrement: true },
       displayName: { type: DataTypes.STRING },
-      email: { type: DataTypes.STRING },
+      email: { type: DataTypes.STRING, unique: true },
       password: { type: DataTypes.STRING },
       image: { type: DataTypes.STRING, defaultValue: '' },
     },
