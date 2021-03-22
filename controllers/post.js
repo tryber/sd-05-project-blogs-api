@@ -17,9 +17,9 @@ postRouter.post('/', verifyToken, async (req, res) => {
     console.log(post, 'post');
     return res.status(201).json(post);
   } catch (err) {
-    console.log(err, 'erro')
-    return res.status(err.status).json({message: err.message});
+    console.log(err, 'erro');
+    return res.status(err.status).json({ message: err.message });
   }
-})
+});
 
 module.exports = postRouter;
