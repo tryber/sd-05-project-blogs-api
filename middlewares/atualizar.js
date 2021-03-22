@@ -14,4 +14,5 @@ const atualizar = async (req, res, next) => {
 
   return next();
 };
+
 module.exports = atualizar;
