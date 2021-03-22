@@ -67,4 +67,22 @@ postRouter.put('/:id', verifyToken, async (req, res) => {
   }
 });
 
+postRouter.delete('/:id', verifyToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await Post.findOne({ where: { id } });
+    console.log(post, 'post');
+    if (!post) {
+      return res.status(404).json({ message: 'Post não existe' });
+    }
+    if (post.dataValues.userId !== req.payload.id) {
+      return res.status(401).json({ message: 'Usuário não autorizado' });
+    }
+    await Post.destroy({ where: { id } });
+    return res.status(204).json({ message: 'Post deletado' });
+  } catch (err) {
+    return res.status(404).json({ message: err });
+  }
+});
+
 module.exports = postRouter;
