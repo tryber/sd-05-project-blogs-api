@@ -9,11 +9,12 @@ const Posts = (sequelize, DataTypes) => {
       },
       published: {
         type: DataTypes.DATE,
-        defaultValue: new Date(),
+        defaultValue: DataTypes.NOW,
       },
       updated: {
         type: DataTypes.DATE,
-        defaultValue: new Date(),
+        defaultValue: DataTypes.NOW,
+        onUpdate: DataTypes.NOW,
       },
     },
     { timestamps: false });

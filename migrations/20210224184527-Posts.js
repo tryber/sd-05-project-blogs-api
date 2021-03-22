@@ -4,18 +4,18 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const Posts = queryInterface.createTable('Posts', {
       id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
       },
       title: {
-        allowNull: false,
         type: Sequelize.STRING,
+        allowNull: false,
       },
       content: {
-        allowNull: false,
         type: Sequelize.STRING,
+        allowNull: false,
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -26,13 +26,12 @@ module.exports = {
         references: { model: 'Users', key: 'id'}
       },
       published: {
+        type: Sequelize.DATE,
         allowNull: false,
-        type: Sequelize.STRING,
-        defaultValue: new Date(),
       },
       updated: {
-      type: Sequelize.STRING,
-      defaultValue: new Date()
+      type: Sequelize.DATE,
+      allowNull: false,
       }
     })
     return Posts;
