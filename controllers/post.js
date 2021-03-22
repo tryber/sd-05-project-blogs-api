@@ -56,7 +56,7 @@ postRouter.put('/:id', verifyToken, async (req, res) => {
   try {
     verifyTitle(title);
     verifyContent(content);
-    if (parseInt(id) !== req.payload.id) {
+    if (Number(id) !== req.payload.id) {
       return res.status(401).json({ message: 'Usuário não autorizado' });
     }
     const postUpdate = await Post.update({ title, content }, { where: { id } });
