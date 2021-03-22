@@ -9,7 +9,8 @@ const auth = async (req, res, next) => {
     }
 
     const verification = validToken(authorization);
-    req.user = verification.newUser;
+    console.log('aqui token', verification);
+    req.user = verification;
 
     next();
   } catch {

@@ -2,23 +2,13 @@ const Post = (sequelize, DataTypes) => {
   const postModel = sequelize.define(
     'Post',
     {
-      title: DataTypes.STRING,
-      content: DataTypes.STRING,
-      published: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-      },
-      updated: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-        onUpdate: DataTypes.NOW,
-      },
-      userId: {
-        type: DataTypes.INTEGER,
-        foreignKey: true,
-      },
+      title: { type: DataTypes.STRING },
+      content: { type: DataTypes.STRING },
+      userId: { foreignKey: true, type: DataTypes.INTEGER },
+      published: { type: DataTypes.DATE, defaultValue: new Date() },
+      updated: { type: DataTypes.DATE, defaultValue: new Date() },
     },
-    { timestamps: false }
+    { timestamps: false },
   );
 
   postModel.associate = (models) => {

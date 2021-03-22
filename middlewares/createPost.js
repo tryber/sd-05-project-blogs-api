@@ -1,4 +1,4 @@
-const postService = async (req, res, next) => {
+const createPost = async (req, res, next) => {
   const { title, content } = req.body;
 
   if (!title) return res.status(400).send({ message: '"title" is required' });
@@ -8,4 +8,4 @@ const postService = async (req, res, next) => {
   next();
 };
 
-module.exports = postService;
+module.exports = createPost;

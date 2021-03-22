@@ -6,11 +6,11 @@ const loginValid = require('../services/login');
 const loginRouter = express.Router();
 
 loginRouter.post('/', async (req, res) => {
-  const loginUser = await loginValid(req);
+  const user = await loginValid(req);
+  console.log('bla bla login', user);
+  if (user.err) return res.status(user.err.status).json(user.err);
 
-  if (loginUser.err) return res.status(loginUser.err.status).json(loginUser.err);
-
-  const token = getToken({ loginUser });
+  const token = getToken(user.dataValues);
 
   res.status(200).json({ token });
 });

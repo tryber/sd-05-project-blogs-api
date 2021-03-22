@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/user/', userController);
 app.use('/login/', loginController);
-app.use('/post', postController);
+app.use('/post/', postController);
 
 const PORT = process.env.PORT || 3000;
 

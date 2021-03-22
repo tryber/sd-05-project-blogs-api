@@ -23,8 +23,7 @@ routeUser.get('/:id', auth, async (req, res) => {
       return res.status(404).json({ message: 'Usuário não existe' });
     }
     res.status(200).json(data);
-  } catch (err) {
-    console.log (err);
+  } catch {
     res.status(500).send({ message: 'Algo deu errado' });
   }
 });
@@ -33,7 +32,7 @@ routeUser.get('/', auth, async (req, res) => {
   try {
     const data = await User.findAll();
     res.status(200).json(data);
-  } catch(err) {
+  } catch (err) {
     console.log(err);
     res.status(500).send({ message: 'Algo deu errado' });
   }
