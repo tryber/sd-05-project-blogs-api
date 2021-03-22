@@ -24,7 +24,6 @@ postRouter.get('/', verifyToken, async (_req, res) => {
     const posts = await Post.findAll({ include: { model: User, as: 'user' } });
     return res.status(200).json(posts);
   } catch (err) {
-    console.log(err, 'erro');
     return res.status(500).json({ message: 'Deu ruim' });
   }
 });
@@ -41,12 +40,33 @@ postRouter.get('/:id', verifyToken, async (req, res) => {
       },
     });
     if (!post) {
-      return res.status(404).json({message: "Post não existe"})
+      return res.status(404).json({ message: 'Post não existe' });
     }
     return res.status(200).json(post);
   } catch (err) {
-    console.log(err, 'erro');
     return res.status(500).json({ message: 'Deu ruim' });
+  }
+});
+
+postRouter.put('/:id', verifyToken, async (req, res) => {
+  const { title, content } = req.body;
+  const { id } = req.params;
+  console.log(id, 'params');
+  console.log(req.payload.id, 'payload');
+  try {
+    verifyTitle(title);
+    verifyContent(content);
+    if (id != req.payload.id) {
+      return res.status(401).json({message: "Usuário não autorizado"})
+    }
+    const postUpdate = await Post.update(
+      {title, content},
+      { where: { id } },
+    );
+    console.log(postUpdate, 'postUpdate');
+    return res.status(200).json({content, title, userId: req.payload.id});
+  } catch (err) {
+    return res.status(err.status).json({message: err.message});
   }
 });
 
