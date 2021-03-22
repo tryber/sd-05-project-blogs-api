@@ -6,10 +6,11 @@ const app = express();
 app.use(express.json());
 
 const userRouter = require('./controllers/users');
+const loginRouter = require('./controllers/login');
 
 // Rotas
 app.use('/user', userRouter);
-// app.use('/login', loginRouter);
+app.use('/login', loginRouter);
 // app.use('/post', postRouter);
 
 // não remova esse endpoint, e para o avaliador funcionar
