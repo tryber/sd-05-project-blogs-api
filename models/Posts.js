@@ -1,4 +1,4 @@
-/* const Post = (sequelize, DataTypes) => {
+const Post = (sequelize, DataTypes) => {
   const postModel = sequelize.define(
     'Post',
     {
@@ -13,17 +13,19 @@
         defaultValue: DataTypes.NOW,
         onUpdate: DataTypes.NOW,
       },
-      userId: DataTypes.INTEGER,
+      userId: {
+        type: DataTypes.INTEGER,
+        foreignKey: true,
+      },
     },
-    { timestamps: false },
+    { timestamps: false }
   );
 
   postModel.associate = (models) => {
-    postModel.belongsTo(models.Users, { foreignKey: 'userId', as: 'user' });
+    postModel.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
   };
 
   return postModel;
 };
 
 module.exports = Post;
-*/
