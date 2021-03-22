@@ -26,7 +26,7 @@ Aqui você vai encontrar os detalhes de como estruturar o desenvolvimento do seu
 - [Como desenvolver](#como-desenvolver)
   - [Linter](#linter)
 - [Requisitos do projeto](#requisitos-do-projeto)
-  - [Observações importantes](👀-Observações-importantes)
+  - [Observações importantes](#👀-Observações-importantes)
     - [Dicas](#dicas)
   - [Lista de Requisitos](#lista-de-requisitos)
     - [1 - Sua aplicação deve ter o endpoint POST `/user`](#1---Sua-aplicação-deve-ter-o-endpoint-POST-/user)
@@ -75,7 +75,7 @@ Para fazer um post é necessário usuário e login, portanto será trabalhada a 
  
 ### Data de Entrega
 
-O projeto tem até a seguinte data: `03/02/2021 - 14:00h`. Para ser entregue a avaliação final.
+O projeto tem até a seguinte data: `04/02/2021 - 14:00h`. Para ser entregue a avaliação final.
 
 ---
 
@@ -85,7 +85,7 @@ O projeto tem até a seguinte data: `03/02/2021 - 14:00h`. Para ser entregue a a
 ### ANTES DE COMEÇAR A DESENVOLVER:
 
 1. Clone o repositório
-  * `git clone https://github.com/betrybe/sd-05-project-blogs-api.git`.
+  * `git clone https://github.com/tryber/sd-05-project-blogs-api.git`.
   * Entre na pasta do repositório que você acabou de clonar:
     * `cd sd-05-project-blogs-api`
 
@@ -287,14 +287,14 @@ Alguns exemplos:
   }
   ```
 
-- Deve conter uma tabela chamada **BlogPosts**, contendo os seguinte dados:
+- Deve conter uma tabela chamada **Posts**, contendo os seguinte dados:
 
   ```json
   {
     "id": "7706273476706534553",
     "title": "Latest updates, August 1st",
     "content": "The whole text for the blog post goes here in this key",
-    "user_id": "401465483996", // esse é o id que referência usuário que é o autor do post
+    "userId": "401465483996", // esse é o id que referência usuário que é o autor do post
     "published": "2011-08-01T19:58:00.000Z",
     "updated": "2011-08-01T19:58:51.947Z",
   }
