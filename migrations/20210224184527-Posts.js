@@ -20,6 +20,7 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        defaultValue: -1,
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         references: { model: 'Users', key: 'id'}
@@ -27,8 +28,12 @@ module.exports = {
       published: {
         allowNull: false,
         type: Sequelize.STRING,
+        defaultValue: new Date(),
       },
-      updated: Sequelize.DATE,
+      updated: {
+      type: Sequelize.STRING,
+      defaultValue: new Date()
+      }
     })
     return Posts;
   },

@@ -11,7 +11,6 @@ loginRouter.post(
   rescue(async (req, res) => {
     const { email, password } = req.body;
     const userLogin = await services.userLogin(email, password);
-    console.log('L14 logincontroller', userLogin);
     if (!userLogin) {
       return res.status(400).json({ message: 'Campos inválidos' });
     }
