@@ -11,8 +11,8 @@ app.get('/', (_req, res) => {
 });
 
 const errorMiddleware = (err, _req, res, _next) => {
-  const { message, status } = err;
-  res.status(status || 500).json({ message });
+  if (err.status) res.status(err.status).json({ message: err.message });
+  res.status(500).json({ message: 'Something went wrong :(' });
 };
 
 app.use(errorMiddleware);
