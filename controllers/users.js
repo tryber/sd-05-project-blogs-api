@@ -14,7 +14,8 @@ userRouter.post('/',async (req, res) => {
   await verifyPassword(password);
   await verifyEmailExist(email);
   user = await User.create({ displayName, email, password, image });
-  token = createToken(req.body);
+  console.log(user.dataValues);
+  token = createToken(user.dataValues);
   res.status(201).json(token);
 } catch (err) {
   res.status(err.status).json({message: err.message});
@@ -40,6 +41,17 @@ userRouter.get('/:id',verifyToken, async (req, res) => {
     res.status(200).json(user);
   } catch (err) {
     res.status(err.status).json({message: err.message});
+  }
+})
+
+userRouter.delete('/me', verifyToken, async (req, res) => {
+  try {
+    const { id } = req.payload;
+    console.log(id);
+    await User.destroy({ where: {id} })
+    res.status(204).json({message: "Usuário deletado"});
+  } catch (err) {
+    res.status(404).json({message: err});
   }
 })
 

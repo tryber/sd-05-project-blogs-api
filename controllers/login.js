@@ -14,7 +14,8 @@ loginRouter.post('/', async (req, res) => {
     if (!user) {
       res.status(400).json({message: "Campos inválidos"});
     }
-    token = createToken(req.body);
+    console.log(user.dataValues)
+    token = createToken(user.dataValues);
     res.status(200).json(token);
   } catch (err) {
     res.status(err.status).json({message: err.message});
