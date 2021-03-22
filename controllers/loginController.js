@@ -7,7 +7,6 @@ const loginRouter = express.Router();
 
 loginRouter.post('/', async (req, res) => {
   const user = await loginValid(req);
-  console.log('bla bla login', user);
   if (user.err) return res.status(user.err.status).json(user.err);
 
   const token = getToken(user.dataValues);

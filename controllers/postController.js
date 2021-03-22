@@ -1,9 +1,12 @@
 const express = require('express');
 const { Post, User } = require('../models');
+// const { Op } = require('sequelize');
 const auth = require('../middlewares/token');
 const createPost = require('../middlewares/createPost');
 const getPost = require('../middlewares/getPost');
 const deletar = require('../middlewares/deletar');
+const atualizar = require('../middlewares/atualizar');
+const { validTitle, validContent } = require('../middlewares/validUpdate');
 
 const routePost = express.Router();
 
@@ -50,5 +53,44 @@ routePost.delete('/:id', auth, deletar, async (req, res) => {
     res.status(500).send({ message: 'Algo deu errado' });
   }
 });
+
+routePost.put('/:id', auth, atualizar, async (req, res) => {
+  try {
+    // console.log('vinicius', req.user);
+    const { title, content } = req.body;
+    const { id } = req.params;
+    if (validTitle(title).status) {
+      return res.status(400).json({ message: '"title" is required' });
+    }
+    if (validContent(content).status) {
+      return res.status(400).json({ message: '"content" is required' });
+    }
+    const upPost = await Post.update({ title, content }, { where: { id } });
+    res.status(200).json({ content, title, userId: Number(id) });
+    if (!upPost) {
+      return res.status(404).json({ message: 'Não' });
+    }
+  } catch (err) {
+    // console.log(err, 'ferrou tudo');
+    res.status(500).send({ message: 'Algo deu errado' });
+  }
+});
+
+/* routePost.get('/search', auth, async (req, res) => {
+  try {
+    const { q } = req.query;
+    const searchPost = await Post.findAll({
+      where: {
+        [Op.or]: [{ title: { [Op.like]: `%${q}%` } }, { content: { [Op.like]: `%${q}%` } }],
+      },
+      include: { model: Users, as: 'user', attributes: { exclude: ['password'] } },
+    });
+    return res.status(200).json(searchPost);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json('Algo deu errado');
+  }
+});
+*/
 
 module.exports = routePost;
