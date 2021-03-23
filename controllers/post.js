@@ -73,25 +73,32 @@ postRouter.get(
 );
 
 // 9 - Sua aplicação deve ter o endpoint PUT /post/:id
-postRouter.get(
+postRouter.put(
   '/:id',
   verifyToken,
-  rescue(async (req, res) => {
-    const { id } = req.params;
-    const uniquePostById = await Post.findByPk(id);
+  verifyJoi(schema),
+  (async (req, res) => {
+    try {
+      const { id } = req.params;
+      console.log(typeof (id), 'CHEGUEI RAPAZIADA');
+      // const uniquePostById = await Post.findByPk(id);
 
-    // Verifica se o usuário é o mesmo que quer editar o post
-    const userAuthenticated = req.userPayload.id;
-    console.log(userAuthenticated);
+      // Verifica se o usuário é o mesmo que quer editar o post
+      const userAuth = req.userPayload.id;
+      console.log('DEUS SOCORRO', typeof (userAuth));
 
-    if (uniquePostById.userId !== userAuthenticated) {
-      return res.status(401).json({ message: 'Usuário não autorizado' });
+      if (Number(id) !== userAuth) {
+        return res.status(401).json({ message: 'Usuário não autorizado' });
+      }
+
+      // Atualização do Post
+      const { title, content } = req.body;
+
+      await Post.update({ title, content }, { where: { id } });
+      return res.status(200).json({ title, content, userId: Number(id) });
+    } catch (error) {
+      return res.status(401).json({ message: 'DEU RUIM' });
     }
-
-    // Atualização do Post
-    const { title, content } = req.body;
-    await Post.update({ title, content }, { where: { id } });
-    return res.status(200).json({ title, content, userId: uniquePostById.userId });
   }),
 );
 
