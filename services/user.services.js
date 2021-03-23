@@ -40,7 +40,7 @@ const registerUser = async (displayName, email, password, image) => {
   if (error) throw INVALID_DATA(error.message);
 
   const userFound = await User.findOne({ where: { email } });
-  
+
   if (userFound) throw USER_CONFLICT;
 
   const newUser = await User.create({
