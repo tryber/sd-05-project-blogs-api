@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const middlewares = require('../middlewares');
-// const { usersService } = require('../services');
 const models = require('../models');
 
 const postRouter = Router();
@@ -13,8 +12,13 @@ postRouter.post('/', middlewares.validatePost, middlewares.auth, async (req, res
 });
 
 postRouter.get('/', middlewares.auth, async (req, res) => {
-  const users = await models.User.findAll({});
-  return res.status(200).json(users);
+  const { id } = req.payload;
+  const posts = await models.Post.findAll({
+    where: { userId: id },
+    attributes: { exclude: 'userId' },
+    include: { model: models.User, as: 'user', attributes: { excludes: 'password' } },
+  });
+  return res.status(200).json(posts);
 });
 
 postRouter.get('/:id', middlewares.auth, async (req, res) => {
