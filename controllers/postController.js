@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const { Op } = require('sequelize');
 
 const Joi = require('joi');
 
@@ -35,6 +36,24 @@ postsRouter.get('/', tokenValidation, async (req, res) => {
     console.log(err);
     return res.status(400).json({ message: err });
   }
+});
+
+postsRouter.get('/search', tokenValidation, async (req, res) => {
+  const { query = '' } = req.query;
+  const { id } = req.payload;
+  try {
+    const search = await Posts.findAll({
+      where: {
+        userId: id,
+        [Op.or]: [
+          { title: { [Op.like]: '%' + query + '%' } },
+          { content: { [Op.like]: '%' + query + '%' } },
+        ],
+      },
+      include: { model: Users, as: 'user', attributes: { exclude: ['password'] } },
+    });
+    return res.status(200).json(search);
+  } catch (error) {}
 });
 
 postsRouter.get('/:id', tokenValidation, async (req, res) => {
