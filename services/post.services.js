@@ -29,13 +29,9 @@ const createPost = async (userId, title, content) => {
 
   if (error) throw INVALID_DATA(error.message);
 
-  await Post.create({ userId, title, content });
+  const newPost = await Post.create({ userId, title, content });
 
-  return {
-    userId,
-    title,
-    content,
-  };
+  return newPost;
 };
 
 const getAllPosts = async () => {
