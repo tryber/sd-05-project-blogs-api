@@ -44,9 +44,15 @@ postRouter.put('/:id', middlewares.validatePost, middlewares.auth, async (req, r
   return res.status(200).json({ content, title, userId });
 });
 
-postRouter.delete('/me', middlewares.auth, async (req, res) => {
-  const { id } = req.payload;
-  await models.User.destroy({ where: { id } });
+postRouter.delete('/:id', middlewares.auth, async (req, res) => {
+  const { id: userId } = req.payload;
+  const { id } = req.params;
+  const post = await models.Post.findOne({ where: { id } });
+  if (!post) return res.status(404).json({ message: 'Post não existe' });
+  if (post.dataValues.userId !== userId) {
+    return res.status(401).json({ message: 'Usuário não autorizado' });
+  }
+  await models.Post.destroy({ where: { id } });
   return res.status(204).json({});
 });
 
