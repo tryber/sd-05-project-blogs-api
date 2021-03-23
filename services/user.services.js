@@ -1,5 +1,5 @@
 const Joi = require('@hapi/joi');
-const { createToken, checkToken } = require('../auth/jwt.auth');
+const { createToken } = require('../auth/jwt.auth');
 const { User } = require('../models');
 
 const REGISTER_SCHEMA = Joi.object({
@@ -52,9 +52,7 @@ const registerUser = async (displayName, email, password, image) => {
   return createToken(treatedData);
 };
 
-const findAllUsers = async (token) => {
-  checkToken(token);
-
+const findAllUsers = async () => {
   const usersFound = await User.findAll();
 
   const treatedUsers = usersFound.map((user_) => {
@@ -65,9 +63,7 @@ const findAllUsers = async (token) => {
   return treatedUsers;
 };
 
-const findUserById = async (id, token) => {
-  checkToken(token);
-
+const findUserById = async (id) => {
   const userFound = await User.findOne({ where: { id } });
 
   if (!userFound) throw USER_NOT_FOUND;
@@ -77,7 +73,12 @@ const findUserById = async (id, token) => {
   return treatedUser;
 };
 
+const deleteUser = async (id) => {
+  await User.destroy({ where: { id } });
+};
+
 module.exports = {
+  deleteUser,
   findAllUsers,
   findUserById,
   registerUser,
