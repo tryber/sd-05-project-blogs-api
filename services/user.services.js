@@ -53,24 +53,19 @@ const registerUser = async (displayName, email, password, image) => {
 };
 
 const findAllUsers = async () => {
-  const usersFound = await User.findAll();
-
-  const treatedUsers = usersFound.map((user_) => {
-    const { password, ...treatedData } = user_.dataValues;
-    return treatedData;
-  });
-
-  return treatedUsers;
+  const usersFound = await User.findAll({ attributes: { exclude: 'password' } });
+  return usersFound;
 };
 
 const findUserById = async (id) => {
-  const userFound = await User.findOne({ where: { id } });
+  const userFound = await User.findOne({
+    where: { id },
+    attributes: { exclude: 'password' },
+  });
 
   if (!userFound) throw USER_NOT_FOUND;
 
-  const { password, ...treatedUser } = userFound.dataValues;
-
-  return treatedUser;
+  return userFound;
 };
 
 const deleteUser = async (id) => {
