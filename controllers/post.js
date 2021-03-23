@@ -25,14 +25,16 @@ postRouter.post(
   '/',
   verifyToken,
   verifyJoi(schema),
-  rescue(async (req, res) => {
+  async (req, res) => {
     const { title, content } = req.body;
-    const { id: idUser } = req.payload.userData;
-
-    await Post.create({ title, content, idUser, published: Date.now(), updated: Date.now() });
-
-    return res.status(201).json({ title, content, idUser });
-  }),
+    const { id: userId } = req.userPayload;
+    try {
+      await Post.create({ title, content, userId, published: Date.now(), updated: Date.now() });
+      return res.status(201).json({ title, content, userId });
+    } catch (error) {
+      return res.status(401).json({ message: 'DEU RUIM' });
+    }
+  },
 );
 
 // 7 - Sua aplicação deve ter o endpoint GET /post

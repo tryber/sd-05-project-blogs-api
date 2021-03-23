@@ -1,10 +1,9 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 require('dotenv').config();
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 const userRouter = require('./controllers/users');
 const loginRouter = require('./controllers/login');

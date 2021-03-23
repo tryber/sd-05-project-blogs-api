@@ -74,8 +74,9 @@ userRouter.get(
   verifyToken,
   rescue(async (req, res) => {
     const { id } = req.payload.userData;
+    console.log(req.payload.userData, 'CHEGOOOOOOOOOU');
     await User.destroy({ where: { id } });
-    return res.status(204).send();
+    return res.status(204);
   }),
 );
 
