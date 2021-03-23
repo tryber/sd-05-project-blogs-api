@@ -81,9 +81,19 @@ const editPost = async (id, userId, title, content) => {
   return editedPost;
 };
 
+const deletePost = async (id, userId) => {
+  const postFound = await Post.findOne({ where: { id } });
+
+  if (!postFound) throw POST_NOT_FOUND;
+  if (postFound.dataValues.userId !== userId) throw UNAUTHORIZED_USER;
+
+  await Post.destroy({ where: { id, userId } });
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   editPost,
+  deletePost,
 };

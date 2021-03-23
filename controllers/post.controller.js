@@ -84,4 +84,21 @@ postRouter.put('/:id', async (req, res, next) => {
   }
 });
 
+postRouter.delete('/:id', async (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
+
+    if (!token) return next(TOKEN_NOT_FOUND);
+    checkToken(token);
+
+    const { payload: { id: userId } } = decodePayload(token);
+    await postServices.deletePost(req.params.id, userId);
+
+    res.sendStatus(204);
+  } catch (error) {
+    if (error.message === 'jwt malformed') return next(INVALID_TOKEN);
+    next(error);
+  }
+});
+
 module.exports = postRouter;
