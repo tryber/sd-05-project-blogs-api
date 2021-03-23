@@ -69,15 +69,20 @@ userRouter.get(
 );
 
 // 5 - Sua aplicação deve ter o endpoint DELETE /user/me
-userRouter.get(
+userRouter.delete(
   '/me',
   verifyToken,
-  rescue(async (req, res) => {
-    const { id } = req.payload.userData;
-    console.log(req.payload.userData, 'CHEGOOOOOOOOOU');
-    await User.destroy({ where: { id } });
-    return res.status(204);
-  }),
+  async (req, res) => {
+    try {
+      const { id } = req.userPayload;
+      // console.log(id, 'SID FOFO');
+      // console.log(req.userPayload, 'CHEGOOOOOOOOOU');
+      await User.destroy({ where: { id } });
+      return res.status(204).json({ message: 'Usuário deletado' });
+    } catch (error) {
+      return res.status(555).json({ message: 'DEU RUIM' });
+    }
+  },
 );
 
 module.exports = userRouter;
