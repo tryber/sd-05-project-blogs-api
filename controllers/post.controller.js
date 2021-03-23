@@ -50,4 +50,20 @@ postRouter.get('/', async (req, res, next) => {
   }
 });
 
+postRouter.get('/:id', async (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
+
+    if (!token) return next(TOKEN_NOT_FOUND);
+    checkToken(token);
+
+    const post = await postServices.findPostById(req.params.id);
+
+    res.status(200).json(post);
+  } catch (error) {
+    if (error.message === 'jwt malformed') return next(INVALID_TOKEN);
+    next(error);
+  }
+});
+
 module.exports = postRouter;

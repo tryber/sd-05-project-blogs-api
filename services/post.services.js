@@ -12,6 +12,12 @@ const INVALID_DATA = (message) => ({
   status: 400,
 });
 
+const POST_NOT_FOUND = {
+  name: 'PostNotFoundError',
+  message: 'Post não existe',
+  status: 404,
+};
+
 const createPost = async (userId, title, content) => {
   const { error } = CREATE_SCHEMA.validate({ title, content });
 
@@ -27,7 +33,7 @@ const createPost = async (userId, title, content) => {
 };
 
 const findAllPosts = async () => {
-  const posts = await Post.findAll({
+  const postsFound = await Post.findAll({
     include: {
       model: User,
       as: 'user',
@@ -35,10 +41,26 @@ const findAllPosts = async () => {
     },
   });
 
-  return posts;
+  return postsFound;
+};
+
+const findPostById = async (id) => {
+  const postFound = await Post.findOne({
+    where: { id },
+    include: {
+      model: User,
+      as: 'user',
+      attributes: { exclude: 'password' },
+    },
+  });
+
+  if (!postFound) throw POST_NOT_FOUND;
+
+  return postFound;
 };
 
 module.exports = {
   createPost,
   findAllPosts,
+  findPostById,
 };
