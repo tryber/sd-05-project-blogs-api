@@ -3,7 +3,7 @@ const tokenMiddleware = require('../middlewares/tokenMiddleware');
 
 const postRouter = Router();
 
-const { Post } = require('../models');
+const { Post, User } = require('../models');
 // const { emailLogin, pwdLogin } = require('../middlewares/loginMiddleware');
 // const middlewares = [emailLogin, pwdLogin];
 
@@ -29,6 +29,20 @@ postRouter.post('/', tokenMiddleware, async (req, res) => {
     return res.status(201).json(post);
   } catch (error) {
     console.log('estou no catch', error);
+    return res.status(500).json({ message: `Intern Error: ${error}` });
+  }
+});
+
+postRouter.get('/', tokenMiddleware, async (req, res) => {
+  try {
+    const listPosts = await Post.findAll({
+      where: { userId: req.payload.id },
+      include: { model: User, as: 'user', attributes: { exclude: 'password' } },
+      attributes: { exclude: 'userId' },
+    });
+
+    return res.status(200).json(listPosts);
+  } catch (error) {
     return res.status(500).json({ message: `Intern Error: ${error}` });
   }
 });

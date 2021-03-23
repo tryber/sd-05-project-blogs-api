@@ -5,6 +5,8 @@ const createPost = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       content: DataTypes.STRING,
       userId: { foreignKey: true, type: DataTypes.INTEGER },
+      published: { type: DataTypes.DATE, defaultValue: new Date() },
+      updated: { type: DataTypes.DATE, defaultValue: new Date() },
     },
     { timestamps: false },
   );
