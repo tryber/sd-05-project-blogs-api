@@ -34,4 +34,20 @@ postRouter.post('/', async (req, res, next) => {
   }
 });
 
+postRouter.get('/', async (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
+
+    if (!token) return next(TOKEN_NOT_FOUND);
+    checkToken(token);
+
+    const posts = await postServices.findAllPosts();
+
+    res.status(200).json(posts);
+  } catch (error) {
+    if (error.message === 'jwt malformed') return next(INVALID_TOKEN);
+    next(error);
+  }
+});
+
 module.exports = postRouter;
