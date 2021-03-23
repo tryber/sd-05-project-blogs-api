@@ -3,6 +3,8 @@ const service = require('../service/usersService');
 
 const router = Router();
 const { createToken } = require('../middlewares/auth');
+const confirmaToken = require('../middlewares/confirmaToken');
+const { Users } = require('../models');
 
 router.post('/', async (req, res) => {
   try {
@@ -23,9 +25,40 @@ router.post('/', async (req, res) => {
       id: userCreate.id,
       iss: 'post_api',
     });
-    res.status(201).json({ token });
+    return res.status(201).json({ token });
   } catch (error) {
-    res.status(500).json({ message: 'Algo está errado' });
+    return res.status(500).json({ message: 'Algo deu errado' });
+  }
+});
+router.get('/', confirmaToken, async (_req, res) => {
+  try {
+    const findUsers = await Users.findAll({ attributes: { exclude: ['password'] } });
+    res.status(200).json(findUsers);
+  } catch (error) {
+    res.status(500).json({ message: 'Algo deu errado' });
+  }
+});
+
+router.get('/:id', confirmaToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const findUserId = await Users.findOne({ where: { id }, attributes: { exclude: ['password'] } });
+    if (!findUserId) {
+      return res.status(404).json({ message: 'Usuário não existe' });
+    }
+    res.status(200).json(findUserId);
+  } catch (error) {
+    res.status(500).json({ message: 'Algo deu errado' });
+  }
+});
+
+router.delete('/me', confirmaToken, async (req, res) => {
+  try {
+    const { id } = req.payload;
+    const deletaUser = await Users.destroy({ where: { id } });
+    res.status(204).json(deletaUser);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 

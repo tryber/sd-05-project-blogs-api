@@ -17,9 +17,9 @@ router.post('/', async (req, res) => {
       email,
       iss: 'post_api',
     });
-    return res.status(200).json({ token });
+    res.status(200).json({ token });
   } catch (error) {
-    return res.status(500).json({ message: 'Algo está errado' });
+    res.status(500).json({ message: 'Algo está errado' });
   }
 });
 
