@@ -1,11 +1,11 @@
 const { validaToken } = require('./auth');
 
 const confirmaToken = async (req, res, next) => {
-  const { authorization } = req.headers;
-  if (!authorization) {
-    return res.status(401).json({ message: 'Token não encontrado' });
-  }
   try {
+    const { authorization } = req.headers;
+    if (!authorization) {
+      return res.status(401).json({ message: 'Token não encontrado' });
+    }
     console.log('authorization', authorization);
     const payload = await validaToken(authorization);
     req.payload = payload;

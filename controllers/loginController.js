@@ -16,6 +16,7 @@ router.post('/', async (req, res) => {
     const token = createToken({
       email,
       iss: 'post_api',
+      id: login.id,
     });
     res.status(200).json({ token });
   } catch (error) {

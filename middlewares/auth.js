@@ -14,7 +14,7 @@ const jwtConfig = {
 const createToken = (payload) => jwt.sign(payload, secret, jwtConfig);
 
 const validaToken = async (token) => {
-  const payload = jwt.validaToken(token, secret);
+  const payload = jwt.verify(token, secret);
   return payload;
 };
 

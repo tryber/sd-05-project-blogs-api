@@ -116,7 +116,7 @@ router.delete('/:id', validaToken, async (req, res) => {
       return res.status(404).json({ message: 'Post não existe' });
     }
     if (validatePost.userId !== userId) {
-      return res.status(404).json({ message: 'Usuário não autorizado' });
+      return res.status(401).json({ message: 'Usuário não autorizado' });
     }
     const deletePost = await Posts.destroy({ where: { id } });
     res.status(204).json(deletePost);
