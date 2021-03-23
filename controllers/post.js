@@ -43,10 +43,15 @@ postRouter.post(
 postRouter.get(
   '/',
   verifyToken,
-  rescue(async (req, res) => {
-    const listPosts = await User.findAll({ include: { model: User, as: 'user' } });
-    res.status(200).json(listPosts);
-  }),
+  async (req, res) => {
+    try {
+      const listPosts = await Post.findAll({ include: { model: User, as: 'user' } });
+      res.status(200).json(listPosts);
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({ message: 'DEU RUIM' });
+    }
+  },
 );
 
 // 8 - Sua aplicação deve ter o endpoint GET /post/:id
@@ -54,7 +59,7 @@ postRouter.get(
   '/:id',
   verifyToken,
   rescue(async (req, res) => {
-    const uniquePost = await User.findByPk(req.params.id, {
+    const uniquePost = await Post.findByPk(req.params.id, {
       include: {
         model: User,
         as: 'user',
@@ -73,7 +78,7 @@ postRouter.get(
   verifyToken,
   rescue(async (req, res) => {
     const { id } = req.params;
-    const uniquePostById = await User.findByPk(id);
+    const uniquePostById = await Post.findByPk(id);
 
     // Verifica se o usuário é o mesmo que quer editar o post
     const userAuthenticated = req.userPayload.id;
