@@ -22,10 +22,15 @@ userRouter.get('/', middlewares.auth, async (req, res) => {
 
 userRouter.get('/:id', middlewares.auth, async (req, res) => {
   const { id } = req.params;
-  console.log('>>>', id);
   const user = await models.User.findOne({ where: { id } });
   if (!user) return res.status(404).json({ message: 'Usuário não existe' });
   return res.status(200).json(user);
+});
+
+userRouter.delete('/me', middlewares.auth, async (req, res) => {
+  const { id } = req.payload;
+  await models.User.destroy({ where: { id } });
+  return res.status(204).json({});
 });
 
 module.exports = userRouter;
