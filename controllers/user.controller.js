@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { userServices } = require('../services');
-const { checkToken } = require('../auth/jwt.auth');
+const { checkToken, decodePayload } = require('../auth/jwt.auth');
 
 const userRouter = Router();
 
@@ -72,9 +72,7 @@ userRouter.delete('/me', async (req, res, next) => {
     if (!token) return next(TOKEN_NOT_FOUND);
     checkToken(token);
 
-    const { payload: { id } } = JSON.parse(
-      Buffer.from(token.split('.')[1], 'base64').toString('utf-8'),
-    );
+    const { payload: { id } } = decodePayload(token);
 
     await userServices.deleteUser(id);
 
