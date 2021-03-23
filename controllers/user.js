@@ -15,4 +15,17 @@ userRouter.post('/', middlewares.validateFields, async (req, res) => {
   return res.status(201).json({ token });
 });
 
+userRouter.get('/', middlewares.auth, async (req, res) => {
+  const users = await models.User.findAll({});
+  return res.status(200).json(users);
+});
+
+userRouter.get('/:id', middlewares.auth, async (req, res) => {
+  const { id } = req.params;
+  console.log('>>>', id);
+  const user = await models.User.findOne({ where: { id } });
+  if (!user) return res.status(404).json({ message: 'Usuário não existe' });
+  return res.status(200).json(user);
+});
+
 module.exports = userRouter;
