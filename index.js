@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { loginController, userController } = require('./controllers');
+const { loginController, postController, userController } = require('./controllers');
 require('dotenv').config();
 
 const app = express();
@@ -15,6 +15,7 @@ app.get('/', (_req, res) => {
 app.use('/', bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/login', loginController);
+app.use('/post', postController);
 app.use('/user', userController);
 
 const errorMiddleware = (err, _req, res, _next) => {
