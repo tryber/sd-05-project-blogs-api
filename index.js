@@ -8,9 +8,9 @@ const usersController = require('./controllers/usersController');
 
 const loginController = require('./controllers/loginController');
 
-app.use(bodyParser.json());
+const postController = require('./controllers/postController');
 
-const PORT = 3000;
+app.use(bodyParser.json());
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (request, response) => {
@@ -20,6 +20,10 @@ app.get('/', (request, response) => {
 app.use('/user', usersController);
 
 app.use('/login', loginController);
+
+app.use('/post', postController);
+
+const PORT = 3000;
 
 app.listen(PORT, () =>
   console.log(`ouvindo alguém me chamar na porta ${PORT}!`));
