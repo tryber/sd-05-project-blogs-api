@@ -79,7 +79,7 @@ userRouter.delete('/me', tokenValidation, async (req, res) => {
   }
 });
 
-userRouter.put('/', tokenValidation, async (req, res) => {
+userRouter.put('/:id', errorHandler(schema), tokenValidation, async (req, res) => {
   const { id } = req.params;
   const { displayName, email, password, image } = req.body;
   try {

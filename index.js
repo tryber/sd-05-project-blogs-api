@@ -5,7 +5,6 @@ const userRouter = require('./controllers/userController');
 const loginRouter = require('./controllers/loginController');
 const postsRouter = require('./controllers/postController');
 
-
 const app = express();
 app.use(express.json());
 
