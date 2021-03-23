@@ -52,12 +52,12 @@ const registerUser = async (displayName, email, password, image) => {
   return createToken(treatedData);
 };
 
-const findAllUsers = async () => {
+const getAllUsers = async () => {
   const usersFound = await User.findAll({ attributes: { exclude: 'password' } });
   return usersFound;
 };
 
-const findUserById = async (id) => {
+const getUserById = async (id) => {
   const userFound = await User.findOne({
     where: { id },
     attributes: { exclude: 'password' },
@@ -73,8 +73,8 @@ const deleteUser = async (id) => {
 };
 
 module.exports = {
-  deleteUser,
-  findAllUsers,
-  findUserById,
   registerUser,
+  getAllUsers,
+  getUserById,
+  deleteUser,
 };

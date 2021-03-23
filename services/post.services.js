@@ -32,7 +32,7 @@ const createPost = async (userId, title, content) => {
   };
 };
 
-const findAllPosts = async () => {
+const getAllPosts = async () => {
   const postsFound = await Post.findAll({
     include: {
       model: User,
@@ -44,7 +44,7 @@ const findAllPosts = async () => {
   return postsFound;
 };
 
-const findPostById = async (id) => {
+const getPostById = async (id) => {
   const postFound = await Post.findOne({
     where: { id },
     include: {
@@ -61,6 +61,6 @@ const findPostById = async (id) => {
 
 module.exports = {
   createPost,
-  findAllPosts,
-  findPostById,
+  getAllPosts,
+  getPostById,
 };

@@ -40,7 +40,7 @@ userRouter.get('/', async (req, res, next) => {
     if (!token) return next(TOKEN_NOT_FOUND);
     checkToken(token);
 
-    const users = await userServices.findAllUsers();
+    const users = await userServices.getAllUsers();
 
     res.status(200).json(users);
   } catch (error) {
@@ -56,7 +56,7 @@ userRouter.get('/:id', async (req, res, next) => {
     if (!token) return next(TOKEN_NOT_FOUND);
     checkToken(token);
 
-    const user = await userServices.findUserById(req.params.id, token);
+    const user = await userServices.getUserById(req.params.id, token);
 
     res.status(200).json(user);
   } catch (error) {

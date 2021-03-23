@@ -41,7 +41,7 @@ postRouter.get('/', async (req, res, next) => {
     if (!token) return next(TOKEN_NOT_FOUND);
     checkToken(token);
 
-    const posts = await postServices.findAllPosts();
+    const posts = await postServices.getAllPosts();
 
     res.status(200).json(posts);
   } catch (error) {
@@ -57,7 +57,7 @@ postRouter.get('/:id', async (req, res, next) => {
     if (!token) return next(TOKEN_NOT_FOUND);
     checkToken(token);
 
-    const post = await postServices.findPostById(req.params.id);
+    const post = await postServices.getPostById(req.params.id);
 
     res.status(200).json(post);
   } catch (error) {
