@@ -61,4 +61,29 @@ postRouter.get('/:id', tokenMiddleware, async (req, res) => {
   return res.status(200).json(postById);
 });
 
+postRouter.put('/:id', tokenMiddleware, async (req, res) => {
+  const { id } = req.params;
+  const { title, content } = req.body;
+  const userLogged = req.payload;
+  const postFound = await Post.findOne({
+    where: { id },
+    include: { model: User, as: 'user', attributes: { exclude: 'password' } },
+    attributes: { exclude: 'userId' },
+  });
+  if (!postFound) { return res.status(404).json({ message: 'Post não existe' }); }
+  if (userLogged.id !== postFound.userId) {
+    return res.status(401).json({ message: 'Usuário não autorizado' });
+  }
+  const postById = await Post.update(
+    { title, content },
+    {
+      where: { userId: userLogged.id, id },
+    },
+  );
+  if (!postById) {
+    return res.status(404).json({ message: 'Post não existe' });
+  }
+  return res.status(200).json({ title, content, userId: req.payload.id });
+});
+
 module.exports = postRouter;
