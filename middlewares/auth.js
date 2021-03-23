@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
     const payload = jwt.verifyToken(authorization);
     req.payload = payload;
   } catch (error) {
-    console.log('aaaaa', error);
+    console.log('erro:', error);
     return res.status(401).json({ message: 'Token expirado ou inválido' });
   }
   return next();

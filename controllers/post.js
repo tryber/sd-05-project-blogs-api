@@ -22,10 +22,14 @@ postRouter.get('/', middlewares.auth, async (req, res) => {
 });
 
 postRouter.get('/:id', middlewares.auth, async (req, res) => {
+  const { id: userId } = req.payload;
   const { id } = req.params;
-  const user = await models.User.findOne({ where: { id } });
-  if (!user) return res.status(404).json({ message: 'Usuário não existe' });
-  return res.status(200).json(user);
+  const post = await models.Post.findOne({
+    where: { userId, id },
+    attributes: { exclude: 'userId' },
+    include: { model: models.User, as: 'user', attributes: { excludes: 'password' } },
+  });
+  return post ? res.status(200).json(post) : res.status(404).json({ message: 'Post não existe' });
 });
 
 postRouter.delete('/me', middlewares.auth, async (req, res) => {
