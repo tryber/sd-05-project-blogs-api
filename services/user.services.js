@@ -21,6 +21,12 @@ const USER_CONFLICT = {
   status: 409,
 };
 
+const USER_NOT_FOUND = {
+  name: 'UserNotFoundError',
+  message: 'Usuário não existe',
+  status: 404,
+};
+
 const registerUser = async (displayName, email, password, image) => {
   const { error } = REGISTER_SCHEMA.validate({
     displayName,
@@ -49,9 +55,9 @@ const registerUser = async (displayName, email, password, image) => {
 const findAllUsers = async (token) => {
   checkToken(token);
 
-  const users = await User.findAll();
+  const usersFound = await User.findAll();
 
-  const treatedUsers = users.map((user_) => {
+  const treatedUsers = usersFound.map((user_) => {
     const { password, ...treatedData } = user_.dataValues;
     return treatedData;
   });
@@ -59,7 +65,20 @@ const findAllUsers = async (token) => {
   return treatedUsers;
 };
 
+const findUserById = async (id, token) => {
+  checkToken(token);
+
+  const userFound = await User.findOne({ where: { id } });
+
+  if (!userFound) throw USER_NOT_FOUND;
+
+  const { password, ...treatedUser } = userFound.dataValues;
+
+  return treatedUser;
+};
+
 module.exports = {
   findAllUsers,
+  findUserById,
   registerUser,
 };

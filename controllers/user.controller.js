@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { userServices } = require('../services');
 
-const user = Router();
+const userRouter = Router();
 
 const TOKEN_NOT_FOUND = {
   name: 'TokenNotFoundError',
@@ -15,7 +15,7 @@ const INVALID_TOKEN = {
   status: 401,
 };
 
-user.post('/', async (req, res, next) => {
+userRouter.post('/', async (req, res, next) => {
   try {
     const { displayName, email, password, image } = req.body;
 
@@ -32,7 +32,7 @@ user.post('/', async (req, res, next) => {
   }
 });
 
-user.get('/', async (req, res, next) => {
+userRouter.get('/', async (req, res, next) => {
   try {
     const token = req.headers.authorization;
 
@@ -47,4 +47,19 @@ user.get('/', async (req, res, next) => {
   }
 });
 
-module.exports = user;
+userRouter.get('/:id', async (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
+
+    if (!token) return next(TOKEN_NOT_FOUND);
+
+    const user = await userServices.findUserById(req.params.id, token);
+
+    res.status(200).json(user);
+  } catch (error) {
+    if (error.message === 'jwt malformed') return next(INVALID_TOKEN);
+    next(error);
+  }
+});
+
+module.exports = userRouter;
