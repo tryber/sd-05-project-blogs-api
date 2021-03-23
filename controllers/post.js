@@ -102,4 +102,32 @@ postRouter.put(
   }),
 );
 
+// 11 - Sua aplicação deve ter o endpoint DELETE /post/:id
+postRouter.delete(
+  '/:id',
+  verifyToken,
+  (async (req, res) => {
+    try {
+      const { id } = req.params;
+      console.log(typeof (id), 'CHEGUEI RAPAZIADA');
+
+      // Verifica post existente
+      const postExist = await Post.findOne({ where: { id } });
+      console.log(postExist);
+      if (!postExist) {
+        return res.status(404).json({ message: 'Post não existe' });
+      }
+
+      const userAuth = req.userPayload.id;
+      if (postExist.dataValues.id !== userAuth) {
+        return res.status(401).json({ message: 'Usuário não autorizado' });
+      }
+
+      await Post.destroy({ where: { id } });
+      return res.status(204).json({ message: 'Post deletado com sucesso' });
+    } catch (error) {
+      return res.status(401).json({ message: 'DEU RUIM' });
+    }
+  }),
+);
 module.exports = postRouter;
