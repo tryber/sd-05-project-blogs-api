@@ -65,25 +65,43 @@ postRouter.put('/:id', tokenMiddleware, async (req, res) => {
   const { id } = req.params;
   const { title, content } = req.body;
   const userLogged = req.payload;
-  const postFound = await Post.findOne({
-    where: { id },
-    include: { model: User, as: 'user', attributes: { exclude: 'password' } },
-    attributes: { exclude: 'userId' },
-  });
-  if (!postFound) { return res.status(404).json({ message: 'Post não existe' }); }
-  if (userLogged.id !== postFound.userId) {
+
+  if (!title) return res.status(400).json({ message: '"title" is required' });
+
+  if (!content) return res.status(400).json({ message: '"content" is required' });
+
+  const postFound = await Post.findOne({ where: { id } });
+
+  if (!postFound) return res.status(404).json({ message: 'Post não existe' });
+
+  if (userLogged.id !== postFound.dataValues.userId) {
     return res.status(401).json({ message: 'Usuário não autorizado' });
   }
-  const postById = await Post.update(
+  await Post.update(
     { title, content },
     {
       where: { userId: userLogged.id, id },
     },
   );
-  if (!postById) {
+
+  return res.status(200).json({ title, content, userId: req.payload.id });
+});
+
+postRouter.delete('/:id', tokenMiddleware, async (req, res) => {
+  const { id } = req.params;
+  const userLogged = req.payload;
+  const postFound = await Post.findOne({
+    where: { id },
+  });
+  if (!postFound) {
     return res.status(404).json({ message: 'Post não existe' });
   }
-  return res.status(200).json({ title, content, userId: req.payload.id });
+  if (userLogged.id !== postFound.userId) {
+    return res.status(401).json({ message: 'Usuário não autorizado' });
+  }
+  const deletePost = await Post.destroy({ where: { id, userId: userLogged.id } });
+
+  return res.status(204).json(deletePost);
 });
 
 module.exports = postRouter;
