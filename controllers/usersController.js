@@ -33,9 +33,10 @@ router.post('/', async (req, res) => {
 router.get('/', confirmaToken, async (_req, res) => {
   try {
     const findUsers = await Users.findAll({ attributes: { exclude: ['password'] } });
-    res.status(200).json(findUsers);
+    console.log('findUsers==>', findUsers);
+    return res.status(200).json(findUsers);
   } catch (error) {
-    res.status(500).json({ message: 'Algo deu errado' });
+    return res.status(500).json({ message: 'Algo deu errado' });
   }
 });
 
