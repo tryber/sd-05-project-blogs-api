@@ -1,5 +1,5 @@
 const Joi = require('@hapi/joi');
-const { createToken } = require('../auth/jwt.auth');
+const { createToken, checkToken } = require('../auth/jwt.auth');
 const { User } = require('../models');
 
 const REGISTER_SCHEMA = Joi.object({
@@ -20,14 +20,6 @@ const USER_CONFLICT = {
   message: 'Usuário já existe',
   status: 409,
 };
-
-// no password leak
-const treatData = (id, displayName, email, image) => ({
-  id,
-  displayName,
-  email,
-  image,
-});
 
 const registerUser = async (displayName, email, password, image) => {
   const { error } = REGISTER_SCHEMA.validate({
@@ -50,11 +42,24 @@ const registerUser = async (displayName, email, password, image) => {
     image,
   });
 
-  const { dataValues } = newUser;
-  const treatedData = treatData(dataValues);
+  const { password: _password, ...treatedData } = newUser.dataValues;
   return createToken(treatedData);
 };
 
+const findAllUsers = async (token) => {
+  checkToken(token);
+
+  const users = await User.findAll();
+
+  const treatedUsers = users.map((user_) => {
+    const { password, ...treatedData } = user_.dataValues;
+    return treatedData;
+  });
+
+  return treatedUsers;
+};
+
 module.exports = {
+  findAllUsers,
   registerUser,
 };
