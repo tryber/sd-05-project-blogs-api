@@ -1,7 +1,7 @@
 const Joi = require('@hapi/joi');
 const { Post, User } = require('../models');
 
-const CREATE_SCHEMA = Joi.object({
+const POST_SCHEMA = Joi.object({
   title: Joi.string().required(),
   content: Joi.string().required(),
 });
@@ -18,8 +18,14 @@ const POST_NOT_FOUND = {
   status: 404,
 };
 
+const UNAUTHORIZED_USER = {
+  name: 'InvalidUserError',
+  message: 'Usuário não autorizado',
+  status: 401,
+};
+
 const createPost = async (userId, title, content) => {
-  const { error } = CREATE_SCHEMA.validate({ title, content });
+  const { error } = POST_SCHEMA.validate({ title, content });
 
   if (error) throw INVALID_DATA(error.message);
 
@@ -59,8 +65,29 @@ const getPostById = async (id) => {
   return postFound;
 };
 
+const editPost = async (id, userId, title, content) => {
+  const { error } = POST_SCHEMA.validate({ title, content });
+
+  if (error) throw INVALID_DATA(error.message);
+
+  const edit = await Post.update(
+    { title, content },
+    { where: { id, userId } },
+  );
+
+  if (edit[0] === 0) throw UNAUTHORIZED_USER;
+
+  const editedPost = await Post.findOne({
+    where: { id, userId },
+    attributes: ['title', 'content', 'userId'],
+  });
+
+  return editedPost;
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
+  editPost,
 };

@@ -66,4 +66,22 @@ postRouter.get('/:id', async (req, res, next) => {
   }
 });
 
+postRouter.put('/:id', async (req, res, next) => {
+  try {
+    const { title, content } = req.body;
+    const token = req.headers.authorization;
+
+    if (!token) return next(TOKEN_NOT_FOUND);
+    checkToken(token);
+
+    const { payload: { id: userId } } = decodePayload(token);
+    const updatedPost = await postServices.editPost(req.params.id, userId, title, content);
+
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    if (error.message === 'jwt malformed') return next(INVALID_TOKEN);
+    next(error);
+  }
+});
+
 module.exports = postRouter;
