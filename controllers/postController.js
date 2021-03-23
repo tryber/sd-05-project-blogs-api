@@ -47,4 +47,18 @@ postRouter.get('/', tokenMiddleware, async (req, res) => {
   }
 });
 
+postRouter.get('/:id', tokenMiddleware, async (req, res) => {
+  const { id } = req.params;
+  const postById = await Post.findOne({
+    where: { userId: req.payload.id, id },
+    include: { model: User, as: 'user', attributes: { exclude: 'password' } },
+    attributes: { exclude: 'userId' },
+  });
+  if (!postById) {
+    return res.status(404).json({ message: 'Post não existe' });
+  }
+
+  return res.status(200).json(postById);
+});
+
 module.exports = postRouter;
