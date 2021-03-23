@@ -5,8 +5,8 @@ const create = (sequelize, DataTypes) => {
       id: { type: DataTypes.INTEGER, primaryKey: true },
       title: DataTypes.STRING,
       content: DataTypes.STRING,
-      published: DataTypes.DATE,
-      updated: DataTypes.DATE,
+      published: { type: DataTypes.DATE, defaultValue: new Date() },
+      updated: { type: DataTypes.DATE, defaultValue: new Date() },
       userId: { type: DataTypes.INTEGER, foreignKey: true },
     },
     {
