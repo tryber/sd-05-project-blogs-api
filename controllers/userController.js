@@ -1,13 +1,29 @@
 const { Router } = require('express');
+
+const Joi = require('joi');
+
 const { Users } = require('../models');
-const validateUser = require('../middleWare/userValidation');
+const tokenValidation = require('../middleWare/tokenValidation');
+const errorHandler = require('../middleWare/errorHandler');
+const createToken = require('../services/createToken');
 
 const userRouter = Router();
 
-userRouter.post('/', validateUser, async (req, res) => {
+const schema = Joi.object({
+  displayName: Joi.string().min(8).required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required().messages({
+    'string.min': '"password" length must be 6 characters long',
+  }),
+  image: Joi.string(),
+});
+
+/* Como ensinado pela nat, o errorHandler verifica o schema do Joi e retorna as mensagens
+ de erro conforme especificado */
+userRouter.post('/', errorHandler(schema), async (req, res) => {
   const { displayName, email, password, image } = req.body;
   try {
-    const userExists = await User.findOne({ where: { email } });
+    const userExists = await Users.findOne({ where: { email } });
 
     if (userExists) return res.status(409).json({ message: 'Usuário já existe' });
 
@@ -17,52 +33,54 @@ userRouter.post('/', validateUser, async (req, res) => {
       password,
       image,
     });
-    return res.status(201).json(newUser);
+    const token = createToken(newUser.dataValues);
+    return res.status(201).json({ token });
   } catch (err) {
     console.log(err);
-    return res.status(400).json({ message: 'Usuário já existe' });
+    return res.status(400).json({ message: err });
   }
 });
 
-userRouter.get('/', async (req, res) => {
+userRouter.get('/', tokenValidation, async (req, res) => {
   try {
     const users = await Users.findAll({ attributes: { exclude: ['password'] } });
-    return res.status(201).json(users);
+    return res.status(200).json(users);
   } catch (err) {
     console.log(err);
-    return res.status(400).json({ message: 'deu ruim' });
+    return res.status(400).json({ message: err });
   }
 });
 
-userRouter.get('/:id', async (req, res) => {
-  const id = req.params.id;
+userRouter.get('/:id', tokenValidation, async (req, res) => {
+  const { id } = req.params;
   try {
     const user = await Users.findOne({
       where: { id },
-      include: 'posts',
+      // include: 'posts',
     });
-    return res.status(201).json(user);
+    if (!user) return res.status(404).json({ message: 'Usuário não existe' });
+    return res.status(200).json(user);
   } catch (err) {
     console.log(err);
-    return res.status(400).json({ message: 'deu ruim' });
+    return res.status(400).json({ message: 'Deu Ruim' });
   }
 });
 
-userRouter.delete('/', async (req, res) => {
-  const id = req.params.id;
+userRouter.delete('/me', tokenValidation, async (req, res) => {
+  const { id } = req.payload;
   try {
-    const user = await Users.findOne({ where: { id } });
-    await user.destroy();
+    console.log(req.payload, 'NANAT PEDIU, SID IMPLOROU');
+    await Users.destroy({ where: { id } });
 
-    return res.status(201).json({ message: 'Deletado com sucesso!' });
+    return res.status(204).json({ message: 'Deletado com sucesso!' });
   } catch (err) {
     console.log(err);
     return res.status(400).json({ error: 'deu ruim' });
   }
 });
 
-userRouter.post('/', async (req, res) => {
-  const id = req.params.id;
+userRouter.put('/', tokenValidation, async (req, res) => {
+  const { id } = req.params;
   const { displayName, email, password, image } = req.body;
   try {
     const updateUser = await Users.findOne({ where: { id } });
