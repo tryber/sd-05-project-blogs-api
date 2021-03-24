@@ -34,8 +34,9 @@ create route get/user:id
 npm start testing with insomnia get/user/:id
 ->success
 git commit -am 'text'
-create routes
-create controllers
-create middlewares
-create errors
+create controllers: findEmail, createUser
+create middlewares: auth,login validation, create user validation
+->troubleShooting Xerif finding email on db
+create routes with middlewares
+next create errors
 

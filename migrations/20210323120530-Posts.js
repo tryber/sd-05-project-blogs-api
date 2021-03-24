@@ -4,10 +4,9 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const PostsTable = queryInterface.createTable("Posts", {
       id: {
-        allowNull: false,
-        // autoIncrement: true,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER(1),
       },
       title: {
         allowNull: false,
@@ -18,7 +17,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       userId: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         references: {
           model: 'Users',
           key: 'id',
