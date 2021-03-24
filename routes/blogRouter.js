@@ -10,5 +10,5 @@ blogRouter.get('/', (_req, res) => {
 });
 
 blogRouter.post('/user', middlewares.createUserValidation, controllers.createUser);
-blogRouter.post('/login');
+blogRouter.post('/login', middlewares.loginValidation);
 module.exports = blogRouter;

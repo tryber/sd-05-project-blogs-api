@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const findEmail = require('../helpers/utils');
+const checkEmail = require('../helpers/utils');
 
 const segredo = 'token';
 
@@ -12,7 +12,7 @@ const authorization = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, segredo);
-    const user = await findEmail(decoded.data.email);
+    const user = await checkEmail(decoded.data.email);
 
     if (!user) {
       return res
