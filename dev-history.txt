@@ -1,0 +1,42 @@
+git clone
+npm install
+git checkout -b new-branch
+sequelize-cli init
+git commit -am "text"
+github PR
+.env
+config.js
+sequelizerc
+->ctrl+H = 'ls -a' (@vini)
+router
+controllers and models
+migrations and seeds
+run prestart
+->runs migrations only does not create them (@Vini)
+run npx ... seed:all $
+->missing table
+checking models/Users 'where are it at rdme?'
+->Vini resolved 'where are it at rdme?'
+migrations example: https://github.com/GustafFig/exercise-sequelize-associations/blob/exercise/migrations/20200925150827-patients.js
+npx sequelize-cli migration:create --name Users
+npx sequelize-cli migration:create --name Posts
+edit Users
+edit Posts
+run prestart
+check MySQL
+->tables are in the database
+run seeders
+check MySQL
+git commit/push github
+create models
+create controller
+create route get/user:id
+npm start testing with insomnia get/user/:id
+->success
+git commit -am 'text'
+create controllers: findEmail, createUser
+create middlewares: auth,login validation, create user validation
+->troubleShooting Xerif finding email on db
+create routes with middlewares
+next create errors
+
